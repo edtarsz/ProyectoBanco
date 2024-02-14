@@ -122,56 +122,59 @@ public class ClienteNuevoDTO {
     }
 
     public boolean esValido() throws ValidacionDTOException {
+        if (Integer.toString(this.idCliente).isEmpty() || Integer.toString(this.idCliente) == null) {
+            throw new ValidacionDTOException("Cliente inválido");
+        }
         if (this.nombre == null
                 || this.nombre.isBlank()
                 || this.nombre.trim().length() > 50) {
-            throw new ValidacionDTOException("Teléfono de socio inválido");
+            throw new ValidacionDTOException("Nombre inválido");
         }
         if (this.apellidoMaterno == null
                 || this.apellidoMaterno.isBlank()
                 || this.apellidoMaterno.trim().length() > 50) {
-            throw new ValidacionDTOException("Teléfono de socio inválido");
+            throw new ValidacionDTOException("Apellido materno inválido");
         }
         if (this.apellidoPaterno == null
                 || this.apellidoPaterno.isBlank()
                 || this.apellidoPaterno.trim().length() > 50) {
-            throw new ValidacionDTOException("Teléfono de socio inválido");
+            throw new ValidacionDTOException("Apellido paterno inválido");
         }
         if (this.contraseña == null
                 || this.contraseña.isBlank()
                 || this.contraseña.trim().length() > 20) {
-            throw new ValidacionDTOException("Teléfono de socio inválido");
+            throw new ValidacionDTOException("Contraseña inválida");
         }
         if (this.fechaNacimiento == null) {
-            throw new ValidacionDTOException("Teléfono de socio inválido");
+            throw new ValidacionDTOException("Fecha de nacimiento inválido");
         }
         if (this.codigoPostal == null
                 || this.codigoPostal.isBlank()
                 || this.codigoPostal.trim().length() > 10) {
-            throw new ValidacionDTOException("Teléfono de socio inválido");
+            throw new ValidacionDTOException("Código postal inválido");
         }
         if (this.numExterior == null
                 || this.numExterior.isBlank()
                 || this.numExterior.trim().length() > 10) {
-            throw new ValidacionDTOException("Teléfono de socio inválido");
+            throw new ValidacionDTOException("Número exterior inválido");
         }
         if (this.calle == null
                 || this.calle.isBlank()
                 || this.calle.trim().length() > 30) {
-            throw new ValidacionDTOException("Teléfono de socio inválido");
+            throw new ValidacionDTOException("Calle inválida");
         }
         if (this.colonia == null
                 || this.colonia.isBlank()
                 || this.colonia.trim().length() > 30) {
-            throw new ValidacionDTOException("Teléfono de socio inválido");
+            throw new ValidacionDTOException("Colonia inválida");
         }
         if (this.ciudad == null
                 || this.ciudad.isBlank()
                 || this.ciudad.trim().length() > 20) {
-            throw new ValidacionDTOException("Teléfono de socio inválido");
+            throw new ValidacionDTOException("Ciudad inválida");
         }
-        if (this.edad < 18) {
-            throw new ValidacionDTOException("Edad de cliente inválido");
+        if (this.edad < 18 || Integer.toString(this.edad).isEmpty() || Integer.toString(this.edad) == null) {
+            throw new ValidacionDTOException("Edad inválida");
         }
         return true;
     }
