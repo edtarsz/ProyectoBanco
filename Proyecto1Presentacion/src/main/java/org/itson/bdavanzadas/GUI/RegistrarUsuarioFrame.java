@@ -4,6 +4,8 @@
  */
 package org.itson.bdavanzadas.GUI;
 
+import org.itson.bdavanzadas.proyecto.daos.IBancoDAO;
+
 /**
  *
  * @author JoseH
@@ -12,6 +14,8 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form RegistrarUsuarioFrame
+     *
+     * @param bancoDAO
      */
     public RegistrarUsuarioFrame() {
         initComponents();
@@ -203,7 +207,7 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         jLabel20.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel20.setText("Número exterior");
 
-        fechaNacimiento.setDateFormatString("y-mm-dd");
+        fechaNacimiento.setDateFormatString("y-MM-dd");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -418,7 +422,7 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-        // TODO add your handling code here:
+//        agregar();
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
@@ -460,41 +464,6 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
     private void txtNumExteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumExteriorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNumExteriorActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RegistrarUsuarioFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RegistrarUsuarioFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RegistrarUsuarioFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RegistrarUsuarioFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new RegistrarUsuarioFrame().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegistrar;

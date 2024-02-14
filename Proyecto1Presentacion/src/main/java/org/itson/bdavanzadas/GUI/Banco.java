@@ -27,5 +27,4 @@ public class Banco {
         IndiceFrame indiceFrame = new IndiceFrame(bancoDAO);
         indiceFrame.setVisible(true);
     }
-
 }
