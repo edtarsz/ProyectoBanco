@@ -12,8 +12,7 @@ import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
  */
 public class ClienteNuevoDTO {
 
-    int idCliente;
-    int edad;
+    Long idCliente;
     String nombre;
     String apellidoPaterno;
     String apellidoMaterno;
@@ -24,8 +23,9 @@ public class ClienteNuevoDTO {
     String calle;
     String colonia;
     String ciudad;
+    int edad;
 
-    public int getIdCliente() {
+    public Long getIdCliente() {
         return idCliente;
     }
 
@@ -73,7 +73,7 @@ public class ClienteNuevoDTO {
         return ciudad;
     }
 
-    public void setIdCliente(int idCliente) {
+    public void setIdCliente(Long idCliente) {
         this.idCliente = idCliente;
     }
 
@@ -122,7 +122,7 @@ public class ClienteNuevoDTO {
     }
 
     public boolean esValido() throws ValidacionDTOException {
-        if (Integer.toString(this.idCliente).isEmpty() || Integer.toString(this.idCliente) == null) {
+        if (Long.toString(this.idCliente).isEmpty() || Long.toString(this.idCliente) == null) {
             throw new ValidacionDTOException("Cliente inválido");
         }
         if (this.nombre == null

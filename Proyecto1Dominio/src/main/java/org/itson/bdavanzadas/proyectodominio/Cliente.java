@@ -12,25 +12,38 @@ import java.util.Objects;
  */
 public class Cliente {
 
-    int idCliente;
-    int edad;
-    String nombre;
-    String apellidoPaterno;
-    String apellidoMaterno;
-    String contraseña;
-    String fechaNacimiento;
-    String codigoPostal;
-    String numExterior;
-    String calle;
-    String colonia;
-    String ciudad;
+    private Long idCliente;
+    private String nombre;
+    private String apellidoPaterno;
+    private String apellidoMaterno;
+    private String contraseña;
+    private String fechaNacimiento;
+    private String codigoPostal;
+    private String numExterior;
+    private String calle;
+    private String colonia;
+    private String ciudad;
+    private int edad;
 
     public Cliente() {
     }
 
-    public Cliente(int idCliente, int edad, String nombre, String apellidoPaterno, String apellidoMaterno, String contraseña, String fechaNacimiento, String codigoPostal, String numExterior, String calle, String colonia, String ciudad) {
+    public Cliente(String nombre, String apellidoPaterno, String apellidoMaterno, String contraseña, String fechaNacimiento, String codigoPostal, String numExterior, String calle, String colonia, String ciudad, int edad) {
+        this.edad = edad;
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.contraseña = contraseña;
+        this.fechaNacimiento = fechaNacimiento;
+        this.codigoPostal = codigoPostal;
+        this.numExterior = numExterior;
+        this.calle = calle;
+        this.colonia = colonia;
+        this.ciudad = ciudad;
+    }
+
+    public Cliente(Long idCliente, String nombre, String apellidoPaterno, String apellidoMaterno, String contraseña, String fechaNacimiento, String codigoPostal, String numExterior, String calle, String colonia, String ciudad, int edad) {
         this.idCliente = idCliente;
-        this.edad = edad;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
@@ -41,23 +54,10 @@ public class Cliente {
         this.calle = calle;
         this.colonia = colonia;
         this.ciudad = ciudad;
-    }
-
-    public Cliente(int edad, String nombre, String apellidoPaterno, String apellidoMaterno, String contraseña, String fechaNacimiento, String codigoPostal, String numExterior, String calle, String colonia, String ciudad) {
         this.edad = edad;
-        this.nombre = nombre;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
-        this.contraseña = contraseña;
-        this.fechaNacimiento = fechaNacimiento;
-        this.codigoPostal = codigoPostal;
-        this.numExterior = numExterior;
-        this.calle = calle;
-        this.colonia = colonia;
-        this.ciudad = ciudad;
     }
 
-    public int getIdCliente() {
+    public Long getIdCliente() {
         return idCliente;
     }
 
@@ -105,7 +105,7 @@ public class Cliente {
         return ciudad;
     }
 
-    public void setIdCliente(int idCliente) {
+    public void setIdCliente(Long idCliente) {
         this.idCliente = idCliente;
     }
 
@@ -155,19 +155,19 @@ public class Cliente {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 19 * hash + this.idCliente;
-        hash = 19 * hash + this.edad;
-        hash = 19 * hash + Objects.hashCode(this.nombre);
-        hash = 19 * hash + Objects.hashCode(this.apellidoPaterno);
-        hash = 19 * hash + Objects.hashCode(this.apellidoMaterno);
-        hash = 19 * hash + Objects.hashCode(this.contraseña);
-        hash = 19 * hash + Objects.hashCode(this.fechaNacimiento);
-        hash = 19 * hash + Objects.hashCode(this.codigoPostal);
-        hash = 19 * hash + Objects.hashCode(this.numExterior);
-        hash = 19 * hash + Objects.hashCode(this.calle);
-        hash = 19 * hash + Objects.hashCode(this.colonia);
-        hash = 19 * hash + Objects.hashCode(this.ciudad);
+        int hash = 3;
+        hash = 83 * hash + Objects.hashCode(this.idCliente);
+        hash = 83 * hash + Objects.hashCode(this.nombre);
+        hash = 83 * hash + Objects.hashCode(this.apellidoPaterno);
+        hash = 83 * hash + Objects.hashCode(this.apellidoMaterno);
+        hash = 83 * hash + Objects.hashCode(this.contraseña);
+        hash = 83 * hash + Objects.hashCode(this.fechaNacimiento);
+        hash = 83 * hash + Objects.hashCode(this.codigoPostal);
+        hash = 83 * hash + Objects.hashCode(this.numExterior);
+        hash = 83 * hash + Objects.hashCode(this.calle);
+        hash = 83 * hash + Objects.hashCode(this.colonia);
+        hash = 83 * hash + Objects.hashCode(this.ciudad);
+        hash = 83 * hash + this.edad;
         return hash;
     }
 
@@ -183,9 +183,6 @@ public class Cliente {
             return false;
         }
         final Cliente other = (Cliente) obj;
-        if (this.idCliente != other.idCliente) {
-            return false;
-        }
         if (this.edad != other.edad) {
             return false;
         }
@@ -216,7 +213,10 @@ public class Cliente {
         if (!Objects.equals(this.colonia, other.colonia)) {
             return false;
         }
-        return Objects.equals(this.ciudad, other.ciudad);
+        if (!Objects.equals(this.ciudad, other.ciudad)) {
+            return false;
+        }
+        return Objects.equals(this.idCliente, other.idCliente);
     }
 
     @Override
@@ -224,7 +224,6 @@ public class Cliente {
         StringBuilder sb = new StringBuilder();
         sb.append("Cliente{");
         sb.append("idCliente=").append(idCliente);
-        sb.append(", edad=").append(edad);
         sb.append(", nombre=").append(nombre);
         sb.append(", apellidoPaterno=").append(apellidoPaterno);
         sb.append(", apellidoMaterno=").append(apellidoMaterno);
@@ -235,6 +234,7 @@ public class Cliente {
         sb.append(", calle=").append(calle);
         sb.append(", colonia=").append(colonia);
         sb.append(", ciudad=").append(ciudad);
+        sb.append(", edad=").append(edad);
         sb.append('}');
         return sb.toString();
     }
