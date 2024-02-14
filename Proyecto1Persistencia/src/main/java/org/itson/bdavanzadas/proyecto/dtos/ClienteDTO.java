@@ -10,7 +10,7 @@ import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
  *
  * @author Ramosz
  */
-public class ClienteNuevoDTO {
+public class ClienteDTO {
 
     Long idCliente;
     String nombre;

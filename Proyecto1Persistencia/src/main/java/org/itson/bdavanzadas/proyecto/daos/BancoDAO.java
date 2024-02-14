@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.itson.bdavanzadas.proyecto.conexion.Conexion;
 import org.itson.bdavanzadas.proyecto.conexion.IConexion;
-import org.itson.bdavanzadas.proyecto.dtos.ClienteNuevoDTO;
+import org.itson.bdavanzadas.proyecto.dtos.ClienteDTO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyectodominio.Cliente;
 
@@ -31,7 +31,7 @@ public class BancoDAO implements IBancoDAO {
     }
 
     @Override
-    public Cliente agregar(ClienteNuevoDTO clienteNuevo) throws PersistenciaException {
+    public Cliente agregar(ClienteDTO clienteNuevo) throws PersistenciaException {
         String sentenciaSQL = """
         INSERT INTO socios(Nombre, ApellidoPaterno, ApellidoMaterno, Contraseña, FechaNacimiento, CodigoPostal, NumExterior, Calle, Colonia, Ciudad, Edad)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""";

@@ -11,7 +11,7 @@ import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
  *
  * @author Ramosz
  */
-public class CuentaNuevaDTO {
+public class CuentaDTO {
 
     int numCuenta;
     int idCliente;
