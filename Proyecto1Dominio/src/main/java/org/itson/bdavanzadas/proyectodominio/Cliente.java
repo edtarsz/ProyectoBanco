@@ -25,6 +25,9 @@ public class Cliente {
     String colonia;
     String ciudad;
 
+    public Cliente() {
+    }
+
     public Cliente(int idCliente, int edad, String nombre, String apellidoPaterno, String apellidoMaterno, String contraseña, String fechaNacimiento, String codigoPostal, String numExterior, String calle, String colonia, String ciudad) {
         this.idCliente = idCliente;
         this.edad = edad;
