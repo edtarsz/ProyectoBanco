@@ -355,7 +355,7 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
                 .addGap(26, 26, 26))
         );
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/itson/bdavanzadas/img/iconochico.png"))); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/iconochico.png"))); // NOI18N
 
         jButton4.setFont(new java.awt.Font("Segoe UI", 0, 50)); // NOI18N
         jButton4.setForeground(new java.awt.Color(42, 98, 143));
