@@ -4,7 +4,6 @@
  */
 package org.itson.bdavanzadas.proyecto.dtos;
 
-import java.util.Date;
 import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
 
 /**
@@ -16,7 +15,7 @@ public class CuentaDTO {
     int numCuenta;
     int idCliente;
     float saldo;
-    Date fechaApertura;
+    String fechaApertura;
 
     public int getNumCuenta() {
         return numCuenta;
@@ -30,7 +29,7 @@ public class CuentaDTO {
         return saldo;
     }
 
-    public Date getFechaApertura() {
+    public String getFechaApertura() {
         return fechaApertura;
     }
 
@@ -46,7 +45,7 @@ public class CuentaDTO {
         this.saldo = saldo;
     }
 
-    public void setFechaApertura(Date fechaApertura) {
+    public void setFechaApertura(String fechaApertura) {
         this.fechaApertura = fechaApertura;
     }
 
