@@ -34,7 +34,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <EmptySpace min="0" pref="537" max="32767" attributes="0"/>
+          <EmptySpace min="0" pref="786" max="32767" attributes="0"/>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
@@ -167,7 +167,7 @@
                       <Component id="jTextField2" max="32767" attributes="0"/>
                       <Component id="label3" pref="28" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="75" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Component id="jButton2" min="-2" pref="43" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
               </Group>
@@ -178,7 +178,7 @@
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/org/itson/bdavanzadas/proyecto1/vbankchico.png"/>
+              <Image iconType="3" name="/org/itson/bdavanzadas/img/vbankchico.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="jLabel1"/>
           </Properties>
@@ -212,14 +212,14 @@
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/org/itson/bdavanzadas/proyecto1/historialIcono.png"/>
+              <Image iconType="3" name="/org/itson/bdavanzadas/img/historialIcono.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/org/itson/bdavanzadas/proyecto1/usuarioIcono.png"/>
+              <Image iconType="3" name="/org/itson/bdavanzadas/img/usuarioIcono.png"/>
             </Property>
           </Properties>
         </Component>
@@ -317,7 +317,7 @@
         <Component class="javax.swing.JLabel" name="jLabel8">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/org/itson/bdavanzadas/proyecto1/transferencia.png"/>
+              <Image iconType="3" name="/org/itson/bdavanzadas/img/transferencia.png"/>
             </Property>
           </Properties>
         </Component>

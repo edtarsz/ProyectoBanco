@@ -164,7 +164,7 @@
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/org/itson/bdavanzadas/proyecto1/vbankchico.png"/>
+              <Image iconType="3" name="/org/itson/bdavanzadas/img/vbankchico.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="jLabel1"/>
           </Properties>
@@ -202,14 +202,14 @@
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/org/itson/bdavanzadas/proyecto1/usuarioIcono.png"/>
+              <Image iconType="3" name="/org/itson/bdavanzadas/img/usuarioIcono.png"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/org/itson/bdavanzadas/proyecto1/historialIcono.png"/>
+              <Image iconType="3" name="/org/itson/bdavanzadas/img/historialIcono.png"/>
             </Property>
           </Properties>
         </Component>

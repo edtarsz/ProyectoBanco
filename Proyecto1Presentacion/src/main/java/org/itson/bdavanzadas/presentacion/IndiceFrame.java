@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package org.itson.bdavanzadas.proyecto1;
+package org.itson.bdavanzadas.presentacion;
 
 import java.awt.Graphics;
 
@@ -43,7 +43,7 @@ public class IndiceFrame extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/itson/bdavanzadas/proyecto1/vbank.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/itson/bdavanzadas/img/vbank.png"))); // NOI18N
         jLabel1.setText("jLabel1");
 
         label1.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
@@ -85,7 +85,7 @@ public class IndiceFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/itson/bdavanzadas/proyecto1/adorno.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/itson/bdavanzadas/img/adorno.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

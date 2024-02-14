@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package org.itson.bdavanzadas.proyecto1;
+package org.itson.bdavanzadas.presentacion;
 
 /**
  *
@@ -52,7 +52,6 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(784, 497));
-        setPreferredSize(new java.awt.Dimension(784, 497));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -124,7 +123,7 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                     .addContainerGap(140, Short.MAX_VALUE)
@@ -156,7 +155,7 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
                     .addContainerGap(316, Short.MAX_VALUE)))
         );
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/itson/bdavanzadas/proyecto1/iconochico.png"))); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/itson/bdavanzadas/img/iconochico.png"))); // NOI18N
 
         jButton4.setFont(new java.awt.Font("Segoe UI", 0, 50)); // NOI18N
         jButton4.setForeground(new java.awt.Color(42, 98, 143));

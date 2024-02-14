@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package org.itson.bdavanzadas.proyecto1;
+package org.itson.bdavanzadas.presentacion;
 
 /**
  *
@@ -331,8 +331,7 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel16)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
@@ -356,7 +355,7 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
                 .addGap(26, 26, 26))
         );
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/itson/bdavanzadas/proyecto1/iconochico.png"))); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/itson/bdavanzadas/img/iconochico.png"))); // NOI18N
 
         jButton4.setFont(new java.awt.Font("Segoe UI", 0, 50)); // NOI18N
         jButton4.setForeground(new java.awt.Color(42, 98, 143));

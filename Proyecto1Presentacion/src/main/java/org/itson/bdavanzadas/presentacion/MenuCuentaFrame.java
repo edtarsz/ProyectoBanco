@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package org.itson.bdavanzadas.proyecto1;
+package org.itson.bdavanzadas.presentacion;
 
 /**
  *
@@ -53,7 +53,7 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/itson/bdavanzadas/proyecto1/vbankchico.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/itson/bdavanzadas/img/vbankchico.png"))); // NOI18N
         jLabel1.setText("jLabel1");
 
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
@@ -76,9 +76,9 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/itson/bdavanzadas/proyecto1/usuarioIcono.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/itson/bdavanzadas/img/usuarioIcono.png"))); // NOI18N
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/itson/bdavanzadas/proyecto1/historialIcono.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/itson/bdavanzadas/img/historialIcono.png"))); // NOI18N
 
         jLabel5.setBackground(new java.awt.Color(102, 102, 102));
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
