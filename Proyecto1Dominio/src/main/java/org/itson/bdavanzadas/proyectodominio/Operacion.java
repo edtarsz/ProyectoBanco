@@ -11,16 +11,16 @@ import java.util.Objects;
  *
  * @author Ramosz
  */
-public class Operaciones {
+public class Operacion {
 
     int idOperacion;
     Date fechaHora;
     float monto;
 
-    public Operaciones() {
+    public Operacion() {
     }
 
-    public Operaciones(int idOperacion, Date fechaHora, float monto) {
+    public Operacion(int idOperacion, Date fechaHora, float monto) {
         this.idOperacion = idOperacion;
         this.fechaHora = fechaHora;
         this.monto = monto;
@@ -70,7 +70,7 @@ public class Operaciones {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Operaciones other = (Operaciones) obj;
+        final Operacion other = (Operacion) obj;
         if (this.idOperacion != other.idOperacion) {
             return false;
         }

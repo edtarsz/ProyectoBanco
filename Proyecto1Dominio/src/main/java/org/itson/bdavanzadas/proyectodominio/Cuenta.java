@@ -11,17 +11,17 @@ import java.util.Objects;
  *
  * @author Ramosz
  */
-public class Cuentas {
+public class Cuenta {
 
     int numCuenta;
     int idCliente;
     float saldo;
     Date fechaApertura;
 
-    public Cuentas() {
+    public Cuenta() {
     }
 
-    public Cuentas(int numCuenta, int idCliente, float saldo, Date fechaApertura) {
+    public Cuenta(int numCuenta, int idCliente, float saldo, Date fechaApertura) {
         this.numCuenta = numCuenta;
         this.idCliente = idCliente;
         this.saldo = saldo;
@@ -81,7 +81,7 @@ public class Cuentas {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Cuentas other = (Cuentas) obj;
+        final Cuenta other = (Cuenta) obj;
         if (this.numCuenta != other.numCuenta) {
             return false;
         }

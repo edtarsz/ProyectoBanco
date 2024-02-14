@@ -4,10 +4,15 @@
  */
 package org.itson.bdavanzadas.proyecto.daos;
 
+import org.itson.bdavanzadas.proyecto.dtos.ClienteNuevoDTO;
+import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
+import org.itson.bdavanzadas.proyectodominio.Cliente;
+
 /**
  *
  * @author Ramosz
  */
 public interface IBancoDAO {
-    
-}
+
+    Cliente agregar(ClienteNuevoDTO clienteNuevo) throws PersistenciaException;
+};
