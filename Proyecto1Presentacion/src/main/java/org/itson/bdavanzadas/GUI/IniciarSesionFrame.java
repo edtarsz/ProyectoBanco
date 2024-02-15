@@ -12,10 +12,15 @@ import org.itson.bdavanzadas.proyecto.daos.IBancoDAO;
  */
 public class IniciarSesionFrame extends javax.swing.JFrame {
 
+    private IBancoDAO bancoDAO;
+
     /**
      * Creates new form IniciarSesionFrame
+     *
+     * @param bancoDAO
      */
-    public IniciarSesionFrame() {
+    public IniciarSesionFrame(IBancoDAO bancoDAO) {
+        this.bancoDAO = bancoDAO;
         initComponents();
     }
 
@@ -232,7 +237,7 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame();
+        RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame(bancoDAO);
         registrarUsuario.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed

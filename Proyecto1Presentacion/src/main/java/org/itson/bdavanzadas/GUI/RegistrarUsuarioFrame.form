@@ -148,7 +148,7 @@
                                       <Component id="txtNombre" alignment="0" min="-2" pref="273" max="-2" attributes="0"/>
                                       <Component id="jLabel10" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="fechaNacimiento" alignment="0" min="-2" pref="129" max="-2" attributes="0"/>
+                                  <Component id="txtfechaNacimiento" alignment="0" min="-2" pref="129" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -224,7 +224,7 @@
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="fechaNacimiento" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtfechaNacimiento" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                               <Component id="jLabel10" min="-2" pref="37" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -540,7 +540,7 @@
                 <Property name="text" type="java.lang.String" value="N&#xfa;mero exterior"/>
               </Properties>
             </Component>
-            <Component class="com.toedter.calendar.JDateChooser" name="fechaNacimiento">
+            <Component class="com.toedter.calendar.JDateChooser" name="txtfechaNacimiento">
               <Properties>
                 <Property name="dateFormatString" type="java.lang.String" value="y-MM-dd"/>
               </Properties>

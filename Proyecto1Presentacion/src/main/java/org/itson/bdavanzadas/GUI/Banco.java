@@ -25,6 +25,8 @@ public class Banco {
         IConexion conexion = new Conexion(cadenaConexion, usuario, contrasenia);
         IBancoDAO bancoDAO = new BancoDAO(conexion);
         IndiceFrame indiceFrame = new IndiceFrame(bancoDAO);
+        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(bancoDAO);
+        RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame(bancoDAO);
         indiceFrame.setVisible(true);
     }
 }

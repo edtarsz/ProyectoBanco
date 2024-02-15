@@ -12,7 +12,7 @@ import org.itson.bdavanzadas.proyecto.daos.IBancoDAO;
  */
 public class IndiceFrame extends javax.swing.JFrame {
 
-    IBancoDAO bancoDAO;
+    private IBancoDAO bancoDAO;
 
     /**
      * Creates new form IndiceFrame
@@ -20,8 +20,8 @@ public class IndiceFrame extends javax.swing.JFrame {
      * @param bancoDAO
      */
     public IndiceFrame(IBancoDAO bancoDAO) {
-        initComponents();
         this.bancoDAO = bancoDAO;
+        initComponents();
     }
 
     public IndiceFrame() {
@@ -174,7 +174,7 @@ public class IndiceFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame();
+        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(bancoDAO);
         iniciarSesion.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -184,7 +184,7 @@ public class IndiceFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame();
+        RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame(bancoDAO);
         registrarUsuario.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed

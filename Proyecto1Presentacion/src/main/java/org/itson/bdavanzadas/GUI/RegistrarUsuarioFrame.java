@@ -4,7 +4,13 @@
  */
 package org.itson.bdavanzadas.GUI;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
 import org.itson.bdavanzadas.proyecto.daos.IBancoDAO;
+import org.itson.bdavanzadas.proyecto.dtos.ClienteDTO;
+import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
+import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
 
 /**
  *
@@ -12,13 +18,52 @@ import org.itson.bdavanzadas.proyecto.daos.IBancoDAO;
  */
 public class RegistrarUsuarioFrame extends javax.swing.JFrame {
 
+    private IBancoDAO bancoDAO;
+
     /**
      * Creates new form RegistrarUsuarioFrame
      *
      * @param bancoDAO
      */
-    public RegistrarUsuarioFrame() {
+    public RegistrarUsuarioFrame(IBancoDAO bancoDAO) {
+        this.bancoDAO = bancoDAO;
         initComponents();
+    }
+
+    private void agregar() {
+        String nombre = txtNombre.getText();
+        String apellidoPaterno = txtPaterno.getText();
+        String apellidoMaterno = txtMaterno.getText();
+        String codigoPostal = txtPostal.getText();
+        String ciudad = txtCiudad.getText();
+        String colonia = txtColonia.getText();
+        String calle = txtCalle.getText();
+        String numExterior = txtNumExterior.getText();
+
+        Date fecha = txtfechaNacimiento.getDate();
+        String fechaNacimiento = (fecha != null) ? new SimpleDateFormat("yyyy-MM-dd").format(fecha) : "Fecha no seleccionada";
+
+        ClienteDTO clienteNuevo = new ClienteDTO();
+        clienteNuevo.setNombre(nombre);
+        clienteNuevo.setApellidoPaterno(apellidoPaterno);
+        clienteNuevo.setApellidoMaterno(apellidoMaterno);
+        clienteNuevo.setCodigoPostal(codigoPostal);
+        clienteNuevo.setCiudad(ciudad);
+        clienteNuevo.setColonia(colonia);
+        clienteNuevo.setCalle(calle);
+        clienteNuevo.setNumExterior(numExterior);
+        clienteNuevo.setFechaNacimiento(fechaNacimiento);
+
+        try {
+            if (clienteNuevo.esValido()) {
+                this.bancoDAO.agregar(clienteNuevo);
+                JOptionPane.showMessageDialog(this, "Se registra al cliene", "Notificación", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (ValidacionDTOException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error de validación", JOptionPane.ERROR_MESSAGE);
+        } catch (PersistenciaException ex) {
+            JOptionPane.showMessageDialog(this, "No fue posible agregar al cliente", "Error de almacenamiento", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -58,7 +103,7 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         txtColonia = new javax.swing.JTextField();
         txtNumExterior = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
-        fechaNacimiento = new com.toedter.calendar.JDateChooser();
+        txtfechaNacimiento = new com.toedter.calendar.JDateChooser();
         jLabel7 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
 
@@ -207,7 +252,7 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         jLabel20.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel20.setText("Número exterior");
 
-        fechaNacimiento.setDateFormatString("y-MM-dd");
+        txtfechaNacimiento.setDateFormatString("y-MM-dd");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -247,7 +292,7 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
                                             .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                                 .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING))
-                            .addComponent(fechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtfechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(43, 43, 43)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
@@ -304,7 +349,7 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtfechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(24, 24, 24)
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -416,13 +461,13 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame();
+        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(bancoDAO);
         iniciarSesion.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-//        agregar();
+        agregar();
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
@@ -467,7 +512,6 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegistrar;
-    private com.toedter.calendar.JDateChooser fechaNacimiento;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -499,5 +543,6 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtNumExterior;
     private javax.swing.JTextField txtPaterno;
     private javax.swing.JTextField txtPostal;
+    private com.toedter.calendar.JDateChooser txtfechaNacimiento;
     // End of variables declaration//GEN-END:variables
 }
