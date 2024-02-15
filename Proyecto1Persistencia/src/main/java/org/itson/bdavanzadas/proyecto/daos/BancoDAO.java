@@ -33,7 +33,7 @@ public class BancoDAO implements IBancoDAO {
     @Override
     public Cliente agregar(ClienteDTO clienteNuevo) throws PersistenciaException {
         String sentenciaSQL = """
-        INSERT INTO socios(Nombre, ApellidoPaterno, ApellidoMaterno, Contraseña, FechaNacimiento, CodigoPostal, NumExterior, Calle, Colonia, Ciudad, Edad)
+        INSERT INTO clientes(Nombre, ApellidoPaterno, ApellidoMaterno, Contraseña, FechaNacimiento, CodigoPostal, NumExterior, Calle, Colonia, Ciudad, Edad)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""";
         try (
                 Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);) {

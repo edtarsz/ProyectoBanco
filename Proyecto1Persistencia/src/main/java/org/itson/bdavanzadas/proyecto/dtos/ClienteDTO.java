@@ -4,6 +4,9 @@
  */
 package org.itson.bdavanzadas.proyecto.dtos;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
 
 /**
@@ -12,7 +15,6 @@ import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
  */
 public class ClienteDTO {
 
-    Long idCliente;
     String nombre;
     String apellidoPaterno;
     String apellidoMaterno;
@@ -24,10 +26,6 @@ public class ClienteDTO {
     String colonia;
     String ciudad;
     int edad;
-
-    public Long getIdCliente() {
-        return idCliente;
-    }
 
     public int getEdad() {
         return edad;
@@ -73,12 +71,15 @@ public class ClienteDTO {
         return ciudad;
     }
 
-    public void setIdCliente(Long idCliente) {
-        this.idCliente = idCliente;
-    }
+    public void setEdad(String fechaNacimiento) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate fechaNacimientoDate = LocalDate.parse(fechaNacimiento, formatter);
+        LocalDate fechaActual = LocalDate.now();
+        Period periodo = Period.between(fechaNacimientoDate, fechaActual);
 
-    public void setEdad(int edad) {
-        this.edad = edad;
+        this.edad = periodo.getYears();
+        System.out.println(fechaNacimiento);
+        System.out.println(this.edad);
     }
 
     public void setNombre(String nombre) {
@@ -122,9 +123,6 @@ public class ClienteDTO {
     }
 
     public boolean esValido() throws ValidacionDTOException {
-        if (Long.toString(this.idCliente).isEmpty() || Long.toString(this.idCliente) == null) {
-            throw new ValidacionDTOException("Cliente inválido");
-        }
         if (this.nombre == null
                 || this.nombre.isBlank()
                 || this.nombre.trim().length() > 50) {

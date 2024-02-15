@@ -38,6 +38,7 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         String ciudad = txtCiudad.getText();
         String colonia = txtColonia.getText();
         String calle = txtCalle.getText();
+        String contraseña = txtContraseña.getText();
         String numExterior = txtNumExterior.getText();
 
         Date fecha = txtfechaNacimiento.getDate();
@@ -47,12 +48,14 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         clienteNuevo.setNombre(nombre);
         clienteNuevo.setApellidoPaterno(apellidoPaterno);
         clienteNuevo.setApellidoMaterno(apellidoMaterno);
+        clienteNuevo.setContraseña(contraseña);
         clienteNuevo.setCodigoPostal(codigoPostal);
         clienteNuevo.setCiudad(ciudad);
         clienteNuevo.setColonia(colonia);
         clienteNuevo.setCalle(calle);
         clienteNuevo.setNumExterior(numExterior);
         clienteNuevo.setFechaNacimiento(fechaNacimiento);
+        clienteNuevo.setEdad(fechaNacimiento);
 
         try {
             if (clienteNuevo.esValido()) {
@@ -64,6 +67,18 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         } catch (PersistenciaException ex) {
             JOptionPane.showMessageDialog(this, "No fue posible agregar al cliente", "Error de almacenamiento", JOptionPane.ERROR_MESSAGE);
         }
+
+        txtNombre.setText("");
+        txtPaterno.setText("");
+        txtMaterno.setText("");
+        txtPostal.setText("");
+        txtCiudad.setText("");
+        txtColonia.setText("");
+        txtCalle.setText("");
+        txtContraseña.setText("");
+        txtNumExterior.setText("");
+        txtConfirmarContraseña.setText("");
+        txtfechaNacimiento.setDate(null);
     }
 
     /**
@@ -88,7 +103,7 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         txtContraseña = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        txtConfiContraseña = new javax.swing.JTextField();
+        txtConfirmarContraseña = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -180,9 +195,9 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel11.setText("Contraseña");
 
-        txtConfiContraseña.addActionListener(new java.awt.event.ActionListener() {
+        txtConfirmarContraseña.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtConfiContraseñaActionPerformed(evt);
+                txtConfirmarContraseñaActionPerformed(evt);
             }
         });
 
@@ -288,7 +303,7 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
                                         .addComponent(jLabel8)
                                         .addComponent(txtMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(txtConfiContraseña, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtConfirmarContraseña, javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                                 .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING))
@@ -361,7 +376,7 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel12)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtConfiContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtConfirmarContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -486,9 +501,9 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtContraseñaActionPerformed
 
-    private void txtConfiContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtConfiContraseñaActionPerformed
+    private void txtConfirmarContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtConfirmarContraseñaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtConfiContraseñaActionPerformed
+    }//GEN-LAST:event_txtConfirmarContraseñaActionPerformed
 
     private void txtPostalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPostalActionPerformed
         // TODO add your handling code here:
@@ -536,7 +551,7 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtCalle;
     private javax.swing.JTextField txtCiudad;
     private javax.swing.JTextField txtColonia;
-    private javax.swing.JTextField txtConfiContraseña;
+    private javax.swing.JTextField txtConfirmarContraseña;
     private javax.swing.JTextField txtContraseña;
     private javax.swing.JTextField txtMaterno;
     private javax.swing.JTextField txtNombre;

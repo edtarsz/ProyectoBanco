@@ -140,7 +140,7 @@
                                               <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                                               <Component id="txtMaterno" min="-2" pref="124" max="-2" attributes="0"/>
                                               <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                                  <Component id="txtConfiContraseña" alignment="0" max="32767" attributes="0"/>
+                                                  <Component id="txtConfirmarContraseña" alignment="0" max="32767" attributes="0"/>
                                                   <Component id="jLabel12" alignment="0" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
@@ -237,7 +237,7 @@
                                   <Group type="102" alignment="1" attributes="0">
                                       <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="txtConfiContraseña" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtConfirmarContraseña" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
@@ -411,9 +411,9 @@
                 <Property name="text" type="java.lang.String" value="Contrase&#xf1;a"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="txtConfiContrase&#xf1;a">
+            <Component class="javax.swing.JTextField" name="txtConfirmarContrase&#xf1;a">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtConfiContrase&#xf1;aActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtConfirmarContrase&#xf1;aActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel12">
