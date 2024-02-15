@@ -22,11 +22,14 @@ public class Banco {
         String cadenaConexion = "jdbc:mysql://localhost/banco";
         String usuario = "root";
         String contrasenia = "18509Tal";
+
         IConexion conexion = new Conexion(cadenaConexion, usuario, contrasenia);
         IBancoDAO bancoDAO = new BancoDAO(conexion);
         IndiceFrame indiceFrame = new IndiceFrame(bancoDAO);
-        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(bancoDAO);
         RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame(bancoDAO);
+        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(bancoDAO);
+        MenuCuentaFrame menuCuenta = new MenuCuentaFrame(bancoDAO);
+
         indiceFrame.setVisible(true);
     }
 }
