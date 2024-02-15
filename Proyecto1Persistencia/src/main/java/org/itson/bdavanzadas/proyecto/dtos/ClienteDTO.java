@@ -71,15 +71,8 @@ public class ClienteDTO {
         return ciudad;
     }
 
-    public void setEdad(String fechaNacimiento) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate fechaNacimientoDate = LocalDate.parse(fechaNacimiento, formatter);
-        LocalDate fechaActual = LocalDate.now();
-        Period periodo = Period.between(fechaNacimientoDate, fechaActual);
-
-        this.edad = periodo.getYears();
-        System.out.println(fechaNacimiento);
-        System.out.println(this.edad);
+    public void setEdad(int edad) {
+       this.edad = edad;
     }
 
     public void setNombre(String nombre) {
@@ -143,7 +136,8 @@ public class ClienteDTO {
                 || this.contraseña.trim().length() > 20) {
             throw new ValidacionDTOException("Contraseña inválida");
         }
-        if (this.fechaNacimiento == null) {
+        if (this.fechaNacimiento == null || this.fechaNacimiento.isBlank()
+                || this.fechaNacimiento.trim().length() > 20) {
             throw new ValidacionDTOException("Fecha de nacimiento inválido");
         }
         if (this.codigoPostal == null

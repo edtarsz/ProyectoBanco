@@ -40,7 +40,7 @@ public class BancoDAO implements IBancoDAO {
         INSERT INTO clientes(Nombre, ApellidoPaterno, ApellidoMaterno, Contraseña, FechaNacimiento, CodigoPostal, NumExterior, Calle, Colonia, Ciudad, Edad)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""";
         try (
-                Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);) {
+            Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);) {
             comando.setString(1, clienteNuevo.getNombre());
             comando.setString(2, clienteNuevo.getApellidoMaterno());
             comando.setString(3, clienteNuevo.getApellidoPaterno());

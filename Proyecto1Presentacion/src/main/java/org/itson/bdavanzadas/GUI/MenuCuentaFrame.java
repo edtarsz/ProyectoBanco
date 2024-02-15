@@ -62,7 +62,7 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         CuentaDTO cuentaNueva = new CuentaDTO();
         cuentaNueva.setNumCuenta();
         cuentaNueva.setIdCliente(cliente.getIdCliente());
-        cuentaNueva.setSaldo((float) 1234.59);
+        cuentaNueva.setSaldo((float) 10000.00);
 
         LocalDate fechaActual = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

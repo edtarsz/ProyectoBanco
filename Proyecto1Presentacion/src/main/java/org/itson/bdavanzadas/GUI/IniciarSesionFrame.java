@@ -247,10 +247,14 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
             Logger.getLogger(IniciarSesionFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (existeUsuario) {
-            System.out.println(this.usuario.getNombre());
-            MenuCuentaFrame menuCuentaFrm = new MenuCuentaFrame(bancoDAO, this.usuario);
-            menuCuentaFrm.setVisible(true);
-            this.dispose();
+            try {
+                System.out.println(this.usuario.getNombre());
+                MenuCuentaFrame menuCuentaFrm = new MenuCuentaFrame(bancoDAO, this.usuario);
+                menuCuentaFrm.setVisible(true);
+                this.dispose();
+            } catch (PersistenciaException ex) {
+                Logger.getLogger(IniciarSesionFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Usuario no encontrado", "Error", JOptionPane.INFORMATION_MESSAGE);
         }
