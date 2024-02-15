@@ -27,8 +27,8 @@ public class Cliente {
 
     public Cliente() {
     }
-    
-    public Cliente(String nombre, String contraseña){
+
+    public Cliente(String nombre, String contraseña) {
         this.nombre = nombre;
         this.contraseña = contraseña;
     }

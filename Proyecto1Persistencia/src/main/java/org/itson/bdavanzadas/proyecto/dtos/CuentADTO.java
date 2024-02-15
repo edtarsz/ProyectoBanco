@@ -4,6 +4,7 @@
  */
 package org.itson.bdavanzadas.proyecto.dtos;
 
+import java.util.Random;
 import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
 
 /**
@@ -13,7 +14,7 @@ import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
 public class CuentaDTO {
 
     int numCuenta;
-    int idCliente;
+    Long idCliente;
     float saldo;
     String fechaApertura;
 
@@ -21,7 +22,7 @@ public class CuentaDTO {
         return numCuenta;
     }
 
-    public int getIdCliente() {
+    public Long getIdCliente() {
         return idCliente;
     }
 
@@ -33,11 +34,17 @@ public class CuentaDTO {
         return fechaApertura;
     }
 
-    public void setNumCuenta(int numCuenta) {
-        this.numCuenta = numCuenta;
+    public void setNumCuenta() {
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < 10; i++) {
+            sb.append(random.nextInt(10));
+        }
+        this.numCuenta = Integer.parseInt(sb.toString());
     }
 
-    public void setIdCliente(int idCliente) {
+    public void setIdCliente(Long idCliente) {
         this.idCliente = idCliente;
     }
 
@@ -53,7 +60,7 @@ public class CuentaDTO {
         if (Integer.toString(this.numCuenta).isEmpty() || Integer.toString(this.numCuenta) == null) {
             throw new ValidacionDTOException("Número de cuenta inválido");
         }
-        if (Integer.toString(this.idCliente).isEmpty() || Integer.toString(this.idCliente) == null) {
+        if (Long.toString(this.idCliente).isEmpty() || Long.toString(this.idCliente) == null) {
             throw new ValidacionDTOException("Cliente inválido");
         }
         if (this.saldo < 0 || Float.toString(this.saldo).isEmpty() || Float.toString(this.saldo) == null) {

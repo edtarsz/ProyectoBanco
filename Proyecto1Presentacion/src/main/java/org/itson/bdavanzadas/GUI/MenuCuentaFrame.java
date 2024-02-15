@@ -4,7 +4,16 @@
  */
 package org.itson.bdavanzadas.GUI;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import javax.swing.JOptionPane;
 import org.itson.bdavanzadas.proyecto.daos.IBancoDAO;
+import org.itson.bdavanzadas.proyecto.dtos.ClienteDTO;
+import org.itson.bdavanzadas.proyecto.dtos.CuentaDTO;
+import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
+import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
 import org.itson.bdavanzadas.proyectodominio.Cliente;
 
 /**
@@ -14,6 +23,7 @@ import org.itson.bdavanzadas.proyectodominio.Cliente;
 public class MenuCuentaFrame extends javax.swing.JFrame {
 
     private IBancoDAO bancoDAO;
+    private long idCliente;
 
     /**
      * Creates new form MenuCuentaFrame
@@ -24,11 +34,41 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         this.bancoDAO = bancoDAO;
         initComponents();
     }
-    
-    public MenuCuentaFrame(IBancoDAO bancoDAO, Cliente cliente){
+
+    public MenuCuentaFrame(IBancoDAO bancoDAO, Cliente cliente) {
         System.out.println(cliente.getNombre());
         initComponents();
         nombreUsuario.setText(cliente.getNombre());
+        System.out.println(cliente.getIdCliente());
+//        this.idCliente = cliente.getIdCliente();
+    }
+
+    private void agregarCuenta() {
+        CuentaDTO cuentaNueva = new CuentaDTO();
+        cuentaNueva.setNumCuenta();
+        cuentaNueva.setIdCliente(idCliente);
+        cuentaNueva.setSaldo((float) 1234.59);
+
+        LocalDate fechaActual = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String fechaFormateada = fechaActual.format(formatter);
+        cuentaNueva.setFechaApertura(fechaFormateada);
+
+        try {
+            if (cuentaNueva.esValido()) {
+                this.bancoDAO.agregar(cuentaNueva);
+                JOptionPane.showMessageDialog(this, "Se registra la cuenta", "Notificación", JOptionPane.INFORMATION_MESSAGE);
+                IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(bancoDAO);
+                iniciarSesion.setVisible(true);
+                this.dispose();
+            }
+        } catch (ValidacionDTOException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error de validación", JOptionPane.ERROR_MESSAGE);
+        } catch (PersistenciaException ex) {
+            JOptionPane.showMessageDialog(this, "No fue posible agregar al cliente", "Error de almacenamiento", JOptionPane.ERROR_MESSAGE);
+        }
+
+//        txtNombre.setText("");
     }
 
     /**
@@ -311,7 +351,7 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        agregarCuenta();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

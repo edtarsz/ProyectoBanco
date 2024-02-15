@@ -16,8 +16,10 @@ import java.util.logging.Logger;
 import org.itson.bdavanzadas.proyecto.conexion.Conexion;
 import org.itson.bdavanzadas.proyecto.conexion.IConexion;
 import org.itson.bdavanzadas.proyecto.dtos.ClienteDTO;
+import org.itson.bdavanzadas.proyecto.dtos.CuentaDTO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyectodominio.Cliente;
+import org.itson.bdavanzadas.proyectodominio.Cuenta;
 
 /**
  *
@@ -96,6 +98,35 @@ public class BancoDAO implements IBancoDAO {
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, "No se pudieron consultar los socios", ex);
             throw new PersistenciaException("No se pudieron consultar los socios", ex);
+        }
+    }
+
+    @Override
+    public Cuenta agregar(CuentaDTO cuentaNueva) throws PersistenciaException {
+        String sentenciaSQL = """
+        INSERT INTO cuentas(numCuenta, idCliente, saldo, fechaApertura)
+        VALUES (?, ?, ?, ?);""";
+        try (
+                Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);) {
+            comando.setInt(1, cuentaNueva.getNumCuenta());
+            comando.setLong(2, cuentaNueva.getIdCliente());
+            comando.setFloat(3, cuentaNueva.getSaldo());
+            comando.setString(4, cuentaNueva.getFechaApertura());
+
+            int numeroRegistrosInsertados = comando.executeUpdate();
+            logger.log(Level.INFO, "Se agregaron {0} socios", numeroRegistrosInsertados);
+
+            ResultSet idGenerado = comando.getGeneratedKeys();
+            idGenerado.next();
+            Cuenta cuenta = new Cuenta(
+                    cuentaNueva.getNumCuenta(),
+                    cuentaNueva.getIdCliente(),
+                    cuentaNueva.getSaldo(),
+                    cuentaNueva.getFechaApertura());
+            return cuenta;
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, "No se pudo guardar la cuenta", ex);
+            throw new PersistenciaException("No se pudo guardar la cuenta", ex);
         }
     }
 }
