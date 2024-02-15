@@ -239,7 +239,7 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
         int i = 0;
         try {
             for (Cliente cliente : this.bancoDAO.consultar()) {
-                if (cliente.getNombre().equals(usuario)) {
+                if (cliente.getNombre().equals(usuario) && cliente.getContraseña().equals(contrasenia)) {
                     this.usuario = cliente;
                     existeUsuario = true;
                 }
