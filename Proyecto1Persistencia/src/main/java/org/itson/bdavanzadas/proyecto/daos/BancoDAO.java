@@ -108,7 +108,7 @@ public class BancoDAO implements IBancoDAO {
         INSERT INTO cuentas(numCuenta, idCliente, saldo, fechaApertura)
         VALUES (?, ?, ?, ?);""";
         try (
-                Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);) {
+            Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);) {
             comando.setInt(1, cuentaNueva.getNumCuenta());
             comando.setLong(2, cuentaNueva.getIdCliente());
             comando.setFloat(3, cuentaNueva.getSaldo());
@@ -130,4 +130,33 @@ public class BancoDAO implements IBancoDAO {
             throw new PersistenciaException("No se pudo guardar la cuenta", ex);
         }
     }
-}
+    
+    public List<Cuenta> consultarCuentas(Cliente cliente) throws PersistenciaException {
+        String sentenciaSQL = "SELECT numCuenta, saldo FROM Cuentas WHERE idCliente = ?;"; 
+        List<Cuenta> listaCuentas = new LinkedList<>();
+
+        try (Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL)) {
+
+            comando.setLong(1, cliente.getIdCliente()); 
+
+            try (ResultSet resultados = comando.executeQuery()) {
+                while (resultados.next()) {
+                    int numCuenta = resultados.getInt("numCuenta");
+                    float saldo = resultados.getFloat("saldo");
+
+                    Cuenta cuenta = new Cuenta(cliente.getIdCliente(), numCuenta, saldo); 
+                    listaCuentas.add(cuenta);
+                }
+            }
+
+            logger.log(Level.INFO, "Se consultaron {0} cuentas para el cliente con ID {1}", new Object[]{listaCuentas.size(), cliente.getIdCliente()});
+            return listaCuentas;
+
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, "No se pudieron consultar las cuentas para el cliente con ID " + cliente.getIdCliente(), ex);
+            throw new PersistenciaException("No se pudieron consultar las cuentas", ex);
+        }
+    }
+    
+    }
+

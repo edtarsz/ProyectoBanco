@@ -21,7 +21,7 @@ public class Banco {
     public static void main(String[] args) throws Exception {
         String cadenaConexion = "jdbc:mysql://localhost/banco";
         String usuario = "root";
-        String contrasenia = "18509Tal";
+        String contrasenia = "CheemSITO357";
 
         IConexion conexion = new Conexion(cadenaConexion, usuario, contrasenia);
         IBancoDAO bancoDAO = new BancoDAO(conexion);

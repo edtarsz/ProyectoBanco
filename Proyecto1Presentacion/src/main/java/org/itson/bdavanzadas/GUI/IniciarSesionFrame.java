@@ -236,7 +236,6 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
         char[] contrasenaCharArray = pswContrasenia.getPassword();
         String contrasenia = new String(contrasenaCharArray);
 
-        int i = 0;
         try {
             for (Cliente cliente : this.bancoDAO.consultar()) {
                 if (cliente.getNombre().equals(usuario) && cliente.getContraseña().equals(contrasenia)) {

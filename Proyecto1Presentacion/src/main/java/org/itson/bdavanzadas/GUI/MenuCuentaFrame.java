@@ -15,6 +15,7 @@ import org.itson.bdavanzadas.proyecto.dtos.CuentaDTO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
 import org.itson.bdavanzadas.proyectodominio.Cliente;
+import org.itson.bdavanzadas.proyectodominio.Cuenta;
 
 /**
  *
@@ -22,30 +23,45 @@ import org.itson.bdavanzadas.proyectodominio.Cliente;
  */
 public class MenuCuentaFrame extends javax.swing.JFrame {
 
+    private Cuenta cuentaMostrada;
     private IBancoDAO bancoDAO;
-    private long idCliente;
+    private Cliente cliente;
 
     /**
      * Creates new form MenuCuentaFrame
      *
      * @param bancoDAO
      */
-    public MenuCuentaFrame(IBancoDAO bancoDAO) {
+    public MenuCuentaFrame(IBancoDAO bancoDAO){
         this.bancoDAO = bancoDAO;
         initComponents();
     }
 
-    public MenuCuentaFrame(IBancoDAO bancoDAO, Cliente cliente) {
+    public MenuCuentaFrame(IBancoDAO bancoDAO, Cliente cliente) throws PersistenciaException {
         this.bancoDAO = bancoDAO;
         initComponents();
         nombreUsuario.setText(cliente.getNombre());
-        this.idCliente = cliente.getIdCliente();
+        this.cliente = cliente;
+        String cuentaInfo = "";
+        if (this.cliente != null && !bancoDAO.consultarCuentas(this.cliente).isEmpty()) {
+            for (Cuenta cuenta : bancoDAO.consultarCuentas(this.cliente)) {
+                System.out.println(cuenta.getIdCliente());
+                cuentaInfo = cuenta.getNumCuenta() + "\n\n\n\n\n\n" + cuenta.getSaldo();
+                if (txtCuenta1.getText().trim().isEmpty()) {
+                    txtCuenta1.setText(cuentaInfo);
+                } else if (txtCuenta2.getText().trim().isEmpty()) {
+                    txtCuenta2.setText(cuentaInfo);
+                } else if (txtCuenta3.getText().trim().isEmpty()) {
+                    txtCuenta3.setText(cuentaInfo);
+                }
+            }
+        }
     }
 
     private void agregarCuenta() {
         CuentaDTO cuentaNueva = new CuentaDTO();
         cuentaNueva.setNumCuenta();
-        cuentaNueva.setIdCliente(idCliente);
+        cuentaNueva.setIdCliente(cliente.getIdCliente());
         cuentaNueva.setSaldo((float) 1234.59);
 
         LocalDate fechaActual = LocalDate.now();
@@ -56,7 +72,7 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         System.out.println("Cuenta nueva: " + cuentaNueva);
         try {
             if (cuentaNueva.esValido()) {
-                this.bancoDAO.agregarCuenta(cuentaNueva);
+                cuentaMostrada = this.bancoDAO.agregarCuenta(cuentaNueva);
                 JOptionPane.showMessageDialog(this, "Se registra la cuenta", "Notificación", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (ValidacionDTOException ex) {
@@ -84,12 +100,12 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         nombreUsuario = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtCuenta1 = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        txtCuenta2 = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea3 = new javax.swing.JTextArea();
-        jButton2 = new javax.swing.JButton();
+        txtCuenta3 = new javax.swing.JTextArea();
+        agregarCuentabtn = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
@@ -147,34 +163,34 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
             }
         });
 
-        jTextArea1.setBackground(new java.awt.Color(42, 98, 143));
-        jTextArea1.setColumns(20);
-        jTextArea1.setForeground(new java.awt.Color(255, 255, 255));
-        jTextArea1.setRows(5);
-        jTextArea1.setBorder(null);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtCuenta1.setBackground(new java.awt.Color(42, 98, 143));
+        txtCuenta1.setColumns(20);
+        txtCuenta1.setForeground(new java.awt.Color(255, 255, 255));
+        txtCuenta1.setRows(5);
+        txtCuenta1.setBorder(null);
+        jScrollPane1.setViewportView(txtCuenta1);
 
-        jTextArea2.setBackground(new java.awt.Color(42, 98, 143));
-        jTextArea2.setColumns(20);
-        jTextArea2.setForeground(new java.awt.Color(255, 255, 255));
-        jTextArea2.setRows(5);
-        jTextArea2.setBorder(null);
-        jScrollPane2.setViewportView(jTextArea2);
+        txtCuenta2.setBackground(new java.awt.Color(42, 98, 143));
+        txtCuenta2.setColumns(20);
+        txtCuenta2.setForeground(new java.awt.Color(255, 255, 255));
+        txtCuenta2.setRows(5);
+        txtCuenta2.setBorder(null);
+        jScrollPane2.setViewportView(txtCuenta2);
 
-        jTextArea3.setBackground(new java.awt.Color(42, 98, 143));
-        jTextArea3.setColumns(20);
-        jTextArea3.setForeground(new java.awt.Color(255, 255, 255));
-        jTextArea3.setRows(5);
-        jTextArea3.setBorder(null);
-        jScrollPane3.setViewportView(jTextArea3);
+        txtCuenta3.setBackground(new java.awt.Color(42, 98, 143));
+        txtCuenta3.setColumns(20);
+        txtCuenta3.setForeground(new java.awt.Color(255, 255, 255));
+        txtCuenta3.setRows(5);
+        txtCuenta3.setBorder(null);
+        jScrollPane3.setViewportView(txtCuenta3);
 
-        jButton2.setBackground(new java.awt.Color(42, 98, 143));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Agregar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        agregarCuentabtn.setBackground(new java.awt.Color(42, 98, 143));
+        agregarCuentabtn.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        agregarCuentabtn.setForeground(new java.awt.Color(255, 255, 255));
+        agregarCuentabtn.setText("Agregar");
+        agregarCuentabtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                agregarCuentabtnActionPerformed(evt);
             }
         });
 
@@ -260,7 +276,7 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(agregarCuentabtn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 24, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
@@ -298,7 +314,7 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addComponent(jScrollPane2)
                     .addComponent(jScrollPane3)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(agregarCuentabtn, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
@@ -341,9 +357,17 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void agregarCuentabtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCuentabtnActionPerformed
         agregarCuenta();
-    }//GEN-LAST:event_jButton2ActionPerformed
+        String cuentaInfo = cuentaMostrada.getNumCuenta() + "\n\n\n\n\n\n" + cuentaMostrada.getSaldo();
+        if (txtCuenta1.getText().trim().isEmpty()) {
+            txtCuenta1.setText(cuentaInfo);
+        } else if (txtCuenta2.getText().trim().isEmpty()) {
+            txtCuenta2.setText(cuentaInfo);
+        } else if (txtCuenta3.getText().trim().isEmpty()) {
+            txtCuenta3.setText(cuentaInfo);
+        }
+    }//GEN-LAST:event_agregarCuentabtnActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
@@ -362,7 +386,7 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton agregarCuentabtn;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
@@ -380,9 +404,9 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JTextArea jTextArea3;
     private javax.swing.JTextField nombreUsuario;
+    private javax.swing.JTextArea txtCuenta1;
+    private javax.swing.JTextArea txtCuenta2;
+    private javax.swing.JTextArea txtCuenta3;
     // End of variables declaration//GEN-END:variables
 }

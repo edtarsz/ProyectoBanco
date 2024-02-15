@@ -22,4 +22,6 @@ public interface IBancoDAO {
     Cuenta agregarCuenta(CuentaDTO cuentaNueva) throws PersistenciaException;
 
     List<Cliente> consultar() throws PersistenciaException;
+    
+    List<Cuenta> consultarCuentas(Cliente cliente) throws PersistenciaException;
 };

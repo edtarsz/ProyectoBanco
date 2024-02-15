@@ -21,6 +21,12 @@ public class Cuenta {
 
     public Cuenta() {
     }
+    
+    public Cuenta(Long idCliente, int numCuenta, float saldo){
+        this.numCuenta = numCuenta;
+        this.saldo = saldo;
+        this.idCliente = idCliente;
+    }
 
     public Cuenta(Long idCliente, float saldo, String fechaApertura) {
         this.idCliente = idCliente;

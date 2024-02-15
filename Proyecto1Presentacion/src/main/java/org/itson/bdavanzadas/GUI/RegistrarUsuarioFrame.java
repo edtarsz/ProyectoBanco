@@ -62,7 +62,7 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         try {
             if (clienteNuevo.esValido()) {
                 this.bancoDAO.agregar(clienteNuevo);
-                JOptionPane.showMessageDialog(this, "Se registra al cliene", "Notificación", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Se registra al cliente", "Notificación", JOptionPane.INFORMATION_MESSAGE);
                 IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(bancoDAO);
                 iniciarSesion.setVisible(true);
                 this.dispose();
