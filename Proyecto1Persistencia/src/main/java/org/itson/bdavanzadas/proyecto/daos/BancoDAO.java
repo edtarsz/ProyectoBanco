@@ -79,16 +79,17 @@ public class BancoDAO implements IBancoDAO {
 
     @Override
     public List<Cliente> consultar() throws PersistenciaException {
-        String sentenciaSQL = "SELECT nombre, contraseña FROM clientes;";
+        String sentenciaSQL = "SELECT idCliente, nombre, contraseña FROM clientes;";
         List<Cliente> listaClientes = new LinkedList<>();
 
         try (Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL); ResultSet resultados = comando.executeQuery()) {
 
             while (resultados.next()) {
+                Long idCliente = resultados.getLong("idCliente");
                 String nombre = resultados.getString("nombre");
                 String contraseña = resultados.getString("contraseña");
 
-                Cliente cliente = new Cliente(nombre, contraseña);
+                Cliente cliente = new Cliente(idCliente, nombre, contraseña);
                 listaClientes.add(cliente);
             }
 
@@ -102,7 +103,7 @@ public class BancoDAO implements IBancoDAO {
     }
 
     @Override
-    public Cuenta agregar(CuentaDTO cuentaNueva) throws PersistenciaException {
+    public Cuenta agregarCuenta(CuentaDTO cuentaNueva) throws PersistenciaException {
         String sentenciaSQL = """
         INSERT INTO cuentas(numCuenta, idCliente, saldo, fechaApertura)
         VALUES (?, ?, ?, ?);""";
@@ -114,7 +115,7 @@ public class BancoDAO implements IBancoDAO {
             comando.setString(4, cuentaNueva.getFechaApertura());
 
             int numeroRegistrosInsertados = comando.executeUpdate();
-            logger.log(Level.INFO, "Se agregaron {0} socios", numeroRegistrosInsertados);
+            logger.log(Level.INFO, "Se agregaron {0} cuentas", numeroRegistrosInsertados);
 
             ResultSet idGenerado = comando.getGeneratedKeys();
             idGenerado.next();

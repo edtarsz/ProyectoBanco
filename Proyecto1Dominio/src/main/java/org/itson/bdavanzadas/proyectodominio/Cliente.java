@@ -28,7 +28,8 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(String nombre, String contraseña) {
+    public Cliente(Long idCliente, String nombre, String contraseña) {
+        this.idCliente = idCliente;
         this.nombre = nombre;
         this.contraseña = contraseña;
     }

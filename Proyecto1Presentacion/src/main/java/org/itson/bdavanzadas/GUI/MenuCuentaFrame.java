@@ -36,11 +36,10 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
     }
 
     public MenuCuentaFrame(IBancoDAO bancoDAO, Cliente cliente) {
-        System.out.println(cliente.getNombre());
+        this.bancoDAO = bancoDAO;
         initComponents();
         nombreUsuario.setText(cliente.getNombre());
-        System.out.println(cliente.getIdCliente());
-//        this.idCliente = cliente.getIdCliente();
+        this.idCliente = cliente.getIdCliente();
     }
 
     private void agregarCuenta() {
@@ -54,21 +53,17 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         String fechaFormateada = fechaActual.format(formatter);
         cuentaNueva.setFechaApertura(fechaFormateada);
 
+        System.out.println("Cuenta nueva: " + cuentaNueva);
         try {
             if (cuentaNueva.esValido()) {
-                this.bancoDAO.agregar(cuentaNueva);
+                this.bancoDAO.agregarCuenta(cuentaNueva);
                 JOptionPane.showMessageDialog(this, "Se registra la cuenta", "Notificación", JOptionPane.INFORMATION_MESSAGE);
-                IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(bancoDAO);
-                iniciarSesion.setVisible(true);
-                this.dispose();
             }
         } catch (ValidacionDTOException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error de validación", JOptionPane.ERROR_MESSAGE);
         } catch (PersistenciaException ex) {
             JOptionPane.showMessageDialog(this, "No fue posible agregar al cliente", "Error de almacenamiento", JOptionPane.ERROR_MESSAGE);
         }
-
-//        txtNombre.setText("");
     }
 
     /**

@@ -19,7 +19,7 @@ public interface IBancoDAO {
 
     Cliente agregar(ClienteDTO clienteNuevo) throws PersistenciaException;
 
-    Cuenta agregar(CuentaDTO cuentaNueva) throws PersistenciaException;
+    Cuenta agregarCuenta(CuentaDTO cuentaNueva) throws PersistenciaException;
 
     List<Cliente> consultar() throws PersistenciaException;
 };

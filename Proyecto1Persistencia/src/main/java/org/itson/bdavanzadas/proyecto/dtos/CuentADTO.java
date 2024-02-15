@@ -36,12 +36,9 @@ public class CuentaDTO {
 
     public void setNumCuenta() {
         Random random = new Random();
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < 10; i++) {
-            sb.append(random.nextInt(10));
-        }
-        this.numCuenta = Integer.parseInt(sb.toString());
+        int min = 100000000;
+        int max = 999999999;
+        this.numCuenta = random.nextInt(max - min + 1) + min;
     }
 
     public void setIdCliente(Long idCliente) {
