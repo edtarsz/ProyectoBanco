@@ -77,26 +77,16 @@ public class BancoDAO implements IBancoDAO {
 
     @Override
     public List<Cliente> consultar() throws PersistenciaException {
-        String sentenciaSQL = "SELECT id, nombre, apellidoPaterno, apellidoMaterno, contraseña, fechaNacimiento, codigoPostal, numExterior, calle, colonia, ciudad, edad FROM clientes;";
+        String sentenciaSQL = "SELECT nombre, contraseña FROM clientes;";
         List<Cliente> listaClientes = new LinkedList<>();
 
         try (Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL); ResultSet resultados = comando.executeQuery()) {
 
             while (resultados.next()) {
-                Long id = resultados.getLong("id");
                 String nombre = resultados.getString("nombre");
-                String apellidoPaterno = resultados.getString("apellidoPaterno");
-                String apellidoMaterno = resultados.getString("apellidoMaterno");
                 String contraseña = resultados.getString("contraseña");
-                String fechaNacimiento = resultados.getString("fechaNacimiento");
-                String codigoPostal = resultados.getString("codigoPostal");
-                String numExterior = resultados.getString("numExterior");
-                String calle = resultados.getString("calle");
-                String colonia = resultados.getString("colonia");
-                String ciudad = resultados.getString("ciudad");
-                int edad = resultados.getInt("edad");
 
-                Cliente cliente = new Cliente(id, nombre, apellidoPaterno, apellidoMaterno, contraseña, fechaNacimiento, codigoPostal, numExterior, calle, colonia, ciudad, edad);
+                Cliente cliente = new Cliente(nombre, contraseña);
                 listaClientes.add(cliente);
             }
 
