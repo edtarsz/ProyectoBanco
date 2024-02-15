@@ -31,6 +31,9 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
     }
 
     private void agregar() {
+        char[] contrasenaCharArray = pswContraseña.getPassword();
+        String contraseña = new String(contrasenaCharArray);
+
         String nombre = txtNombre.getText();
         String apellidoPaterno = txtPaterno.getText();
         String apellidoMaterno = txtMaterno.getText();
@@ -38,7 +41,6 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         String ciudad = txtCiudad.getText();
         String colonia = txtColonia.getText();
         String calle = txtCalle.getText();
-        String contraseña = txtContraseña.getText();
         String numExterior = txtNumExterior.getText();
 
         Date fecha = txtfechaNacimiento.getDate();
@@ -61,6 +63,9 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
             if (clienteNuevo.esValido()) {
                 this.bancoDAO.agregar(clienteNuevo);
                 JOptionPane.showMessageDialog(this, "Se registra al cliene", "Notificación", JOptionPane.INFORMATION_MESSAGE);
+                IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(bancoDAO);
+                iniciarSesion.setVisible(true);
+                this.dispose();
             }
         } catch (ValidacionDTOException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error de validación", JOptionPane.ERROR_MESSAGE);
@@ -75,9 +80,9 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         txtCiudad.setText("");
         txtColonia.setText("");
         txtCalle.setText("");
-        txtContraseña.setText("");
         txtNumExterior.setText("");
-        txtConfirmarContraseña.setText("");
+        pswContraseña.setText("");
+        pswContraseñaConfirmar.setText("");
         txtfechaNacimiento.setDate(null);
     }
 
@@ -101,9 +106,7 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        txtContraseña = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        txtConfirmarContraseña = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -119,6 +122,8 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         txtNumExterior = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
         txtfechaNacimiento = new com.toedter.calendar.JDateChooser();
+        pswContraseña = new javax.swing.JPasswordField();
+        pswContraseñaConfirmar = new javax.swing.JPasswordField();
         jLabel7 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
 
@@ -185,21 +190,9 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(42, 98, 143));
         jLabel10.setText("Cree una contraseña");
 
-        txtContraseña.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtContraseñaActionPerformed(evt);
-            }
-        });
-
         jLabel11.setBackground(new java.awt.Color(102, 102, 102));
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel11.setText("Contraseña");
-
-        txtConfirmarContraseña.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtConfirmarContraseñaActionPerformed(evt);
-            }
-        });
 
         jLabel12.setBackground(new java.awt.Color(102, 102, 102));
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -284,10 +277,9 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel11)
-                            .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel13)
                             .addComponent(jLabel14))
-                        .addGap(73, 73, 73))
+                        .addGap(73, 433, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
@@ -297,14 +289,14 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
                                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel6)
                                         .addComponent(txtPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel9))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel9)
+                                        .addComponent(pswContraseña))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(jLabel8)
-                                        .addComponent(txtMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(txtConfirmarContraseña, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                        .addComponent(txtMaterno, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+                                        .addComponent(jLabel12)
+                                        .addComponent(pswContraseñaConfirmar)))
                                 .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING))
                             .addComponent(txtfechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -371,12 +363,13 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(28, 28, 28))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel12)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtConfirmarContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(pswContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(pswContraseñaConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -497,14 +490,6 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtMaternoActionPerformed
 
-    private void txtContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContraseñaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtContraseñaActionPerformed
-
-    private void txtConfirmarContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtConfirmarContraseñaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtConfirmarContraseñaActionPerformed
-
     private void txtPostalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPostalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPostalActionPerformed
@@ -548,11 +533,11 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPasswordField pswContraseña;
+    private javax.swing.JPasswordField pswContraseñaConfirmar;
     private javax.swing.JTextField txtCalle;
     private javax.swing.JTextField txtCiudad;
     private javax.swing.JTextField txtColonia;
-    private javax.swing.JTextField txtConfirmarContraseña;
-    private javax.swing.JTextField txtContraseña;
     private javax.swing.JTextField txtMaterno;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtNumExterior;

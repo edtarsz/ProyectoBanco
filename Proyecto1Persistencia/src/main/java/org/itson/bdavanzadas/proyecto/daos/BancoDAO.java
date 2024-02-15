@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.itson.bdavanzadas.proyecto.conexion.Conexion;
@@ -71,6 +72,11 @@ public class BancoDAO implements IBancoDAO {
             logger.log(Level.SEVERE, "No se pudo guardar el cliente", ex);
             throw new PersistenciaException("No se pudo guardar el cliente", ex);
         }
+    }
+
+    @Override
+    public List<Cliente> consultar() throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }
