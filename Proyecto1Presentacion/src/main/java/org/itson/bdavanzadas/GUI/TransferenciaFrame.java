@@ -342,9 +342,21 @@ public class TransferenciaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_txtImporteActionPerformed
 
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
-        Cuenta cuenta = (Cuenta) cuentaOrigenCmbBox.getSelectedItem();
+        Cuenta cuenta = new Cuenta();
+        String cuentaString = (String) cuentaOrigenCmbBox.getSelectedItem();
         int idCuentaDestino = Integer.parseInt(txtCuentaDestino.getText());
         int monto = Integer.parseInt(txtImporte.getText());
+        List<Cuenta> listaCuentas;
+        try {
+            listaCuentas = bancoDAO.consultarCuentas(this.cliente);
+            for (Cuenta account : listaCuentas) {
+                if (String.valueOf(account.getNumCuenta()).equals(cuentaString)){
+                    cuenta = account;
+                }
+            }
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(TransferenciaFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         
         try {
@@ -352,18 +364,17 @@ public class TransferenciaFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Rellene todos los campos", "Notificación", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 Date fechaActual = new java.util.Date();
-                OperacionDTO operacion = new OperacionDTO();
-                operacion.setFechaHora(fechaActual);
-                operacion.setMonto(monto);
-                this.bancoDAO.agregarOperacion(operacion);
                 TransferenciaDTO transferencia = new TransferenciaDTO();
                 transferencia.setIdCuenta(cuenta.getNumCuenta());
                 transferencia.setIdCuentaDestino(idCuentaDestino);
                 transferencia.setFechaHora(fechaActual);
+                transferencia.setMonto(monto);
                 this.bancoDAO.realizarTransferencia(transferencia);
+                ConfirmarTransferenciaFrame confirmar = new ConfirmarTransferenciaFrame();
+                confirmar.setVisible(true);
             }
         } catch (PersistenciaException ex) {
-            JOptionPane.showMessageDialog(this, "No fue posible agregar al cliente", "Error de almacenamiento", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No fue posible realizar la transferencia", "Error de almacenamiento", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_confirmarBtnActionPerformed
 

@@ -29,7 +29,5 @@ public interface IBancoDAO {
     
     List<Cuenta> consultarCuentas(Cliente cliente) throws PersistenciaException;
     
-    public Operacion agregarOperacion(OperacionDTO operacionNueva) throws PersistenciaException;
-    
-    public Transferencia realizarTransferencia(TransferenciaDTO transferencia) throws PersistenciaException;
+    Transferencia realizarTransferencia(TransferenciaDTO transferencia) throws PersistenciaException;
 };

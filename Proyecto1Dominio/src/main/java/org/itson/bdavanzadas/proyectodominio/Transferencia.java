@@ -16,11 +16,10 @@ public class Transferencia extends Operacion {
     int idCuentaDestino;
     int idCliente;
 
-    public Transferencia(int idCuenta, int idCuentaDestino, int idCliente, int idOperacion, Date fechaHora, float monto) {
+    public Transferencia(int idCuenta, int idCuentaDestino, int idOperacion, Date fechaHora, float monto) {
         super(idOperacion, fechaHora, monto);
         this.idCuenta = idCuenta;
         this.idCuentaDestino = idCuentaDestino;
-        this.idCliente = idCliente;
     }
 
     public int getIdCuenta() {

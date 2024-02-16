@@ -5,11 +5,12 @@
 package org.itson.bdavanzadas.proyecto.daos;
 
 import java.sql.Connection;
-import java.sql.Date;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -163,75 +164,78 @@ public class BancoDAO implements IBancoDAO {
             throw new PersistenciaException("No se pudieron consultar las cuentas", ex);
         }
     }
-    
-    public Operacion agregarOperacion(OperacionDTO operacionNueva) throws PersistenciaException{
-        String sentenciaSQL = """
-        INSERT INTO operaciones(fechaHora, monto)
-        VALUES (?, ?);""";
-        try (
-            Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);) {
-            comando.setDate(1, (Date) operacionNueva.getFechaHora());
-            comando.setFloat(2, operacionNueva.getMonto());
-
-            int numeroRegistrosInsertados = comando.executeUpdate();
-            logger.log(Level.INFO, "Se agregaron {0} operaciones", numeroRegistrosInsertados);
-
-            ResultSet idGenerado = comando.getGeneratedKeys();
-            idGenerado.next();
-            Operacion operacion = new Operacion(idGenerado.getInt(1), operacionNueva.getFechaHora(), operacionNueva.getMonto());
-            return operacion;
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, "No se pudo guardar la operación", ex);
-            throw new PersistenciaException("No se pudo guardar la operación", ex);
-        }
-    }
+     
     
     @Override
      public Transferencia realizarTransferencia(TransferenciaDTO transferenciaNueva) throws PersistenciaException {
-        String sentenciaSQL = """
-        INSERT INTO transferencias(idOperacion, idCuenta, idCuentaDestino, idCliente)
+    String sentenciaSQLOperacion = """
+        INSERT INTO operaciones(fechaHora, monto)
+        VALUES (?, ?);""";
+    
+    String sentenciaSQLTransferencia = """
+        INSERT INTO transferencias(idOperacion, idCuenta, idCuentaDestino)
         VALUES (?, ?, ?);""";
-        try (
-            Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);) {
-            comando.setInt(1, transferenciaNueva.getIdOperacion());
-            comando.setInt(2, transferenciaNueva.getIdCuenta());
-            comando.setInt(3, transferenciaNueva.getIdCuentaDestino());
-            comando.setInt(4, transferenciaNueva.getIdCliente());
+    
+    String actualizarSaldoOrigenSQL = "UPDATE cuentas SET saldo = saldo - ? WHERE numCuenta = ?;";
+    
+    String actualizarSaldoDestinoSQL = "UPDATE cuentas SET saldo = saldo + ? WHERE numCuenta = ?;";
 
-            String sentenciaSQL1 = """
-        SELECT * FROM cuentas c  
-                                   INNER JOIN operaciones o on c.idCuenta = o.idCuenta
-                                   INNER JOIN cuentas cd on o.idCuentaDestino = cd.idCuenta
-                                   where idOperacion = ?""";
-            
-            try (PreparedStatement statement = conexion.prepareStatement(sentenciaSQL)) {
-                statement.setInt(1, transferenciaNueva.getIdOperacion()); // Asegúrate de reemplazar tuIdOperacion con el valor apropiado
+    
+    
+    try (Connection conexion = this.conexionBD.obtenerConexion()) {
+        try (PreparedStatement comandoOperacion = conexion.prepareStatement(sentenciaSQLOperacion, Statement.RETURN_GENERATED_KEYS)) {
+            comandoOperacion.setDate(1, new java.sql.Date(transferenciaNueva.getFechaHora().getTime()));
+            comandoOperacion.setInt(2, (int) transferenciaNueva.getMonto());
+            comandoOperacion.executeUpdate();
 
-                ResultSet resultSet = statement.executeQuery();
-
-                if (resultSet.next()) {
-                    Cuenta cuentaOrigen = (Cuenta) resultSet.getObject("c.idCuenta");
-                    cuentaOrigen.setSaldo(cuentaOrigen.getSaldo() + transferenciaNueva.getMonto());
+            try (ResultSet generatedKeys = comandoOperacion.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int idOperacionGenerado = generatedKeys.getInt(1);
                     
-                    Cuenta cuentaDestino = (Cuenta) resultSet.getObject("c.idCuenta");
-                    cuentaDestino.setSaldo(cuentaDestino.getSaldo() - transferenciaNueva.getMonto());
-                }
-            } catch (SQLException e) {
-                e.printStackTrace(); 
-            }
-            
-            int numeroRegistrosInsertados = comando.executeUpdate();
-            logger.log(Level.INFO, "Se realizó la transferencia", numeroRegistrosInsertados);
+                    try (PreparedStatement comandoTransferencia = conexion.prepareStatement(sentenciaSQLTransferencia)) {
+                        comandoTransferencia.setInt(1, idOperacionGenerado);
+                        comandoTransferencia.setInt(2, transferenciaNueva.getIdCuenta());
+                        comandoTransferencia.setInt(3, transferenciaNueva.getIdCuentaDestino());
+                        comandoTransferencia.executeUpdate();
+                    }
+                    
+                    try (PreparedStatement comandoActualizarOrigen = conexion.prepareStatement(actualizarSaldoOrigenSQL)) {
+                        comandoActualizarOrigen.setInt(1, (int) transferenciaNueva.getMonto());
+                        comandoActualizarOrigen.setInt(2, transferenciaNueva.getIdCuenta());
+                        comandoActualizarOrigen.executeUpdate();
+                    }
 
-            Transferencia transferencia = new Transferencia(transferenciaNueva.getIdCuenta(), transferenciaNueva.getIdCuentaDestino(), transferenciaNueva.getIdCliente(), transferenciaNueva.getIdOperacion(), transferenciaNueva.getFechaHora(), transferenciaNueva.getMonto());
-            return transferencia;
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, "No se pudo realizar la transferencia", ex);
-            throw new PersistenciaException("No se pudo realizar la transferencia", ex);
+                    try (PreparedStatement comandoActualizarDestino = conexion.prepareStatement(actualizarSaldoDestinoSQL)) {
+                        comandoActualizarDestino.setInt(1, (int) transferenciaNueva.getMonto());
+                        comandoActualizarDestino.setInt(2, transferenciaNueva.getIdCuentaDestino());
+                        comandoActualizarDestino.executeUpdate();
+                    }
+
+                    Transferencia transferencia = new Transferencia(
+                        transferenciaNueva.getIdCuenta(),
+                        transferenciaNueva.getIdCuentaDestino(),
+                        idOperacionGenerado,
+                        transferenciaNueva.getFechaHora(),
+                        transferenciaNueva.getMonto()
+                    );
+
+                    return transferencia;
+                } else {
+                    throw new PersistenciaException("No se pudo obtener el ID de la operación generada");
+                }
+            }
         }
+    } catch (SQLException ex) {
+        logger.log(Level.SEVERE, "No se pudo realizar la transferencia", ex);
+        throw new PersistenciaException("No se pudo realizar la transferencia", ex);
+    }
+}
+     
+     
+     
     }
      
      
     
-    }
+    
 
