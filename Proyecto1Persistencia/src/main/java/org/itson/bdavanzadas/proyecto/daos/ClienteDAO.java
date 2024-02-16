@@ -25,12 +25,12 @@ import org.itson.bdavanzadas.proyectodominio.Cuenta;
  *
  * @author Ramosz
  */
-public class BancoDAO implements IBancoDAO {
+public class ClienteDAO implements IClienteDAO {
 
     final IConexion conexionBD;
     static final Logger logger = Logger.getLogger(Conexion.class.getName());
 
-    public BancoDAO(IConexion conexion) {
+    public ClienteDAO(IConexion conexion) {
         this.conexionBD = conexion;
     }
 

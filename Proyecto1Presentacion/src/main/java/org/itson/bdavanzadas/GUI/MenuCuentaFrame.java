@@ -7,7 +7,8 @@ package org.itson.bdavanzadas.GUI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
-import org.itson.bdavanzadas.proyecto.daos.IBancoDAO;
+import org.itson.bdavanzadas.proyecto.daos.IClienteDAO;
+import org.itson.bdavanzadas.proyecto.daos.ICuentaDAO;
 import org.itson.bdavanzadas.proyecto.dtos.CuentaDTO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
@@ -21,27 +22,28 @@ import org.itson.bdavanzadas.proyectodominio.Cuenta;
 public class MenuCuentaFrame extends javax.swing.JFrame {
 
     private Cuenta cuentaMostrada;
-    private IBancoDAO bancoDAO;
+    private IClienteDAO clienteDAO;
+    private ICuentaDAO cuentaDAO;
     private Cliente cliente;
 
     /**
      * Creates new form MenuCuentaFrame
      *
-     * @param bancoDAO
+     * @param clienteDAO
      */
-    public MenuCuentaFrame(IBancoDAO bancoDAO) {
-        this.bancoDAO = bancoDAO;
+    public MenuCuentaFrame(IClienteDAO clienteDAO) {
+        this.clienteDAO = clienteDAO;
         initComponents();
     }
 
-    public MenuCuentaFrame(IBancoDAO bancoDAO, Cliente cliente) throws PersistenciaException {
-        this.bancoDAO = bancoDAO;
+    public MenuCuentaFrame(IClienteDAO clienteDAO, Cliente cliente) throws PersistenciaException {
+        this.clienteDAO = clienteDAO;
         initComponents();
         nombreUsuario.setText(cliente.getNombre());
         this.cliente = cliente;
         String cuentaInfo = "";
-        if (this.cliente != null && !bancoDAO.consultarCuentas(this.cliente).isEmpty()) {
-            for (Cuenta cuenta : bancoDAO.consultarCuentas(this.cliente)) {
+        if (this.cliente != null && !clienteDAO.consultarCuentas(this.cliente).isEmpty()) {
+            for (Cuenta cuenta : clienteDAO.consultarCuentas(this.cliente)) {
                 System.out.println(cuenta.getIdCliente());
                 cuentaInfo = cuenta.getNumCuenta() + "\n\n\n\n\n\n" + cuenta.getSaldo();
                 if (txtCuenta1.getText().trim().isEmpty()) {
@@ -69,7 +71,7 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         System.out.println("Cuenta nueva: " + cuentaNueva);
         try {
             if (cuentaNueva.esValido()) {
-                cuentaMostrada = this.bancoDAO.agregarCuenta(cuentaNueva);
+                cuentaMostrada = this.clienteDAO.agregarCuenta(cuentaNueva);
                 JOptionPane.showMessageDialog(this, "Se registra la cuenta", "Notificación", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (ValidacionDTOException ex) {

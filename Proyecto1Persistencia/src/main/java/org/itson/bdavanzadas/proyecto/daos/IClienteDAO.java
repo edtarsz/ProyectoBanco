@@ -15,13 +15,13 @@ import org.itson.bdavanzadas.proyectodominio.Cuenta;
  *
  * @author Ramosz
  */
-public interface IBancoDAO {
+public interface IClienteDAO {
 
     Cliente agregar(ClienteDTO clienteNuevo) throws PersistenciaException;
 
     Cuenta agregarCuenta(CuentaDTO cuentaNueva) throws PersistenciaException;
 
-    List<Cliente> consultar() throws PersistenciaException;
-
     List<Cuenta> consultarCuentas(Cliente cliente) throws PersistenciaException;
-};
+
+    List<Cliente> consultar() throws PersistenciaException;
+}

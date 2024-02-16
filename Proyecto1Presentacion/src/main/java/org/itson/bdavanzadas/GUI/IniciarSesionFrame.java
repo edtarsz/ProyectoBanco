@@ -6,7 +6,8 @@ package org.itson.bdavanzadas.GUI;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.itson.bdavanzadas.proyecto.daos.IBancoDAO;
+import org.itson.bdavanzadas.proyecto.daos.IClienteDAO;
+import org.itson.bdavanzadas.proyecto.daos.ICuentaDAO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyectodominio.Cliente;
 
@@ -16,16 +17,17 @@ import org.itson.bdavanzadas.proyectodominio.Cliente;
  */
 public class IniciarSesionFrame extends javax.swing.JFrame {
 
-    private IBancoDAO bancoDAO;
+    private IClienteDAO clienteDAO;
+    private ICuentaDAO cuentaDAO;
     private Cliente usuario;
 
     /**
      * Creates new form IniciarSesionFrame
      *
-     * @param bancoDAO
+     * @param clienteDAO
      */
-    public IniciarSesionFrame(IBancoDAO bancoDAO) {
-        this.bancoDAO = bancoDAO;
+    public IniciarSesionFrame(IClienteDAO clienteDAO) {
+        this.clienteDAO = clienteDAO;
         initComponents();
     }
 
@@ -265,7 +267,7 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
 
         if (validarCampo()) {
             try {
-                for (Cliente cliente : this.bancoDAO.consultar()) {
+                for (Cliente cliente : this.clienteDAO.consultar()) {
                     if (cliente.getUsuario().equals(usuario) && cliente.getContraseña().equals(contrasenia)) {
                         this.usuario = cliente;
                         existeUsuario = true;
@@ -281,7 +283,7 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
         if (existeUsuario) {
             try {
                 System.out.println(this.usuario.getNombre());
-                MenuCuentaFrame menuCuentaFrm = new MenuCuentaFrame(bancoDAO, this.usuario);
+                MenuCuentaFrame menuCuentaFrm = new MenuCuentaFrame(clienteDAO, this.usuario);
                 menuCuentaFrm.setVisible(true);
                 this.dispose();
             } catch (PersistenciaException ex) {
@@ -293,13 +295,13 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
     private void btnRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroActionPerformed
-        RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame(bancoDAO);
+        RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame(clienteDAO);
         registrarUsuario.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegistroActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        IndiceFrame indiceFrame = new IndiceFrame(bancoDAO);
+        IndiceFrame indiceFrame = new IndiceFrame(clienteDAO);
         indiceFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed

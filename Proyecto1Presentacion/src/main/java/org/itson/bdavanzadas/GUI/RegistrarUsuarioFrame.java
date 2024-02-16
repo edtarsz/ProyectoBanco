@@ -10,7 +10,7 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import javax.swing.JOptionPane;
-import org.itson.bdavanzadas.proyecto.daos.IBancoDAO;
+import org.itson.bdavanzadas.proyecto.daos.IClienteDAO;
 import org.itson.bdavanzadas.proyecto.dtos.ClienteDTO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
@@ -21,15 +21,15 @@ import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
  */
 public class RegistrarUsuarioFrame extends javax.swing.JFrame {
 
-    private IBancoDAO bancoDAO;
+    private IClienteDAO clienteDAO;
 
     /**
      * Creates new form RegistrarUsuarioFrame
      *
-     * @param bancoDAO
+     * @param clienteDAO
      */
-    public RegistrarUsuarioFrame(IBancoDAO bancoDAO) {
-        this.bancoDAO = bancoDAO;
+    public RegistrarUsuarioFrame(IClienteDAO clienteDAO) {
+        this.clienteDAO = clienteDAO;
         initComponents();
     }
 
@@ -84,11 +84,11 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
                 if (!validarCampo()) {
                     JOptionPane.showMessageDialog(this, "Rellene todos los campos", "Notificación", JOptionPane.INFORMATION_MESSAGE);
                 } else if (clienteNuevo.esValido()) {
-                    this.bancoDAO.agregar(clienteNuevo);
+                    this.clienteDAO.agregar(clienteNuevo);
                     limpiarCampos();
                     JOptionPane.showMessageDialog(this, "Se registra al cliente", "Notificación", JOptionPane.INFORMATION_MESSAGE);
                     JOptionPane.showMessageDialog(this, "Tu usuario es: " + clienteNuevo.getUsuario(), "Notificación", JOptionPane.INFORMATION_MESSAGE);
-                    IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(bancoDAO);
+                    IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(clienteDAO);
                     iniciarSesion.setVisible(true);
                     this.dispose();
                 }
@@ -531,7 +531,7 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(bancoDAO);
+        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(clienteDAO);
         iniciarSesion.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
