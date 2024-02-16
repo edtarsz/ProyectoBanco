@@ -43,8 +43,8 @@ public class ClienteDAO implements IClienteDAO {
                 Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);) {
             comando.setString(1, clienteNuevo.getUsuario());
             comando.setString(2, clienteNuevo.getNombre());
-            comando.setString(3, clienteNuevo.getApellidoMaterno());
-            comando.setString(4, clienteNuevo.getApellidoPaterno());
+            comando.setString(3, clienteNuevo.getApellidoPaterno());
+            comando.setString(4, clienteNuevo.getApellidoMaterno());
             comando.setString(5, clienteNuevo.getContraseña());
             comando.setString(6, clienteNuevo.getFechaNacimiento());
             comando.setString(7, clienteNuevo.getCodigoPostal());

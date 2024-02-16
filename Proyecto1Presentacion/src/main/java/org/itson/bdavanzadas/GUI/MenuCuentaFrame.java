@@ -187,6 +187,7 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         agregarCuentabtn.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         agregarCuentabtn.setForeground(new java.awt.Color(255, 255, 255));
         agregarCuentabtn.setText("Agregar");
+        agregarCuentabtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         agregarCuentabtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 agregarCuentabtnActionPerformed(evt);
@@ -201,6 +202,7 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         jButton5.setForeground(new java.awt.Color(42, 98, 143));
         jButton5.setText("Realizar una transferencia");
         jButton5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 98, 143), 4));
+        jButton5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
@@ -211,6 +213,7 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         jButton6.setForeground(new java.awt.Color(42, 98, 143));
         jButton6.setText("Generar retiro sin tarjeta");
         jButton6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 98, 143), 4));
+        jButton6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
