@@ -5,6 +5,7 @@
 package org.itson.bdavanzadas.proyecto.daos;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,9 +18,13 @@ import org.itson.bdavanzadas.proyecto.conexion.Conexion;
 import org.itson.bdavanzadas.proyecto.conexion.IConexion;
 import org.itson.bdavanzadas.proyecto.dtos.ClienteDTO;
 import org.itson.bdavanzadas.proyecto.dtos.CuentaDTO;
+import org.itson.bdavanzadas.proyecto.dtos.OperacionDTO;
+import org.itson.bdavanzadas.proyecto.dtos.TransferenciaDTO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyectodominio.Cliente;
 import org.itson.bdavanzadas.proyectodominio.Cuenta;
+import org.itson.bdavanzadas.proyectodominio.Operacion;
+import org.itson.bdavanzadas.proyectodominio.Transferencia;
 
 /**
  *
@@ -131,6 +136,7 @@ public class BancoDAO implements IBancoDAO {
         }
     }
     
+    @Override
     public List<Cuenta> consultarCuentas(Cliente cliente) throws PersistenciaException {
         String sentenciaSQL = "SELECT numCuenta, saldo FROM Cuentas WHERE idCliente = ?;"; 
         List<Cuenta> listaCuentas = new LinkedList<>();
@@ -157,6 +163,75 @@ public class BancoDAO implements IBancoDAO {
             throw new PersistenciaException("No se pudieron consultar las cuentas", ex);
         }
     }
+    
+    public Operacion agregarOperacion(OperacionDTO operacionNueva) throws PersistenciaException{
+        String sentenciaSQL = """
+        INSERT INTO operaciones(fechaHora, monto)
+        VALUES (?, ?);""";
+        try (
+            Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);) {
+            comando.setDate(1, (Date) operacionNueva.getFechaHora());
+            comando.setFloat(2, operacionNueva.getMonto());
+
+            int numeroRegistrosInsertados = comando.executeUpdate();
+            logger.log(Level.INFO, "Se agregaron {0} operaciones", numeroRegistrosInsertados);
+
+            ResultSet idGenerado = comando.getGeneratedKeys();
+            idGenerado.next();
+            Operacion operacion = new Operacion(idGenerado.getInt(1), operacionNueva.getFechaHora(), operacionNueva.getMonto());
+            return operacion;
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, "No se pudo guardar la operación", ex);
+            throw new PersistenciaException("No se pudo guardar la operación", ex);
+        }
+    }
+    
+    @Override
+     public Transferencia realizarTransferencia(TransferenciaDTO transferenciaNueva) throws PersistenciaException {
+        String sentenciaSQL = """
+        INSERT INTO transferencias(idOperacion, idCuenta, idCuentaDestino, idCliente)
+        VALUES (?, ?, ?);""";
+        try (
+            Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);) {
+            comando.setInt(1, transferenciaNueva.getIdOperacion());
+            comando.setInt(2, transferenciaNueva.getIdCuenta());
+            comando.setInt(3, transferenciaNueva.getIdCuentaDestino());
+            comando.setInt(4, transferenciaNueva.getIdCliente());
+
+            String sentenciaSQL1 = """
+        SELECT * FROM cuentas c  
+                                   INNER JOIN operaciones o on c.idCuenta = o.idCuenta
+                                   INNER JOIN cuentas cd on o.idCuentaDestino = cd.idCuenta
+                                   where idOperacion = ?""";
+            
+            try (PreparedStatement statement = conexion.prepareStatement(sentenciaSQL)) {
+                statement.setInt(1, transferenciaNueva.getIdOperacion()); // Asegúrate de reemplazar tuIdOperacion con el valor apropiado
+
+                ResultSet resultSet = statement.executeQuery();
+
+                if (resultSet.next()) {
+                    Cuenta cuentaOrigen = (Cuenta) resultSet.getObject("c.idCuenta");
+                    cuentaOrigen.setSaldo(cuentaOrigen.getSaldo() + transferenciaNueva.getMonto());
+                    
+                    Cuenta cuentaDestino = (Cuenta) resultSet.getObject("c.idCuenta");
+                    cuentaDestino.setSaldo(cuentaDestino.getSaldo() - transferenciaNueva.getMonto());
+                }
+            } catch (SQLException e) {
+                e.printStackTrace(); 
+            }
+            
+            int numeroRegistrosInsertados = comando.executeUpdate();
+            logger.log(Level.INFO, "Se realizó la transferencia", numeroRegistrosInsertados);
+
+            Transferencia transferencia = new Transferencia(transferenciaNueva.getIdCuenta(), transferenciaNueva.getIdCuentaDestino(), transferenciaNueva.getIdCliente(), transferenciaNueva.getIdOperacion(), transferenciaNueva.getFechaHora(), transferenciaNueva.getMonto());
+            return transferencia;
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, "No se pudo realizar la transferencia", ex);
+            throw new PersistenciaException("No se pudo realizar la transferencia", ex);
+        }
+    }
+     
+     
     
     }
 

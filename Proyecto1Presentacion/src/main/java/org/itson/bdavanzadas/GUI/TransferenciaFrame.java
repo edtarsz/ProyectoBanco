@@ -4,17 +4,60 @@
  */
 package org.itson.bdavanzadas.GUI;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import org.itson.bdavanzadas.proyecto.daos.IBancoDAO;
+import org.itson.bdavanzadas.proyecto.dtos.OperacionDTO;
+import org.itson.bdavanzadas.proyecto.dtos.TransferenciaDTO;
+import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
+import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
+import org.itson.bdavanzadas.proyectodominio.Cliente;
+import org.itson.bdavanzadas.proyectodominio.Cuenta;
+import org.itson.bdavanzadas.proyectodominio.Operacion;
+import org.itson.bdavanzadas.proyectodominio.Transferencia;
+
 /**
  *
  * @author JoseH
  */
 public class TransferenciaFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TransferenciaFrame
-     */
-    public TransferenciaFrame() {
+    private IBancoDAO bancoDAO;
+    private Cliente cliente;
+    
+    public TransferenciaFrame(IBancoDAO bancoDAO){
+        this.bancoDAO = bancoDAO;
         initComponents();
+    }
+    
+    public TransferenciaFrame(IBancoDAO bancoDAO, Cliente cliente) {
+        this.bancoDAO = bancoDAO;
+        initComponents();
+        this.cliente = cliente;
+        try {
+            List<Cuenta> listaCuentas = bancoDAO.consultarCuentas(this.cliente);
+
+            DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+
+            for (Cuenta cuenta : listaCuentas) {
+                model.addElement(String.valueOf(cuenta.getNumCuenta()));
+            }
+
+            cuentaOrigenCmbBox.setModel(model);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(TransferenciaFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        Date fechaActual = new java.util.Date();
+        SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String fechaString = formato.format(fechaActual);
+        fechaHoratxt.setText(fechaString);
+        
     }
 
     /**
@@ -33,16 +76,16 @@ public class TransferenciaFrame extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        fechaHoratxt = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cuentaOrigenCmbBox = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         txtCuentaDestino = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        txtMonto = new javax.swing.JTextField();
+        txtImporte = new javax.swing.JTextField();
         label3 = new java.awt.Label();
-        jButton2 = new javax.swing.JButton();
+        confirmarBtn = new javax.swing.JButton();
         txtSaldoPostResta = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -87,13 +130,13 @@ public class TransferenciaFrame extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(42, 98, 143));
         jLabel6.setText("Fecha y hora: ");
 
-        jTextField1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(42, 98, 143));
-        jTextField1.setText("(fecha y hora)");
-        jTextField1.setBorder(null);
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        fechaHoratxt.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        fechaHoratxt.setForeground(new java.awt.Color(42, 98, 143));
+        fechaHoratxt.setText("(fecha y hora)");
+        fechaHoratxt.setBorder(null);
+        fechaHoratxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                fechaHoratxtActionPerformed(evt);
             }
         });
 
@@ -101,12 +144,12 @@ public class TransferenciaFrame extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(42, 98, 143));
         jLabel7.setText("Cuenta origen");
 
-        jComboBox1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        jComboBox1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jComboBox1.setKeySelectionManager(null);
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        cuentaOrigenCmbBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        cuentaOrigenCmbBox.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        cuentaOrigenCmbBox.setKeySelectionManager(null);
+        cuentaOrigenCmbBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                cuentaOrigenCmbBoxActionPerformed(evt);
             }
         });
 
@@ -127,23 +170,23 @@ public class TransferenciaFrame extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(42, 98, 143));
         jLabel10.setText("Importe");
 
-        txtMonto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        txtMonto.addActionListener(new java.awt.event.ActionListener() {
+        txtImporte.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        txtImporte.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMontoActionPerformed(evt);
+                txtImporteActionPerformed(evt);
             }
         });
 
         label3.setForeground(new java.awt.Color(42, 98, 143));
         label3.setText("Después de la transferencia, en tu cuenta quedarán");
 
-        jButton2.setBackground(new java.awt.Color(42, 98, 143));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Confirmar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        confirmarBtn.setBackground(new java.awt.Color(42, 98, 143));
+        confirmarBtn.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        confirmarBtn.setForeground(new java.awt.Color(255, 255, 255));
+        confirmarBtn.setText("Confirmar");
+        confirmarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                confirmarBtnActionPerformed(evt);
             }
         });
 
@@ -182,16 +225,16 @@ public class TransferenciaFrame extends javax.swing.JFrame {
                                 .addGap(186, 186, 186)
                                 .addComponent(jLabel6)
                                 .addGap(45, 45, 45)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(fechaHoratxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(confirmarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10)
-                            .addComponent(txtMonto, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtImporte, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel7)
-                                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(cuentaOrigenCmbBox, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(label3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -223,7 +266,7 @@ public class TransferenciaFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fechaHoratxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(40, 40, 40)
@@ -235,7 +278,7 @@ public class TransferenciaFrame extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(cuentaOrigenCmbBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(28, 28, 28))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -243,13 +286,13 @@ public class TransferenciaFrame extends javax.swing.JFrame {
                         .addGap(19, 19, 19)))
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtMonto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtImporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtSaldoPostResta)
                     .addComponent(label3, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(confirmarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49))
         );
 
@@ -257,19 +300,17 @@ public class TransferenciaFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 784, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 472, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -284,35 +325,58 @@ public class TransferenciaFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void fechaHoratxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fechaHoratxtActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_fechaHoratxtActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    private void cuentaOrigenCmbBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cuentaOrigenCmbBoxActionPerformed
+        
+    }//GEN-LAST:event_cuentaOrigenCmbBoxActionPerformed
 
     private void txtCuentaDestinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCuentaDestinoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCuentaDestinoActionPerformed
 
-    private void txtMontoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMontoActionPerformed
+    private void txtImporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtImporteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtMontoActionPerformed
+    }//GEN-LAST:event_txtImporteActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
+        Cuenta cuenta = (Cuenta) cuentaOrigenCmbBox.getSelectedItem();
+        int idCuentaDestino = Integer.parseInt(txtCuentaDestino.getText());
+        int monto = Integer.parseInt(txtImporte.getText());
+        
+        
+        try {
+            if (String.valueOf(idCuentaDestino).isEmpty() || String.valueOf(idCuentaDestino) == null || String.valueOf(monto).isEmpty() || String.valueOf(monto) == null) {
+                JOptionPane.showMessageDialog(this, "Rellene todos los campos", "Notificación", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                Date fechaActual = new java.util.Date();
+                OperacionDTO operacion = new OperacionDTO();
+                operacion.setFechaHora(fechaActual);
+                operacion.setMonto(monto);
+                this.bancoDAO.agregarOperacion(operacion);
+                TransferenciaDTO transferencia = new TransferenciaDTO();
+                transferencia.setIdCuenta(cuenta.getNumCuenta());
+                transferencia.setIdCuentaDestino(idCuentaDestino);
+                transferencia.setFechaHora(fechaActual);
+                this.bancoDAO.realizarTransferencia(transferencia);
+            }
+        } catch (PersistenciaException ex) {
+            JOptionPane.showMessageDialog(this, "No fue posible agregar al cliente", "Error de almacenamiento", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_confirmarBtnActionPerformed
 
     private void txtSaldoPostRestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSaldoPostRestaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSaldoPostRestaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton confirmarBtn;
+    private javax.swing.JComboBox<String> cuentaOrigenCmbBox;
+    private javax.swing.JTextField fechaHoratxt;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -324,10 +388,9 @@ public class TransferenciaFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
     private java.awt.Label label3;
     private javax.swing.JTextField txtCuentaDestino;
-    private javax.swing.JTextField txtMonto;
+    private javax.swing.JTextField txtImporte;
     private javax.swing.JTextField txtSaldoPostResta;
     // End of variables declaration//GEN-END:variables
 }

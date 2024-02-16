@@ -33,12 +33,12 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>Proyecto1Persistencia</artifactId>
+            <artifactId>Proyecto1Dominio</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>Proyecto1Dominio</artifactId>
+            <artifactId>Proyecto1Persistencia</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
