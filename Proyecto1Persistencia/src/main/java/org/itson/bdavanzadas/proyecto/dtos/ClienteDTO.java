@@ -4,9 +4,7 @@
  */
 package org.itson.bdavanzadas.proyecto.dtos;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
+import java.security.SecureRandom;
 import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
 
 /**
@@ -15,6 +13,7 @@ import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
  */
 public class ClienteDTO {
 
+    String usuario;
     String nombre;
     String apellidoPaterno;
     String apellidoMaterno;
@@ -26,6 +25,10 @@ public class ClienteDTO {
     String colonia;
     String ciudad;
     int edad;
+
+    public String getUsuario() {
+        return usuario;
+    }
 
     public int getEdad() {
         return edad;
@@ -71,8 +74,26 @@ public class ClienteDTO {
         return ciudad;
     }
 
+    public void setUsuario(String nombre) {
+        if (nombre != null && nombre.length() >= 3) {
+            StringBuilder sb = new StringBuilder();
+            SecureRandom secureRandom = new SecureRandom();
+            int longitud = 5;
+
+            for (int i = 0; i < longitud; i++) {
+                int digitoAleatorio = secureRandom.nextInt(10);
+                sb.append(digitoAleatorio);
+            }
+
+            String primerosTresCaracteres = nombre.substring(0, Math.min(nombre.length(), 3));
+            this.usuario = primerosTresCaracteres + sb.toString();
+        } else {
+            throw new IllegalArgumentException("Nombre no válido para generar el usuario");
+        }
+    }
+
     public void setEdad(int edad) {
-       this.edad = edad;
+        this.edad = edad;
     }
 
     public void setNombre(String nombre) {
@@ -165,8 +186,10 @@ public class ClienteDTO {
                 || this.ciudad.trim().length() > 20) {
             throw new ValidacionDTOException("Ciudad inválida");
         }
-        if (this.edad < 18 || Integer.toString(this.edad).isEmpty() || Integer.toString(this.edad) == null) {
-            throw new ValidacionDTOException("Edad inválida");
+        if (this.edad < 18
+                || Integer.toString(this.edad).isEmpty()
+                || Integer.toString(this.edad) == null) {
+            throw new ValidacionDTOException("Menor de edad no permitido");
         }
         return true;
     }

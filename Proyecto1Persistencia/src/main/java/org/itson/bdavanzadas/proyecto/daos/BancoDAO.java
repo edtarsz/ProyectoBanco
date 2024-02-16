@@ -37,28 +37,31 @@ public class BancoDAO implements IBancoDAO {
     @Override
     public Cliente agregar(ClienteDTO clienteNuevo) throws PersistenciaException {
         String sentenciaSQL = """
-        INSERT INTO clientes(Nombre, ApellidoPaterno, ApellidoMaterno, Contraseña, FechaNacimiento, CodigoPostal, NumExterior, Calle, Colonia, Ciudad, Edad)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""";
+        INSERT INTO clientes(Usuario, Nombre, ApellidoPaterno, ApellidoMaterno, Contraseña, FechaNacimiento, CodigoPostal, NumExterior, Calle, Colonia, Ciudad, Edad)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""";
         try (
-            Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);) {
-            comando.setString(1, clienteNuevo.getNombre());
-            comando.setString(2, clienteNuevo.getApellidoMaterno());
-            comando.setString(3, clienteNuevo.getApellidoPaterno());
-            comando.setString(4, clienteNuevo.getContraseña());
-            comando.setString(5, clienteNuevo.getFechaNacimiento());
-            comando.setString(6, clienteNuevo.getCodigoPostal());
-            comando.setString(7, clienteNuevo.getNumExterior());
-            comando.setString(8, clienteNuevo.getCalle());
-            comando.setString(9, clienteNuevo.getColonia());
-            comando.setString(10, clienteNuevo.getCiudad());
-            comando.setInt(11, clienteNuevo.getEdad());
+                Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);) {
+            comando.setString(1, clienteNuevo.getUsuario());
+            comando.setString(2, clienteNuevo.getNombre());
+            comando.setString(3, clienteNuevo.getApellidoMaterno());
+            comando.setString(4, clienteNuevo.getApellidoPaterno());
+            comando.setString(5, clienteNuevo.getContraseña());
+            comando.setString(6, clienteNuevo.getFechaNacimiento());
+            comando.setString(7, clienteNuevo.getCodigoPostal());
+            comando.setString(8, clienteNuevo.getNumExterior());
+            comando.setString(9, clienteNuevo.getCalle());
+            comando.setString(10, clienteNuevo.getColonia());
+            comando.setString(11, clienteNuevo.getCiudad());
+            comando.setInt(12, clienteNuevo.getEdad());
             int numeroRegistrosInsertados = comando.executeUpdate();
             logger.log(Level.INFO, "Se agregaron {0} socios", numeroRegistrosInsertados);
 
             ResultSet idGenerado = comando.getGeneratedKeys();
             idGenerado.next();
+
             Cliente cliente = new Cliente(
                     idGenerado.getLong(1),
+                    clienteNuevo.getUsuario(),
                     clienteNuevo.getNombre(),
                     clienteNuevo.getApellidoPaterno(),
                     clienteNuevo.getApellidoMaterno(),
@@ -71,6 +74,7 @@ public class BancoDAO implements IBancoDAO {
                     clienteNuevo.getCiudad(),
                     clienteNuevo.getEdad());
             return cliente;
+
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, "No se pudo guardar el cliente", ex);
             throw new PersistenciaException("No se pudo guardar el cliente", ex);
@@ -79,17 +83,18 @@ public class BancoDAO implements IBancoDAO {
 
     @Override
     public List<Cliente> consultar() throws PersistenciaException {
-        String sentenciaSQL = "SELECT idCliente, nombre, contraseña FROM clientes;";
+        String sentenciaSQL = "SELECT idCliente, usuario, nombre, contraseña FROM clientes;";
         List<Cliente> listaClientes = new LinkedList<>();
 
         try (Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL); ResultSet resultados = comando.executeQuery()) {
 
             while (resultados.next()) {
                 Long idCliente = resultados.getLong("idCliente");
+                String usuario = resultados.getString("usuario");
                 String nombre = resultados.getString("nombre");
                 String contraseña = resultados.getString("contraseña");
 
-                Cliente cliente = new Cliente(idCliente, nombre, contraseña);
+                Cliente cliente = new Cliente(idCliente, usuario, nombre, contraseña);
                 listaClientes.add(cliente);
             }
 
@@ -108,7 +113,7 @@ public class BancoDAO implements IBancoDAO {
         INSERT INTO cuentas(numCuenta, idCliente, saldo, fechaApertura)
         VALUES (?, ?, ?, ?);""";
         try (
-            Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);) {
+                Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);) {
             comando.setInt(1, cuentaNueva.getNumCuenta());
             comando.setLong(2, cuentaNueva.getIdCliente());
             comando.setFloat(3, cuentaNueva.getSaldo());
@@ -130,21 +135,22 @@ public class BancoDAO implements IBancoDAO {
             throw new PersistenciaException("No se pudo guardar la cuenta", ex);
         }
     }
-    
+
+    @Override
     public List<Cuenta> consultarCuentas(Cliente cliente) throws PersistenciaException {
-        String sentenciaSQL = "SELECT numCuenta, saldo FROM Cuentas WHERE idCliente = ?;"; 
+        String sentenciaSQL = "SELECT numCuenta, saldo FROM Cuentas WHERE idCliente = ?;";
         List<Cuenta> listaCuentas = new LinkedList<>();
 
         try (Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL)) {
 
-            comando.setLong(1, cliente.getIdCliente()); 
+            comando.setLong(1, cliente.getIdCliente());
 
             try (ResultSet resultados = comando.executeQuery()) {
                 while (resultados.next()) {
                     int numCuenta = resultados.getInt("numCuenta");
                     float saldo = resultados.getFloat("saldo");
 
-                    Cuenta cuenta = new Cuenta(cliente.getIdCliente(), numCuenta, saldo); 
+                    Cuenta cuenta = new Cuenta(cliente.getIdCliente(), numCuenta, saldo);
                     listaCuentas.add(cuenta);
                 }
             }
@@ -157,6 +163,4 @@ public class BancoDAO implements IBancoDAO {
             throw new PersistenciaException("No se pudieron consultar las cuentas", ex);
         }
     }
-    
-    }
-
+}

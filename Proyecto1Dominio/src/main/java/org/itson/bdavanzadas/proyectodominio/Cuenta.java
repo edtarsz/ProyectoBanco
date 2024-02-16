@@ -4,7 +4,6 @@
  */
 package org.itson.bdavanzadas.proyectodominio;
 
-import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
 
@@ -21,8 +20,8 @@ public class Cuenta {
 
     public Cuenta() {
     }
-    
-    public Cuenta(Long idCliente, int numCuenta, float saldo){
+
+    public Cuenta(Long idCliente, int numCuenta, float saldo) {
         this.numCuenta = numCuenta;
         this.saldo = saldo;
         this.idCliente = idCliente;

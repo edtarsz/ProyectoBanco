@@ -12,6 +12,7 @@ import java.util.Objects;
  */
 public class Cliente {
 
+    private String usuario;
     private Long idCliente;
     private String nombre;
     private String apellidoPaterno;
@@ -28,8 +29,9 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(Long idCliente, String nombre, String contraseña) {
+    public Cliente(Long idCliente, String usuario, String nombre, String contraseña) {
         this.idCliente = idCliente;
+        this.usuario = usuario;
         this.nombre = nombre;
         this.contraseña = contraseña;
     }
@@ -48,7 +50,8 @@ public class Cliente {
         this.ciudad = ciudad;
     }
 
-    public Cliente(Long idCliente, String nombre, String apellidoPaterno, String apellidoMaterno, String contraseña, String fechaNacimiento, String codigoPostal, String numExterior, String calle, String colonia, String ciudad, int edad) {
+    public Cliente(Long idCliente, String usuario, String nombre, String apellidoPaterno, String apellidoMaterno, String contraseña, String fechaNacimiento, String codigoPostal, String numExterior, String calle, String colonia, String ciudad, int edad) {
+        this.usuario = usuario;
         this.idCliente = idCliente;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -65,6 +68,10 @@ public class Cliente {
 
     public Long getIdCliente() {
         return idCliente;
+    }
+
+    public String getUsuario() {
+        return usuario;
     }
 
     public int getEdad() {
@@ -115,6 +122,10 @@ public class Cliente {
         this.idCliente = idCliente;
     }
 
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
     public void setEdad(int edad) {
         this.edad = edad;
     }
@@ -161,7 +172,8 @@ public class Cliente {
 
     @Override
     public int hashCode() {
-        int hash = 3;
+        int hash = 5;
+        hash = 83 * hash + Objects.hashCode(this.usuario);
         hash = 83 * hash + Objects.hashCode(this.idCliente);
         hash = 83 * hash + Objects.hashCode(this.nombre);
         hash = 83 * hash + Objects.hashCode(this.apellidoPaterno);
@@ -190,6 +202,9 @@ public class Cliente {
         }
         final Cliente other = (Cliente) obj;
         if (this.edad != other.edad) {
+            return false;
+        }
+        if (!Objects.equals(this.usuario, other.usuario)) {
             return false;
         }
         if (!Objects.equals(this.nombre, other.nombre)) {
@@ -229,7 +244,8 @@ public class Cliente {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Cliente{");
-        sb.append("idCliente=").append(idCliente);
+        sb.append("usuario=").append(usuario);
+        sb.append(", idCliente=").append(idCliente);
         sb.append(", nombre=").append(nombre);
         sb.append(", apellidoPaterno=").append(apellidoPaterno);
         sb.append(", apellidoMaterno=").append(apellidoMaterno);
