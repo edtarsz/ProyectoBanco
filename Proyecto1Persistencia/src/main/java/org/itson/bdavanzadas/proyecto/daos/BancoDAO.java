@@ -94,6 +94,14 @@ public class BancoDAO implements IBancoDAO {
                 String nombre = resultados.getString("nombre");
                 String contraseña = resultados.getString("contraseña");
 
+                // Desencriptación
+                char[] contraseñaArray = contraseña.toCharArray();
+                for (int i = 0; i < contraseñaArray.length; i++) {
+                    contraseñaArray[i] -= 5;
+                }
+
+                contraseña = new String(contraseñaArray);
+
                 Cliente cliente = new Cliente(idCliente, usuario, nombre, contraseña);
                 listaClientes.add(cliente);
             }

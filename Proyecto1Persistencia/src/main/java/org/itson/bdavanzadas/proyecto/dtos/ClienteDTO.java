@@ -108,8 +108,11 @@ public class ClienteDTO {
         this.apellidoMaterno = apellidoMaterno;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setContraseña(char[] contraseña) {
+        for (int i = 0; i < contraseña.length; i++) {
+            contraseña[i] += 5;
+        }
+        this.contraseña = new String(contraseña);
     }
 
     public void setFechaNacimiento(String fechaNacimiento) {
@@ -152,9 +155,7 @@ public class ClienteDTO {
                 || this.apellidoPaterno.trim().length() > 50) {
             throw new ValidacionDTOException("Apellido paterno inválido");
         }
-        if (this.contraseña == null
-                || this.contraseña.isBlank()
-                || this.contraseña.trim().length() > 20) {
+        if (this.contraseña == null) {
             throw new ValidacionDTOException("Contraseña inválida");
         }
         if (this.fechaNacimiento == null || this.fechaNacimiento.isBlank()

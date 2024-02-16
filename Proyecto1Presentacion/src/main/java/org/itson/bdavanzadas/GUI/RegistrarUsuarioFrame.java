@@ -57,7 +57,7 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         clienteNuevo.setNombre(nombre);
         clienteNuevo.setApellidoPaterno(apellidoPaterno);
         clienteNuevo.setApellidoMaterno(apellidoMaterno);
-        clienteNuevo.setContraseña(contraseña);
+        clienteNuevo.setContraseña(contrasenaCharArray);
         clienteNuevo.setCodigoPostal(codigoPostal);
         clienteNuevo.setCiudad(ciudad);
         clienteNuevo.setColonia(colonia);

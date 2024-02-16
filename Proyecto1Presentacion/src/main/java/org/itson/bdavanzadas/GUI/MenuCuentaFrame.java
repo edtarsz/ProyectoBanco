@@ -4,13 +4,10 @@
  */
 package org.itson.bdavanzadas.GUI;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import javax.swing.JOptionPane;
 import org.itson.bdavanzadas.proyecto.daos.IBancoDAO;
-import org.itson.bdavanzadas.proyecto.dtos.ClienteDTO;
 import org.itson.bdavanzadas.proyecto.dtos.CuentaDTO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
