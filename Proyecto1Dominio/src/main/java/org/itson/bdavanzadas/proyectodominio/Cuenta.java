@@ -4,6 +4,7 @@
  */
 package org.itson.bdavanzadas.proyectodominio;
 
+import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
 
@@ -16,7 +17,7 @@ public class Cuenta {
     int numCuenta;
     Long idCliente;
     float saldo;
-    String fechaApertura;
+    Date fechaApertura;
 
     public Cuenta() {
     }
@@ -27,13 +28,13 @@ public class Cuenta {
         this.idCliente = idCliente;
     }
 
-    public Cuenta(Long idCliente, float saldo, String fechaApertura) {
+    public Cuenta(Long idCliente, float saldo, Date fechaApertura) {
         this.idCliente = idCliente;
         this.saldo = saldo;
         this.fechaApertura = fechaApertura;
     }
 
-    public Cuenta(int numCuenta, Long idCliente, float saldo, String fechaApertura) {
+    public Cuenta(int numCuenta, Long idCliente, float saldo, Date fechaApertura) {
         this.numCuenta = numCuenta;
         this.idCliente = idCliente;
         this.saldo = saldo;
@@ -52,7 +53,7 @@ public class Cuenta {
         return saldo;
     }
 
-    public String getFechaApertura() {
+    public Date getFechaApertura() {
         return fechaApertura;
     }
 
@@ -74,7 +75,7 @@ public class Cuenta {
         this.saldo = saldo;
     }
 
-    public void setFechaApertura(String fechaApertura) {
+    public void setFechaApertura(Date fechaApertura) {
         this.fechaApertura = fechaApertura;
     }
 

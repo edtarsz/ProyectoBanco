@@ -12,7 +12,7 @@ import java.util.Objects;
  * @author Ramosz
  */
 public class RetiroSinCuenta extends Operacion {
-
+    int idCuenta;
     String folio;
     String contraseñaRetiro;
 
@@ -22,7 +22,15 @@ public class RetiroSinCuenta extends Operacion {
         this.folio = folio;
         this.contraseñaRetiro = contraseñaRetiro;
     }
+    
+    public int getIdCuenta() {
+        return idCuenta;
+    }
 
+    public void setIdCuenta(int idCuenta) {
+        this.idCuenta = idCuenta;
+    }
+    
     public String getFolio() {
         return folio;
     }

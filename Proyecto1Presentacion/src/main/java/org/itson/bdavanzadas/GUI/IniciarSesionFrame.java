@@ -17,8 +17,8 @@ import org.itson.bdavanzadas.proyectodominio.Cliente;
  */
 public class IniciarSesionFrame extends javax.swing.JFrame {
 
-    private IClienteDAO clienteDAO;
     private ICuentaDAO cuentaDAO;
+    private IClienteDAO clienteDAO;
     private Cliente usuario;
 
     /**
@@ -26,8 +26,9 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
      *
      * @param clienteDAO
      */
-    public IniciarSesionFrame(IClienteDAO clienteDAO) {
+    public IniciarSesionFrame(IClienteDAO clienteDAO, ICuentaDAO cuentaDAO) {
         this.clienteDAO = clienteDAO;
+        this.cuentaDAO = cuentaDAO;
         initComponents();
     }
 
@@ -299,7 +300,7 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
         if (existeUsuario) {
             try {
                 System.out.println(this.usuario.getNombre());
-                MenuCuentaFrame menuCuentaFrm = new MenuCuentaFrame(clienteDAO, this.usuario);
+                MenuCuentaFrame menuCuentaFrm = new MenuCuentaFrame(clienteDAO, this.usuario, cuentaDAO);
                 menuCuentaFrm.setVisible(true);
                 this.dispose();
             } catch (PersistenciaException ex) {
@@ -311,7 +312,7 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
     private void btnRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroActionPerformed
-        RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame(clienteDAO);
+        RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame(clienteDAO, cuentaDAO);
         registrarUsuario.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegistroActionPerformed
@@ -325,13 +326,13 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_pswContraseniaMouseClicked
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-        IndiceFrame indiceFrame = new IndiceFrame(clienteDAO);
+        IndiceFrame indiceFrame = new IndiceFrame(clienteDAO, cuentaDAO);
         indiceFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-        IndiceFrame indiceFrame = new IndiceFrame(clienteDAO);
+        IndiceFrame indiceFrame = new IndiceFrame(clienteDAO, cuentaDAO);
         indiceFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel6MouseClicked

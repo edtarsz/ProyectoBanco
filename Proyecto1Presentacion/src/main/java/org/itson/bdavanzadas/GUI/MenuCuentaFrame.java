@@ -6,6 +6,7 @@ package org.itson.bdavanzadas.GUI;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import org.itson.bdavanzadas.proyecto.daos.IClienteDAO;
 import org.itson.bdavanzadas.proyecto.daos.ICuentaDAO;
@@ -37,8 +38,9 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         initComponents();
     }
 
-    public MenuCuentaFrame(IClienteDAO clienteDAO, Cliente cliente) throws PersistenciaException {
+    public MenuCuentaFrame(IClienteDAO clienteDAO, Cliente cliente, ICuentaDAO cuentaDAO) throws PersistenciaException {
         this.clienteDAO = clienteDAO;
+        this.cuentaDAO = cuentaDAO;
         initComponents();
         nombreUsuario.setText(cliente.getNombre());
         this.cliente = cliente;
@@ -64,10 +66,8 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         cuentaNueva.setIdCliente(cliente.getIdCliente());
         cuentaNueva.setSaldo((float) 10000.00);
 
-        LocalDate fechaActual = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String fechaFormateada = fechaActual.format(formatter);
-        cuentaNueva.setFechaApertura(fechaFormateada);
+        Date fechaActual = new Date();
+        cuentaNueva.setFechaApertura(fechaActual);
 
         System.out.println("Cuenta nueva: " + cuentaNueva);
         try {
@@ -108,8 +108,8 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         txtCuenta3 = new javax.swing.JTextArea();
         agregarCuentabtn = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        transferenciaBtn = new javax.swing.JButton();
+        retiroBtn = new javax.swing.JButton();
         txtEditarPerfil = new javax.swing.JButton();
         txtCerrarSesion = new javax.swing.JButton();
 
@@ -210,27 +210,27 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(42, 98, 143));
         jLabel8.setText("Operaciones");
 
-        jButton5.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(42, 98, 143));
-        jButton5.setText("Realizar una transferencia");
-        jButton5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 98, 143), 4));
-        jButton5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton5.setBackground(null);
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        transferenciaBtn.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        transferenciaBtn.setForeground(new java.awt.Color(42, 98, 143));
+        transferenciaBtn.setText("Realizar una transferencia");
+        transferenciaBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 98, 143), 4));
+        transferenciaBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        transferenciaBtn.setBackground(null);
+        transferenciaBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                transferenciaBtnActionPerformed(evt);
             }
         });
 
-        jButton6.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        jButton6.setForeground(new java.awt.Color(42, 98, 143));
-        jButton6.setText("Generar retiro sin tarjeta");
-        jButton6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 98, 143), 4));
-        jButton6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton6.setBackground(null);
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        retiroBtn.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        retiroBtn.setForeground(new java.awt.Color(42, 98, 143));
+        retiroBtn.setText("Generar retiro sin tarjeta");
+        retiroBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 98, 143), 4));
+        retiroBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        retiroBtn.setBackground(null);
+        retiroBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                retiroBtnActionPerformed(evt);
             }
         });
 
@@ -284,9 +284,9 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel8)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(transferenciaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(retiroBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLabel5)
                                     .addComponent(jLabel6)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -339,8 +339,8 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(transferenciaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(retiroBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(54, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(txtEditarPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -404,15 +404,17 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_agregarCuentabtnActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        TransferenciaFrame transferencia = new TransferenciaFrame(clienteDAO, cliente);
+    private void transferenciaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferenciaBtnActionPerformed
+        TransferenciaFrame transferencia = new TransferenciaFrame(clienteDAO, cliente, cuentaDAO);
         transferencia.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_transferenciaBtnActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
+    private void retiroBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retiroBtnActionPerformed
+        RetiroFrame retiroFrm = new RetiroFrame(clienteDAO, cliente, cuentaDAO);
+        retiroFrm.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_retiroBtnActionPerformed
 
     private void txtEditarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEditarPerfilActionPerformed
         // TODO add your handling code here:
@@ -424,7 +426,7 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
 
     private void txtCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCerrarSesionActionPerformed
         JOptionPane.showMessageDialog(this, "Se ha cerrado sesión correctamente.", "Notificación", JOptionPane.INFORMATION_MESSAGE);
-        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(clienteDAO);
+        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(clienteDAO, cuentaDAO);
         iniciarSesion.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_txtCerrarSesionActionPerformed
@@ -433,8 +435,6 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
     private javax.swing.JButton agregarCuentabtn;
     private javax.swing.JButton btnHistorial;
     private javax.swing.JButton btnUsuario;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -448,6 +448,8 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField nombreUsuario;
+    private javax.swing.JButton retiroBtn;
+    private javax.swing.JButton transferenciaBtn;
     private javax.swing.JButton txtCerrarSesion;
     private javax.swing.JTextArea txtCuenta1;
     private javax.swing.JTextArea txtCuenta2;

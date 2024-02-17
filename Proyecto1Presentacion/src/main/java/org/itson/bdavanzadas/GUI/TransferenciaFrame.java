@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import org.itson.bdavanzadas.proyecto.daos.IClienteDAO;
+import org.itson.bdavanzadas.proyecto.daos.ICuentaDAO;
 import org.itson.bdavanzadas.proyecto.dtos.TransferenciaDTO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyectodominio.Cliente;
@@ -23,6 +24,7 @@ import org.itson.bdavanzadas.proyectodominio.Cuenta;
  */
 public class TransferenciaFrame extends javax.swing.JFrame {
 
+    private ICuentaDAO cuentaDAO;
     private boolean estadoDesplegado = false;
     private IClienteDAO clienteDAO;
     private Cliente cliente;
@@ -32,8 +34,9 @@ public class TransferenciaFrame extends javax.swing.JFrame {
         initComponents();
     }
 
-    public TransferenciaFrame(IClienteDAO clienteDAO, Cliente cliente) {
+    public TransferenciaFrame(IClienteDAO clienteDAO, Cliente cliente, ICuentaDAO cuentaDAO) {
         this.clienteDAO = clienteDAO;
+        this.cuentaDAO = cuentaDAO;
         initComponents();
         this.cliente = cliente;
         try {
@@ -85,7 +88,7 @@ public class TransferenciaFrame extends javax.swing.JFrame {
                 transferencia.setFechaHora(fechaActual);
                 transferencia.setMonto(monto);
                 dispose();
-                ConfirmarTransferenciaFrame confirmar = new ConfirmarTransferenciaFrame(clienteDAO, this.clienteDAO.realizarTransferencia(transferencia), cliente);
+                ConfirmarTransferenciaFrame confirmar = new ConfirmarTransferenciaFrame(clienteDAO, this.clienteDAO.realizarTransferencia(transferencia), cliente, cuentaDAO);
                 confirmar.setVisible(true);
             }
         } catch (PersistenciaException ex) {
@@ -115,10 +118,6 @@ public class TransferenciaFrame extends javax.swing.JFrame {
         label3 = new java.awt.Label();
         confirmarBtn = new javax.swing.JButton();
         txtSaldoPostResta = new javax.swing.JTextField();
-        btnHistorial = new javax.swing.JButton();
-        btnUsuario = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         txtCerrarSesionT = new javax.swing.JButton();
         txtEditarPerfilT = new javax.swing.JButton();
@@ -206,38 +205,6 @@ public class TransferenciaFrame extends javax.swing.JFrame {
             }
         });
 
-        btnHistorial.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        btnHistorial.setForeground(new java.awt.Color(42, 98, 143));
-        btnHistorial.setText("Historial");
-        btnHistorial.setBorderPainted(false);
-        btnHistorial.setBackground(null);
-        btnHistorial.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHistorialActionPerformed(evt);
-            }
-        });
-
-        btnUsuario.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        btnUsuario.setForeground(new java.awt.Color(42, 98, 143));
-        btnUsuario.setText("Usuario");
-        btnUsuario.setBorderPainted(false);
-        btnUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnUsuario.setBackground(null);
-        btnUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnUsuarioMouseClicked(evt);
-            }
-        });
-        btnUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUsuarioActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/usuarioIcono.png"))); // NOI18N
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/historialIcono.png"))); // NOI18N
-
         jLabel11.setBackground(new java.awt.Color(102, 102, 102));
         jLabel11.setForeground(new java.awt.Color(153, 153, 153));
         jLabel11.setText("__________________________________________________________________________________________________________________________________________");
@@ -275,17 +242,8 @@ public class TransferenciaFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(297, 297, 297)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnHistorial)
-                                .addGap(24, 24, 24)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnUsuario))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(confirmarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10)
                             .addComponent(txtImporte, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -307,7 +265,7 @@ public class TransferenciaFrame extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(txtSaldoPostResta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addContainerGap(28, Short.MAX_VALUE))
+                        .addContainerGap(228, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -332,12 +290,7 @@ public class TransferenciaFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnUsuario)
-                            .addComponent(btnHistorial))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(50, 50, 50)
                         .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -425,30 +378,9 @@ public class TransferenciaFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSaldoPostRestaActionPerformed
 
-    private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnHistorialActionPerformed
-
-    private void btnUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUsuarioMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnUsuarioMouseClicked
-
-    private void btnUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuarioActionPerformed
-        if (!estadoDesplegado) {
-            txtEditarPerfilT.setText("* Editar perfil");
-            txtCerrarSesionT.setText("* Cerrar sesión");
-        } else {
-            txtEditarPerfilT.setText("");
-            txtCerrarSesionT.setText("");
-        }
-
-        // Cambia el estado
-        estadoDesplegado = !estadoDesplegado;
-    }//GEN-LAST:event_btnUsuarioActionPerformed
-
     private void txtCerrarSesionTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCerrarSesionTActionPerformed
         JOptionPane.showMessageDialog(this, "Se ha cerrado sesión correctamente.", "Notificación", JOptionPane.INFORMATION_MESSAGE);
-        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(clienteDAO);
+        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(clienteDAO, cuentaDAO);
         iniciarSesion.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_txtCerrarSesionTActionPerformed
@@ -458,69 +390,21 @@ public class TransferenciaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_txtEditarPerfilTActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton agregarCuentabtn;
-    private javax.swing.JButton agregarCuentabtn1;
-    private javax.swing.JButton btnHistorial;
-    private javax.swing.JButton btnHistorial1;
-    private javax.swing.JButton btnHistorial2;
-    private javax.swing.JButton btnUsuario;
-    private javax.swing.JButton btnUsuario1;
-    private javax.swing.JButton btnUsuario2;
     private javax.swing.JButton confirmarBtn;
     private javax.swing.JComboBox<String> cuentaOrigenCmbBox;
     private javax.swing.JTextField fechaHoratxt;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
     private java.awt.Label label3;
-    private javax.swing.JTextField nombreUsuario;
-    private javax.swing.JTextField nombreUsuario1;
-    private javax.swing.JButton txtCerrarSesion;
-    private javax.swing.JButton txtCerrarSesion1;
     private javax.swing.JButton txtCerrarSesionT;
-    private javax.swing.JTextArea txtCuenta1;
-    private javax.swing.JTextArea txtCuenta2;
-    private javax.swing.JTextArea txtCuenta3;
-    private javax.swing.JTextArea txtCuenta4;
-    private javax.swing.JTextArea txtCuenta5;
-    private javax.swing.JTextArea txtCuenta6;
     private javax.swing.JTextField txtCuentaDestino;
-    private javax.swing.JButton txtEditarPerfil;
-    private javax.swing.JButton txtEditarPerfil1;
     private javax.swing.JButton txtEditarPerfilT;
     private javax.swing.JTextField txtImporte;
     private javax.swing.JTextField txtSaldoPostResta;

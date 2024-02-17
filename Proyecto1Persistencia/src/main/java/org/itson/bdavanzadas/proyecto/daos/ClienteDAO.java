@@ -127,7 +127,7 @@ public class ClienteDAO implements IClienteDAO {
             comando.setInt(1, cuentaNueva.getNumCuenta());
             comando.setLong(2, cuentaNueva.getIdCliente());
             comando.setFloat(3, cuentaNueva.getSaldo());
-            comando.setString(4, cuentaNueva.getFechaApertura());
+            comando.setDate(4, new java.sql.Date(cuentaNueva.getFechaApertura().getTime()));
 
             int numeroRegistrosInsertados = comando.executeUpdate();
             logger.log(Level.INFO, "Se agregaron {0} cuentas", numeroRegistrosInsertados);

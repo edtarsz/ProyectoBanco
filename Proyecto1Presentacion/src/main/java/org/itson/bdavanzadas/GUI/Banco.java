@@ -30,11 +30,12 @@ public class Banco {
         IClienteDAO clienteDao = new ClienteDAO(conexion);
         ICuentaDAO cuentaDao = new CuentaDAO(conexion);
 
-        IndiceFrame indiceFrame = new IndiceFrame(clienteDao);
-        RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame(clienteDao);
-        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(clienteDao);
+        IndiceFrame indiceFrame = new IndiceFrame(clienteDao, cuentaDao);
+        RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame(clienteDao, cuentaDao);
+        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(clienteDao, cuentaDao);
         MenuCuentaFrame menuCuenta = new MenuCuentaFrame(clienteDao);
         TransferenciaFrame transferencia = new TransferenciaFrame(clienteDao);
+        RetiroFrame retiro = new RetiroFrame(clienteDao, cuentaDao);
 
         indiceFrame.setVisible(true);
     }
