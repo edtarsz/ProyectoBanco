@@ -5,6 +5,7 @@
 package org.itson.bdavanzadas.GUI;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -23,19 +24,20 @@ import org.itson.bdavanzadas.proyectodominio.Cuenta;
  *
  * @author JoseH
  */
-public class RetiroFrame extends javax.swing.JFrame {
+public class SolicitarRetiroFrame extends javax.swing.JFrame {
+    
     private IClienteDAO clienteDAO;
     private Cliente cliente;
     private ICuentaDAO cuentaDAO;
 
 
-    public RetiroFrame(IClienteDAO clienteDAO, ICuentaDAO cuentaDAO) {
+    public SolicitarRetiroFrame(IClienteDAO clienteDAO, ICuentaDAO cuentaDAO) {
         initComponents();
         this.clienteDAO = clienteDAO;
         this.cuentaDAO = cuentaDAO;
     }
     
-    public RetiroFrame(IClienteDAO clienteDAO, Cliente cliente, ICuentaDAO cuentaDAO){
+    public SolicitarRetiroFrame(IClienteDAO clienteDAO, Cliente cliente, ICuentaDAO cuentaDAO){
         this.clienteDAO = clienteDAO;
         initComponents();
         this.cliente = cliente;
@@ -75,13 +77,13 @@ public class RetiroFrame extends javax.swing.JFrame {
             if (monto < 0) {
                 JOptionPane.showMessageDialog(this, "Coloca un monto válido", "Notificación", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                Date fechaActual = new java.util.Date();
+                LocalDateTime fechaHoraActual = LocalDateTime.now();
                 RetiroSinCuentaDTO retiro = new RetiroSinCuentaDTO();
                 retiro.setIdCuenta(cuenta.getNumCuenta());
                 retiro.setFolio();
                 retiro.setContraseñaRetiro();
                 retiro.setMonto(monto);
-                retiro.setFechaHora(fechaActual);
+                retiro.setFechaHora(fechaHoraActual);
                 Banco.retiroDao.solicitarRetiro(retiro, cuentaDAO);
                 dispose();
             }

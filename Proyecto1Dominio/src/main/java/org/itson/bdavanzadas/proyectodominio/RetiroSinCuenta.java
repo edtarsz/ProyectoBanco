@@ -4,6 +4,7 @@
  */
 package org.itson.bdavanzadas.proyectodominio;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -16,9 +17,14 @@ public class RetiroSinCuenta extends Operacion {
     String folio;
     String contraseñaRetiro;
 
-    public RetiroSinCuenta(int idOperacion, Date fechaHora, float monto, String folio, String contraseñaRetiro) {
+    public RetiroSinCuenta(int idOperacion, LocalDateTime fechaHora, float monto, String folio, String contraseñaRetiro) {
         super(idOperacion, fechaHora, monto);
         this.idOperacion = idOperacion;
+        this.folio = folio;
+        this.contraseñaRetiro = contraseñaRetiro;
+    }
+
+    public RetiroSinCuenta(String folio, String contraseñaRetiro) {
         this.folio = folio;
         this.contraseñaRetiro = contraseñaRetiro;
     }

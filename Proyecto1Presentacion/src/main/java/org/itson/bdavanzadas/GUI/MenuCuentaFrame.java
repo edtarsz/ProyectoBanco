@@ -411,7 +411,7 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_transferenciaBtnActionPerformed
 
     private void retiroBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retiroBtnActionPerformed
-        RetiroFrame retiroFrm = new RetiroFrame(clienteDAO, cliente, cuentaDAO);
+        SolicitarRetiroFrame retiroFrm = new SolicitarRetiroFrame(clienteDAO, cliente, cuentaDAO);
         retiroFrm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_retiroBtnActionPerformed

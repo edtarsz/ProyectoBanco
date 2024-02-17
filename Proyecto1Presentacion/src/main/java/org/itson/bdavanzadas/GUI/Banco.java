@@ -42,7 +42,7 @@ public class Banco {
         IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(clienteDao, cuentaDao);
         MenuCuentaFrame menuCuenta = new MenuCuentaFrame(clienteDao);
         TransferenciaFrame transferencia = new TransferenciaFrame(clienteDao);
-        RetiroFrame retiro = new RetiroFrame(clienteDao, cuentaDao);
+        SolicitarRetiroFrame retiro = new SolicitarRetiroFrame(clienteDao, cuentaDao);
 
         indiceFrame.setVisible(true);
     }

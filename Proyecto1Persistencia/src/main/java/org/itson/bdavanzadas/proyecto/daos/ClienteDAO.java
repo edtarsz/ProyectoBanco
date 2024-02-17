@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -190,7 +191,7 @@ public class ClienteDAO implements IClienteDAO {
 
         try (Connection conexion = this.conexionBD.obtenerConexion()) {
             try (PreparedStatement comandoOperacion = conexion.prepareStatement(sentenciaSQLOperacion, Statement.RETURN_GENERATED_KEYS)) {
-                comandoOperacion.setDate(1, new java.sql.Date(transferenciaNueva.getFechaHora().getTime()));
+                comandoOperacion.setTimestamp(1, Timestamp.valueOf(transferenciaNueva.getFechaHora()));
                 comandoOperacion.setInt(2, (int) transferenciaNueva.getMonto());
                 comandoOperacion.executeUpdate();
 

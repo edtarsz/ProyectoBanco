@@ -15,4 +15,5 @@ import org.itson.bdavanzadas.proyectodominio.RetiroSinCuenta;
 public interface IRetiroDAO {
     RetiroSinCuenta solicitarRetiro(RetiroSinCuentaDTO retiro, ICuentaDAO cuentaDAO) throws PersistenciaException;
     void procesarRetiro(RetiroSinCuenta retiro) throws PersistenciaException;
+    RetiroSinCuenta consultarRetiro(RetiroSinCuenta retiroSinCuenta) throws PersistenciaException;
 }

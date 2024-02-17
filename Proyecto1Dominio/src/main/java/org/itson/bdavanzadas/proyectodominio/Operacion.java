@@ -4,6 +4,7 @@
  */
 package org.itson.bdavanzadas.proyectodominio;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -14,13 +15,13 @@ import java.util.Objects;
 public class Operacion {
 
     int idOperacion;
-    Date fechaHora;
+    LocalDateTime fechaHora;
     float monto;
 
     public Operacion() {
     }
 
-    public Operacion(int idOperacion, Date fechaHora, float monto) {
+    public Operacion(int idOperacion, LocalDateTime fechaHora, float monto) {
         this.idOperacion = idOperacion;
         this.fechaHora = fechaHora;
         this.monto = monto;
@@ -30,7 +31,7 @@ public class Operacion {
         return idOperacion;
     }
 
-    public Date getFechaHora() {
+    public LocalDateTime getFechaHora() {
         return fechaHora;
     }
 
@@ -42,7 +43,7 @@ public class Operacion {
         this.idOperacion = idOperacion;
     }
 
-    public void setFechaHora(Date fechaHora) {
+    public void setFechaHora(LocalDateTime fechaHora) {
         this.fechaHora = fechaHora;
     }
 

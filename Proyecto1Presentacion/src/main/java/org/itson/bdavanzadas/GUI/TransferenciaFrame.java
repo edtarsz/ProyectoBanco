@@ -5,6 +5,7 @@
 package org.itson.bdavanzadas.GUI;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -81,7 +82,7 @@ public class TransferenciaFrame extends javax.swing.JFrame {
             if (String.valueOf(idCuentaDestino).isEmpty() || String.valueOf(idCuentaDestino) == null || String.valueOf(monto).isEmpty() || String.valueOf(monto) == null) {
                 JOptionPane.showMessageDialog(this, "Rellene todos los campos", "Notificación", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                Date fechaActual = new java.util.Date();
+                LocalDateTime fechaActual = LocalDateTime.now();
                 TransferenciaDTO transferencia = new TransferenciaDTO();
                 transferencia.setIdCuenta(cuenta.getNumCuenta());
                 transferencia.setIdCuentaDestino(idCuentaDestino);

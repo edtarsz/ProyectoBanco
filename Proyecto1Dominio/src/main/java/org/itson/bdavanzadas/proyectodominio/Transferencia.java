@@ -4,6 +4,7 @@
  */
 package org.itson.bdavanzadas.proyectodominio;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -15,7 +16,7 @@ public class Transferencia extends Operacion {
     int idCuenta;
     int idCuentaDestino;
 
-    public Transferencia(int idCuenta, int idCuentaDestino, int idOperacion, Date fechaHora, float monto) {
+    public Transferencia(int idCuenta, int idCuentaDestino, int idOperacion, LocalDateTime fechaHora, float monto) {
         super(idOperacion, fechaHora, monto);
         this.idCuenta = idCuenta;
         this.idCuentaDestino = idCuentaDestino;
