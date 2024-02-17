@@ -84,8 +84,8 @@ public class TransferenciaFrame extends javax.swing.JFrame {
                 transferencia.setIdCuentaDestino(idCuentaDestino);
                 transferencia.setFechaHora(fechaActual);
                 transferencia.setMonto(monto);
-                this.clienteDAO.realizarTransferencia(transferencia);
-                ConfirmarTransferenciaFrame confirmar = new ConfirmarTransferenciaFrame();
+                dispose();
+                ConfirmarTransferenciaFrame confirmar = new ConfirmarTransferenciaFrame(clienteDAO, this.clienteDAO.realizarTransferencia(transferencia), cliente);
                 confirmar.setVisible(true);
             }
         } catch (PersistenciaException ex) {
