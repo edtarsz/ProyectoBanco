@@ -14,13 +14,11 @@ public class Transferencia extends Operacion {
 
     int idCuenta;
     int idCuentaDestino;
-    int idCliente;
 
-    public Transferencia(int idCuenta, int idCuentaDestino, int idCliente, int idOperacion, Date fechaHora, float monto) {
+    public Transferencia(int idCuenta, int idCuentaDestino, int idOperacion, Date fechaHora, float monto) {
         super(idOperacion, fechaHora, monto);
         this.idCuenta = idCuenta;
         this.idCuentaDestino = idCuentaDestino;
-        this.idCliente = idCliente;
     }
 
     public int getIdCuenta() {
@@ -31,16 +29,11 @@ public class Transferencia extends Operacion {
         return idCuentaDestino;
     }
 
-    public int getIdCliente() {
-        return idCliente;
-    }
-
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 29 * hash + this.idCuenta;
-        hash = 29 * hash + this.idCuentaDestino;
-        hash = 29 * hash + this.idCliente;
+        hash = 53 * hash + this.idCuenta;
+        hash = 53 * hash + this.idCuentaDestino;
         return hash;
     }
 
@@ -59,21 +52,6 @@ public class Transferencia extends Operacion {
         if (this.idCuenta != other.idCuenta) {
             return false;
         }
-        if (this.idCuentaDestino != other.idCuentaDestino) {
-            return false;
-        }
-        return this.idCliente == other.idCliente;
+        return this.idCuentaDestino == other.idCuentaDestino;
     }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Transferencia{");
-        sb.append("idCuenta=").append(idCuenta);
-        sb.append(", idCuentaDestino=").append(idCuentaDestino);
-        sb.append(", idCliente=").append(idCliente);
-        sb.append('}');
-        return sb.toString();
-    }
-
 }

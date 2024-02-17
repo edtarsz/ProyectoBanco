@@ -34,6 +34,7 @@ public class Banco {
         RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame(clienteDao);
         IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(clienteDao);
         MenuCuentaFrame menuCuenta = new MenuCuentaFrame(clienteDao);
+        TransferenciaFrame transferencia = new TransferenciaFrame(clienteDao);
 
         indiceFrame.setVisible(true);
     }

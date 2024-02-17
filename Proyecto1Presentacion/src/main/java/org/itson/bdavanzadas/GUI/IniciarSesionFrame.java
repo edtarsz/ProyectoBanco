@@ -97,6 +97,9 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(153, 153, 153));
         jLabel2.setText("--------------------------------o--------------------------------");
 
+        txtUsuario.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtUsuario.setForeground(new java.awt.Color(42, 98, 143));
+        txtUsuario.setToolTipText("");
         txtUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 txtUsuarioMouseClicked(evt);
@@ -135,6 +138,8 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(153, 153, 153));
         jLabel4.setText("Usuario:");
 
+        pswContrasenia.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        pswContrasenia.setForeground(new java.awt.Color(42, 98, 143));
         pswContrasenia.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 pswContraseniaMouseClicked(evt);
