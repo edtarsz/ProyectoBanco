@@ -82,7 +82,7 @@ public class RetiroFrame extends javax.swing.JFrame {
                 retiro.setContraseñaRetiro();
                 retiro.setMonto(monto);
                 retiro.setFechaHora(fechaActual);
-                cuentaDAO.realizarRetiro(retiro);
+                Banco.retiroDao.solicitarRetiro(retiro, cuentaDAO);
                 dispose();
             }
         } catch (PersistenciaException ex) {

@@ -11,6 +11,8 @@ import org.itson.bdavanzadas.proyecto.daos.ClienteDAO;
 import org.itson.bdavanzadas.proyecto.daos.CuentaDAO;
 import org.itson.bdavanzadas.proyecto.daos.IClienteDAO;
 import org.itson.bdavanzadas.proyecto.daos.ICuentaDAO;
+import org.itson.bdavanzadas.proyecto.daos.IRetiroDAO;
+import org.itson.bdavanzadas.proyecto.daos.RetiroDAO;
 
 /**
  *
@@ -19,7 +21,11 @@ import org.itson.bdavanzadas.proyecto.daos.ICuentaDAO;
 public class Banco {
 
     static final Logger logger = Logger.getLogger(Banco.class.getName());
-
+    public static IClienteDAO clienteDao;
+    public static ICuentaDAO cuentaDao;
+    public static IRetiroDAO retiroDao;
+    
+    
     public static void main(String[] args) throws Exception {
         String cadenaConexion = "jdbc:mysql://localhost/banco";
         String usuario = "root";
@@ -27,8 +33,9 @@ public class Banco {
 
         IConexion conexion = new Conexion(cadenaConexion, usuario, contrasenia);
 
-        IClienteDAO clienteDao = new ClienteDAO(conexion);
+        clienteDao = new ClienteDAO(conexion);
         ICuentaDAO cuentaDao = new CuentaDAO(conexion);
+        IRetiroDAO retiroDao = new RetiroDAO(conexion);
 
         IndiceFrame indiceFrame = new IndiceFrame(clienteDao, cuentaDao);
         RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame(clienteDao, cuentaDao);
