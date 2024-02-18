@@ -25,6 +25,7 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
      * Creates new form IniciarSesionFrame
      *
      * @param clienteDAO
+     * @param cuentaDAO
      */
     public IniciarSesionFrame(IClienteDAO clienteDAO, ICuentaDAO cuentaDAO) {
         this.clienteDAO = clienteDAO;

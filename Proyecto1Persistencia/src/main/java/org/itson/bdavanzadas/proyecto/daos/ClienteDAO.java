@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.itson.bdavanzadas.proyecto.conexion.Conexion;
 import org.itson.bdavanzadas.proyecto.conexion.IConexion;
+import org.itson.bdavanzadas.proyecto.dtos.ClienteActualizadoDTO;
 import org.itson.bdavanzadas.proyecto.dtos.ClienteDTO;
 import org.itson.bdavanzadas.proyecto.dtos.CuentaDTO;
 import org.itson.bdavanzadas.proyecto.dtos.TransferenciaDTO;
@@ -86,16 +87,25 @@ public class ClienteDAO implements IClienteDAO {
 
     @Override
     public List<Cliente> consultar() throws PersistenciaException {
-        String sentenciaSQL = "SELECT idCliente, usuario, nombre, contraseña FROM clientes;";
+        String sentenciaSQL = "SELECT idCliente, Usuario, Nombre, ApellidoPaterno, ApellidoMaterno, Contraseña, FechaNacimiento, CodigoPostal, NumExterior, Calle, Colonia, Ciudad FROM clientes";
+
         List<Cliente> listaClientes = new LinkedList<>();
 
         try (Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL); ResultSet resultados = comando.executeQuery()) {
 
             while (resultados.next()) {
                 Long idCliente = resultados.getLong("idCliente");
-                String usuario = resultados.getString("usuario");
-                String nombre = resultados.getString("nombre");
-                String contraseña = resultados.getString("contraseña");
+                String usuario = resultados.getString("Usuario");
+                String nombre = resultados.getString("Nombre");
+                String apellidoPaterno = resultados.getString("ApellidoPaterno");
+                String apellidoMaterno = resultados.getString("ApellidoMaterno");
+                String contraseña = resultados.getString("Contraseña");
+                String fechaNacimiento = resultados.getString("FechaNacimiento");
+                String codigoPostal = resultados.getString("CodigoPostal");
+                String numExterior = resultados.getString("NumExterior");
+                String calle = resultados.getString("Calle");
+                String colonia = resultados.getString("Colonia");
+                String ciudad = resultados.getString("Ciudad");
 
                 // Desencriptación
                 char[] contraseñaArray = contraseña.toCharArray();
@@ -105,7 +115,7 @@ public class ClienteDAO implements IClienteDAO {
 
                 contraseña = new String(contraseñaArray);
 
-                Cliente cliente = new Cliente(idCliente, usuario, nombre, contraseña);
+                Cliente cliente = new Cliente(idCliente, usuario, nombre, apellidoPaterno, apellidoMaterno, contraseña, fechaNacimiento, codigoPostal, numExterior, calle, colonia, ciudad);
                 listaClientes.add(cliente);
             }
 
@@ -235,6 +245,60 @@ public class ClienteDAO implements IClienteDAO {
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, "No se pudo realizar la transferencia", ex);
             throw new PersistenciaException("No se pudo realizar la transferencia", ex);
+        }
+    }
+
+    @Override
+    public Cliente actualizar(long idCliente, ClienteActualizadoDTO clienteActualizado) throws PersistenciaException {
+        String sentenciaSQL = """
+            UPDATE clientes
+            SET Usuario = ?, Nombre = ?, ApellidoPaterno = ?, ApellidoMaterno = ?, Contraseña = ?, 
+                FechaNacimiento = ?, CodigoPostal = ?, NumExterior = ?, Calle = ?, Colonia = ?, Ciudad = ?, Edad = ?
+            WHERE idCliente = ?;""";
+
+        try (
+                Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL);) {
+            comando.setString(1, clienteActualizado.getUsuario());
+            comando.setString(2, clienteActualizado.getNombre());
+            comando.setString(3, clienteActualizado.getApellidoPaterno());
+            comando.setString(4, clienteActualizado.getApellidoMaterno());
+            comando.setString(5, clienteActualizado.getContraseña());
+            comando.setString(6, clienteActualizado.getFechaNacimiento());
+            comando.setString(7, clienteActualizado.getCodigoPostal());
+            comando.setString(8, clienteActualizado.getNumExterior());
+            comando.setString(9, clienteActualizado.getCalle());
+            comando.setString(10, clienteActualizado.getColonia());
+            comando.setString(11, clienteActualizado.getCiudad());
+            comando.setInt(12, clienteActualizado.getEdad());
+            comando.setLong(13, idCliente);
+
+            int numeroRegistrosActualizados = comando.executeUpdate();
+
+            if (numeroRegistrosActualizados == 0) {
+                logger.log(Level.SEVERE, "No se pudo actualizar el cliente, ninguna fila afectada");
+                throw new PersistenciaException("No se pudo actualizar el cliente, ninguna fila afectada");
+            }
+
+            logger.log(Level.INFO, "Se actualizó el cliente con ID {0}", idCliente);
+
+            Cliente cliente = new Cliente(
+                    clienteActualizado.getUsuario(),
+                    clienteActualizado.getNombre(),
+                    clienteActualizado.getApellidoPaterno(),
+                    clienteActualizado.getApellidoMaterno(),
+                    clienteActualizado.getContraseña(),
+                    clienteActualizado.getFechaNacimiento(),
+                    clienteActualizado.getCodigoPostal(),
+                    clienteActualizado.getNumExterior(),
+                    clienteActualizado.getCalle(),
+                    clienteActualizado.getColonia(),
+                    clienteActualizado.getCiudad(),
+                    clienteActualizado.getEdad());
+            return cliente;
+
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, "No se pudo actualizar el cliente", ex);
+            throw new PersistenciaException("No se pudo actualizar el cliente", ex);
         }
     }
 }

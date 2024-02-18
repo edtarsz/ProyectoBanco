@@ -5,6 +5,7 @@
 package org.itson.bdavanzadas.proyecto.daos;
 
 import java.util.List;
+import org.itson.bdavanzadas.proyecto.dtos.ClienteActualizadoDTO;
 import org.itson.bdavanzadas.proyecto.dtos.ClienteDTO;
 import org.itson.bdavanzadas.proyecto.dtos.CuentaDTO;
 import org.itson.bdavanzadas.proyecto.dtos.TransferenciaDTO;
@@ -20,6 +21,8 @@ import org.itson.bdavanzadas.proyectodominio.Transferencia;
 public interface IClienteDAO {
 
     Cliente agregar(ClienteDTO clienteNuevo) throws PersistenciaException;
+
+    Cliente actualizar(long idCliente, ClienteActualizadoDTO clienteActualizado) throws PersistenciaException;
 
     Cuenta agregarCuenta(CuentaDTO cuentaNueva) throws PersistenciaException;
 

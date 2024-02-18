@@ -8,17 +8,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.itson.bdavanzadas.proyecto.conexion.Conexion;
 import org.itson.bdavanzadas.proyecto.conexion.IConexion;
-import static org.itson.bdavanzadas.proyecto.daos.ClienteDAO.logger;
-import org.itson.bdavanzadas.proyecto.dtos.RetiroSinCuentaDTO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyectodominio.Cuenta;
-import org.itson.bdavanzadas.proyectodominio.RetiroSinCuenta;
 
 /**
  *
@@ -26,7 +21,6 @@ import org.itson.bdavanzadas.proyectodominio.RetiroSinCuenta;
  */
 public class CuentaDAO implements ICuentaDAO {
 
-    
     final IConexion conexionBD;
     static final Logger logger = Logger.getLogger(Conexion.class.getName());
 
@@ -34,6 +28,7 @@ public class CuentaDAO implements ICuentaDAO {
         this.conexionBD = conexion;
     }
 
+    @Override
     public Cuenta obtenerCuenta(int numCuenta) throws PersistenciaException {
         String sentenciaSQL = "SELECT * FROM cuentas WHERE numCuenta = ?";
         Cuenta cuenta = null;
@@ -58,6 +53,4 @@ public class CuentaDAO implements ICuentaDAO {
 
         return cuenta;
     }
-    
-    
 }

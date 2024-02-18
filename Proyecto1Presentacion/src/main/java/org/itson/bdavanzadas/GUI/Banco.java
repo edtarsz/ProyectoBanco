@@ -24,12 +24,11 @@ public class Banco {
     public static IClienteDAO clienteDao;
     public static ICuentaDAO cuentaDao;
     public static IRetiroDAO retiroDao;
-    
-    
+
     public static void main(String[] args) throws Exception {
         String cadenaConexion = "jdbc:mysql://localhost/banco";
         String usuario = "root";
-        String contrasenia = "CheemSITO357";
+        String contrasenia = "18509Tal";
 
         IConexion conexion = new Conexion(cadenaConexion, usuario, contrasenia);
 

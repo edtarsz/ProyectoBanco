@@ -12,8 +12,8 @@ import java.util.Objects;
  */
 public class Cliente {
 
-    private String usuario;
     private Long idCliente;
+    private String usuario;
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
@@ -27,13 +27,6 @@ public class Cliente {
     private int edad;
 
     public Cliente() {
-    }
-
-    public Cliente(Long idCliente, String usuario, String nombre, String contraseña) {
-        this.idCliente = idCliente;
-        this.usuario = usuario;
-        this.nombre = nombre;
-        this.contraseña = contraseña;
     }
 
     public Cliente(String nombre, String apellidoPaterno, String apellidoMaterno, String contraseña, String fechaNacimiento, String codigoPostal, String numExterior, String calle, String colonia, String ciudad, int edad) {
@@ -50,9 +43,39 @@ public class Cliente {
         this.ciudad = ciudad;
     }
 
+    public Cliente(Long idCliente, String usuario, String nombre, String apellidoPaterno, String apellidoMaterno, String contraseña, String fechaNacimiento, String codigoPostal, String numExterior, String calle, String colonia, String ciudad) {
+        this.usuario = usuario;
+        this.idCliente = idCliente;
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.contraseña = contraseña;
+        this.fechaNacimiento = fechaNacimiento;
+        this.codigoPostal = codigoPostal;
+        this.numExterior = numExterior;
+        this.calle = calle;
+        this.colonia = colonia;
+        this.ciudad = ciudad;
+    }
+
     public Cliente(Long idCliente, String usuario, String nombre, String apellidoPaterno, String apellidoMaterno, String contraseña, String fechaNacimiento, String codigoPostal, String numExterior, String calle, String colonia, String ciudad, int edad) {
         this.usuario = usuario;
         this.idCliente = idCliente;
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.contraseña = contraseña;
+        this.fechaNacimiento = fechaNacimiento;
+        this.codigoPostal = codigoPostal;
+        this.numExterior = numExterior;
+        this.calle = calle;
+        this.colonia = colonia;
+        this.ciudad = ciudad;
+        this.edad = edad;
+    }
+
+    public Cliente(String usuario, String nombre, String apellidoPaterno, String apellidoMaterno, String contraseña, String fechaNacimiento, String codigoPostal, String numExterior, String calle, String colonia, String ciudad, int edad) {
+        this.usuario = usuario;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;

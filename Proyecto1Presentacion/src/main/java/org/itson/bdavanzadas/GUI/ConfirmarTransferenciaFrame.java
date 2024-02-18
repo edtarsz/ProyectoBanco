@@ -7,7 +7,6 @@ package org.itson.bdavanzadas.GUI;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.itson.bdavanzadas.proyecto.daos.ClienteDAO;
 import org.itson.bdavanzadas.proyecto.daos.IClienteDAO;
 import org.itson.bdavanzadas.proyecto.daos.ICuentaDAO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;

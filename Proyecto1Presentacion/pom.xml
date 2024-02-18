@@ -32,9 +32,9 @@
             <version>1.4</version>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>Proyecto1Persistencia</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.netbeans.external</groupId>
+            <artifactId>AbsoluteLayout</artifactId>
+            <version>RELEASE170</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -42,9 +42,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.netbeans.external</groupId>
-            <artifactId>AbsoluteLayout</artifactId>
-            <version>RELEASE170</version>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>Proyecto1Persistencia</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

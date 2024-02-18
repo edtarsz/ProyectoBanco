@@ -4,8 +4,6 @@
  */
 package org.itson.bdavanzadas.GUI;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import org.itson.bdavanzadas.proyecto.daos.IClienteDAO;
@@ -417,7 +415,9 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_retiroBtnActionPerformed
 
     private void txtEditarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEditarPerfilActionPerformed
-        // TODO add your handling code here:
+        ActualizarUsuarioFrame editarPerfil = new ActualizarUsuarioFrame(clienteDAO, cliente);
+        editarPerfil.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_txtEditarPerfilActionPerformed
 
     private void btnUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUsuarioMouseClicked
