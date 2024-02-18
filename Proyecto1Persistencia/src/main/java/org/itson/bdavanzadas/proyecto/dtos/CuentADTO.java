@@ -14,12 +14,13 @@ import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
  */
 public class CuentaDTO {
 
-    int numCuenta;
+    String numCuenta;
+    String estado;
     Long idCliente;
     float saldo;
     Date fechaApertura;
 
-    public int getNumCuenta() {
+    public String getNumCuenta() {
         return numCuenta;
     }
 
@@ -35,11 +36,17 @@ public class CuentaDTO {
         return fechaApertura;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
     public void setNumCuenta() {
         Random random = new Random();
         int min = 100000000;
         int max = 999999999;
-        this.numCuenta = random.nextInt(max - min + 1) + min;
+
+        int randomNumber = random.nextInt(max - min + 1) + min;
+        this.numCuenta = Integer.toString(randomNumber);
     }
 
     public void setIdCliente(Long idCliente) {
@@ -54,8 +61,12 @@ public class CuentaDTO {
         this.fechaApertura = fechaApertura;
     }
 
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     public boolean esValido() throws ValidacionDTOException {
-        if (Integer.toString(this.numCuenta).isEmpty() || Integer.toString(this.numCuenta) == null) {
+        if (this.numCuenta.isEmpty() || this.numCuenta == null) {
             throw new ValidacionDTOException("Número de cuenta inválido");
         }
         if (Long.toString(this.idCliente).isEmpty() || Long.toString(this.idCliente) == null) {

@@ -14,7 +14,8 @@ import java.util.Random;
  */
 public class Cuenta {
 
-    int numCuenta;
+    String numCuenta;
+    String estado;
     Long idCliente;
     float saldo;
     Date fechaApertura;
@@ -22,7 +23,7 @@ public class Cuenta {
     public Cuenta() {
     }
 
-    public Cuenta(Long idCliente, int numCuenta, float saldo) {
+    public Cuenta(Long idCliente, String numCuenta, float saldo) {
         this.numCuenta = numCuenta;
         this.saldo = saldo;
         this.idCliente = idCliente;
@@ -34,14 +35,18 @@ public class Cuenta {
         this.fechaApertura = fechaApertura;
     }
 
-    public Cuenta(int numCuenta, Long idCliente, float saldo, Date fechaApertura) {
+    public Cuenta(String numCuenta, Long idCliente, float saldo, Date fechaApertura) {
         this.numCuenta = numCuenta;
         this.idCliente = idCliente;
         this.saldo = saldo;
         this.fechaApertura = fechaApertura;
     }
 
-    public int getNumCuenta() {
+    public String getEstado() {
+        return estado;
+    }
+
+    public String getNumCuenta() {
         return numCuenta;
     }
 
@@ -64,7 +69,7 @@ public class Cuenta {
         for (int i = 0; i < 10; i++) {
             sb.append(random.nextInt(10));
         }
-        this.numCuenta = Integer.parseInt(sb.toString());
+        this.numCuenta = sb.toString();
     }
 
     public void setIdCliente(Long idCliente) {
@@ -79,13 +84,18 @@ public class Cuenta {
         this.fechaApertura = fechaApertura;
     }
 
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 47 * hash + this.numCuenta;
-        hash = 47 * hash + Objects.hashCode(this.idCliente);
-        hash = 47 * hash + Float.floatToIntBits(this.saldo);
-        hash = 47 * hash + Objects.hashCode(this.fechaApertura);
+        int hash = 7;
+        hash = 41 * hash + Objects.hashCode(this.numCuenta);
+        hash = 41 * hash + Objects.hashCode(this.estado);
+        hash = 41 * hash + Objects.hashCode(this.idCliente);
+        hash = 41 * hash + Float.floatToIntBits(this.saldo);
+        hash = 41 * hash + Objects.hashCode(this.fechaApertura);
         return hash;
     }
 
@@ -101,16 +111,19 @@ public class Cuenta {
             return false;
         }
         final Cuenta other = (Cuenta) obj;
-        if (this.numCuenta != other.numCuenta) {
-            return false;
-        }
         if (Float.floatToIntBits(this.saldo) != Float.floatToIntBits(other.saldo)) {
             return false;
         }
-        if (!Objects.equals(this.fechaApertura, other.fechaApertura)) {
+        if (!Objects.equals(this.numCuenta, other.numCuenta)) {
             return false;
         }
-        return Objects.equals(this.idCliente, other.idCliente);
+        if (!Objects.equals(this.estado, other.estado)) {
+            return false;
+        }
+        if (!Objects.equals(this.idCliente, other.idCliente)) {
+            return false;
+        }
+        return Objects.equals(this.fechaApertura, other.fechaApertura);
     }
 
     @Override
@@ -118,6 +131,7 @@ public class Cuenta {
         StringBuilder sb = new StringBuilder();
         sb.append("Cuenta{");
         sb.append("numCuenta=").append(numCuenta);
+        sb.append(", estado=").append(estado);
         sb.append(", idCliente=").append(idCliente);
         sb.append(", saldo=").append(saldo);
         sb.append(", fechaApertura=").append(fechaApertura);

@@ -40,7 +40,7 @@ public class CuentaDAO implements ICuentaDAO {
             ResultSet resultado = comando.executeQuery();
             if (resultado.next()) {
                 cuenta = new Cuenta(
-                        resultado.getInt("numCuenta"),
+                        resultado.getString("numCuenta"),
                         resultado.getLong("idCliente"),
                         resultado.getFloat("saldo"),
                         resultado.getDate("fechaApertura")

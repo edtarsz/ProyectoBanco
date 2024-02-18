@@ -135,7 +135,7 @@ public class ClienteDAO implements IClienteDAO {
         VALUES (?, ?, ?, ?);""";
         try (
                 Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);) {
-            comando.setInt(1, cuentaNueva.getNumCuenta());
+            comando.setString(1, cuentaNueva.getNumCuenta());
             comando.setLong(2, cuentaNueva.getIdCliente());
             comando.setFloat(3, cuentaNueva.getSaldo());
             comando.setDate(4, new java.sql.Date(cuentaNueva.getFechaApertura().getTime()));
@@ -168,7 +168,7 @@ public class ClienteDAO implements IClienteDAO {
 
             try (ResultSet resultados = comando.executeQuery()) {
                 while (resultados.next()) {
-                    int numCuenta = resultados.getInt("numCuenta");
+                    String numCuenta = resultados.getString("numCuenta");
                     float saldo = resultados.getFloat("saldo");
 
                     Cuenta cuenta = new Cuenta(cliente.getIdCliente(), numCuenta, saldo);
@@ -301,4 +301,26 @@ public class ClienteDAO implements IClienteDAO {
             throw new PersistenciaException("No se pudo actualizar el cliente", ex);
         }
     }
+
+    @Override
+    public void cambiarEstadoCuenta(String numCuenta, String nuevoEstado) throws PersistenciaException {
+        String sentenciaSQL = "UPDATE cuentas SET estado = ? WHERE numCuenta = ?";
+
+        try (
+                Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL);) {
+            comando.setString(1, nuevoEstado);
+            comando.setString(2, numCuenta);
+
+            int numeroRegistrosActualizados = comando.executeUpdate();
+            if (numeroRegistrosActualizados > 0) {
+                logger.log(Level.INFO, "Se cambió el estado de la cuenta con número de cuenta {0} a {1}", new Object[]{numCuenta, nuevoEstado});
+            } else {
+                logger.log(Level.WARNING, "No se encontró la cuenta con número de cuenta {0}", numCuenta);
+            }
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, "No se pudo cambiar el estado de la cuenta", ex);
+            throw new PersistenciaException("No se pudo cambiar el estado de la cuenta", ex);
+        }
+    }
+
 }

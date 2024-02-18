@@ -84,7 +84,7 @@ public class TransferenciaFrame extends javax.swing.JFrame {
             } else {
                 LocalDateTime fechaActual = LocalDateTime.now();
                 TransferenciaDTO transferencia = new TransferenciaDTO();
-                transferencia.setIdCuenta(cuenta.getNumCuenta());
+                transferencia.setIdCuenta(Integer.parseInt(cuenta.getNumCuenta()));
                 transferencia.setIdCuentaDestino(idCuentaDestino);
                 transferencia.setFechaHora(fechaActual);
                 transferencia.setMonto(monto);

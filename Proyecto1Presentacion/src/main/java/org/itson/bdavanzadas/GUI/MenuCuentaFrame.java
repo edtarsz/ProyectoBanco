@@ -4,8 +4,14 @@
  */
 package org.itson.bdavanzadas.GUI;
 
+import java.awt.Color;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.border.EmptyBorder;
 import org.itson.bdavanzadas.proyecto.daos.IClienteDAO;
 import org.itson.bdavanzadas.proyecto.daos.ICuentaDAO;
 import org.itson.bdavanzadas.proyecto.dtos.CuentaDTO;
@@ -37,24 +43,15 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
     }
 
     public MenuCuentaFrame(IClienteDAO clienteDAO, Cliente cliente, ICuentaDAO cuentaDAO) throws PersistenciaException {
+        initComponents();
+
         this.clienteDAO = clienteDAO;
         this.cuentaDAO = cuentaDAO;
-        initComponents();
-        nombreUsuario.setText(cliente.getNombre());
         this.cliente = cliente;
-        String cuentaInfo = "";
+        nombreUsuario.setText(cliente.getNombre());
+
         if (this.cliente != null && !clienteDAO.consultarCuentas(this.cliente).isEmpty()) {
-            for (Cuenta cuenta : clienteDAO.consultarCuentas(this.cliente)) {
-                System.out.println(cuenta.getIdCliente());
-                cuentaInfo = cuenta.getNumCuenta() + "\n\n\n\n\n\n" + cuenta.getSaldo();
-                if (txtCuenta1.getText().trim().isEmpty()) {
-                    txtCuenta1.setText(cuentaInfo);
-                } else if (txtCuenta2.getText().trim().isEmpty()) {
-                    txtCuenta2.setText(cuentaInfo);
-                } else if (txtCuenta3.getText().trim().isEmpty()) {
-                    txtCuenta3.setText(cuentaInfo);
-                }
-            }
+            mostrarCuentas();
         }
     }
 
@@ -72,11 +69,54 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
             if (cuentaNueva.esValido()) {
                 cuentaMostrada = this.clienteDAO.agregarCuenta(cuentaNueva);
                 JOptionPane.showMessageDialog(this, "Se registra la cuenta", "Notificación", JOptionPane.INFORMATION_MESSAGE);
+                mostrarCuentas();
             }
         } catch (ValidacionDTOException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error de validación", JOptionPane.ERROR_MESSAGE);
         } catch (PersistenciaException ex) {
             JOptionPane.showMessageDialog(this, "No fue posible agregar al cliente", "Error de almacenamiento", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void cancelarCuenta() {
+        Object selectedItem = cmbCuentas.getSelectedItem();
+
+        try {
+            if (selectedItem != null && selectedItem instanceof String) {
+                String cuentaSeleccionada = (String) selectedItem;
+                int opcion = JOptionPane.showConfirmDialog(this, "¿Está seguro de cancelar la cuenta?", "Confirmación", JOptionPane.YES_NO_OPTION);
+
+                if (opcion == JOptionPane.YES_OPTION) {
+                    String numCuenta = cuentaSeleccionada;
+                    this.clienteDAO.cambiarEstadoCuenta(selectedItem.toString(), "Cancelada");
+                    JOptionPane.showMessageDialog(this, "Se canceló la cuenta", "Notificación", JOptionPane.INFORMATION_MESSAGE);
+                    mostrarCuentas();
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "No hay cuenta seleccionada para cancelar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (PersistenciaException ex) {
+            JOptionPane.showMessageDialog(this, "No fue posible cancelar la cuenta", "Error de almacenamiento", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void mostrarCuentas() {
+        try {
+            List<Cuenta> listaCuentas = clienteDAO.consultarCuentas(this.cliente);
+
+            DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+
+            for (Cuenta cuenta : listaCuentas) {
+                if (cuenta.getEstado() == "Cancelada") {
+                    model.addElement(String.valueOf("Cuenta cancelada: " + cuenta.getNumCuenta()));
+                } else {
+                    model.addElement(String.valueOf(cuenta.getNumCuenta()));
+                    model.addElement(String.valueOf("Saldo: " + cuenta.getSaldo()));
+                }
+            }
+            cmbCuentas.setModel(model);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(TransferenciaFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -98,18 +138,14 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         nombreUsuario = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtCuenta1 = new javax.swing.JTextArea();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txtCuenta2 = new javax.swing.JTextArea();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        txtCuenta3 = new javax.swing.JTextArea();
         agregarCuentabtn = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         transferenciaBtn = new javax.swing.JButton();
         retiroBtn = new javax.swing.JButton();
         txtEditarPerfil = new javax.swing.JButton();
         txtCerrarSesion = new javax.swing.JButton();
+        cmbCuentas = new javax.swing.JComboBox<>();
+        agregarCuentabtn1 = new javax.swing.JButton();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -171,27 +207,6 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
                 nombreUsuarioActionPerformed(evt);
             }
         });
-
-        txtCuenta1.setBackground(new java.awt.Color(42, 98, 143));
-        txtCuenta1.setColumns(20);
-        txtCuenta1.setForeground(new java.awt.Color(255, 255, 255));
-        txtCuenta1.setRows(5);
-        txtCuenta1.setBorder(null);
-        jScrollPane1.setViewportView(txtCuenta1);
-
-        txtCuenta2.setBackground(new java.awt.Color(42, 98, 143));
-        txtCuenta2.setColumns(20);
-        txtCuenta2.setForeground(new java.awt.Color(255, 255, 255));
-        txtCuenta2.setRows(5);
-        txtCuenta2.setBorder(null);
-        jScrollPane2.setViewportView(txtCuenta2);
-
-        txtCuenta3.setBackground(new java.awt.Color(42, 98, 143));
-        txtCuenta3.setColumns(20);
-        txtCuenta3.setForeground(new java.awt.Color(255, 255, 255));
-        txtCuenta3.setRows(5);
-        txtCuenta3.setBorder(null);
-        jScrollPane3.setViewportView(txtCuenta3);
 
         agregarCuentabtn.setBackground(new java.awt.Color(42, 98, 143));
         agregarCuentabtn.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
@@ -258,6 +273,27 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
             }
         });
 
+        cmbCuentas.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        cmbCuentas.setForeground(new java.awt.Color(42, 98, 143));
+        cmbCuentas.setBackground(Color.WHITE);
+        cmbCuentas.setBorder(new EmptyBorder(15, 3, 5, 3));
+        cmbCuentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbCuentasActionPerformed(evt);
+            }
+        });
+
+        agregarCuentabtn1.setBackground(new java.awt.Color(121, 23, 43));
+        agregarCuentabtn1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        agregarCuentabtn1.setForeground(new java.awt.Color(255, 255, 255));
+        agregarCuentabtn1.setText("Cancelar cuenta");
+        agregarCuentabtn1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        agregarCuentabtn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarCuentabtn1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -280,31 +316,29 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel8)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(transferenciaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(retiroBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(agregarCuentabtn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 16, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel7)
                                     .addComponent(nombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtEditarPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(8, 8, 8)))))
+                                .addGap(8, 8, 8))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel6)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(transferenciaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(retiroBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(cmbCuentas, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(agregarCuentabtn, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(agregarCuentabtn1)))
+                                .addGap(0, 16, Short.MAX_VALUE)))))
                 .addGap(35, 35, 35))
         );
         jPanel1Layout.setVerticalGroup(
@@ -327,13 +361,12 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
                         .addComponent(nombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1)
-                            .addComponent(jScrollPane2)
-                            .addComponent(jScrollPane3)
-                            .addComponent(agregarCuentabtn, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmbCuentas, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(agregarCuentabtn, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(agregarCuentabtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(47, 47, 47)
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -361,7 +394,7 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 4, Short.MAX_VALUE)))
         );
 
         pack();
@@ -392,14 +425,6 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
 
     private void agregarCuentabtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCuentabtnActionPerformed
         agregarCuenta();
-        String cuentaInfo = cuentaMostrada.getNumCuenta() + "\n\n\n\n\n\n" + cuentaMostrada.getSaldo();
-        if (txtCuenta1.getText().trim().isEmpty()) {
-            txtCuenta1.setText(cuentaInfo);
-        } else if (txtCuenta2.getText().trim().isEmpty()) {
-            txtCuenta2.setText(cuentaInfo);
-        } else if (txtCuenta3.getText().trim().isEmpty()) {
-            txtCuenta3.setText(cuentaInfo);
-        }
     }//GEN-LAST:event_agregarCuentabtnActionPerformed
 
     private void transferenciaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferenciaBtnActionPerformed
@@ -431,10 +456,20 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_txtCerrarSesionActionPerformed
 
+    private void cmbCuentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCuentasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbCuentasActionPerformed
+
+    private void agregarCuentabtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCuentabtn1ActionPerformed
+        cancelarCuenta();
+    }//GEN-LAST:event_agregarCuentabtn1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregarCuentabtn;
+    private javax.swing.JButton agregarCuentabtn1;
     private javax.swing.JButton btnHistorial;
     private javax.swing.JButton btnUsuario;
+    private javax.swing.JComboBox<String> cmbCuentas;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -444,16 +479,10 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField nombreUsuario;
     private javax.swing.JButton retiroBtn;
     private javax.swing.JButton transferenciaBtn;
     private javax.swing.JButton txtCerrarSesion;
-    private javax.swing.JTextArea txtCuenta1;
-    private javax.swing.JTextArea txtCuenta2;
-    private javax.swing.JTextArea txtCuenta3;
     private javax.swing.JButton txtEditarPerfil;
     // End of variables declaration//GEN-END:variables
 }

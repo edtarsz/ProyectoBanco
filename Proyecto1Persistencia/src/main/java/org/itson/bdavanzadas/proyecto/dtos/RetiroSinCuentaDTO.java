@@ -6,7 +6,6 @@ package org.itson.bdavanzadas.proyecto.dtos;
 
 import java.security.SecureRandom;
 import java.util.Random;
-import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
 import org.itson.bdavanzadas.proyectodominio.Operacion;
 
 /**
