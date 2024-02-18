@@ -28,8 +28,6 @@ public interface IClienteDAO {
 
     void cambiarEstadoCuenta(String numCuenta, String nuevoEstado) throws PersistenciaException;
 
-    Transferencia realizarTransferencia(TransferenciaDTO transferenciaNueva) throws PersistenciaException;
-
     List<Cuenta> consultarCuentas(Cliente cliente) throws PersistenciaException;
 
     List<Cliente> consultar() throws PersistenciaException;

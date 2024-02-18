@@ -179,6 +179,7 @@ public class HacerRetiroFrame extends javax.swing.JFrame {
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
         try {
             realizarRetiro();
+            
         } catch (PersistenciaException ex) {
             Logger.getLogger(HacerRetiroFrame.class.getName()).log(Level.SEVERE, null, ex);
         }

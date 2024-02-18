@@ -26,23 +26,17 @@ import org.itson.bdavanzadas.proyectodominio.Cuenta;
  */
 public class SolicitarRetiroFrame extends javax.swing.JFrame {
 
-    private IClienteDAO clienteDAO;
     private Cliente cliente;
-    private ICuentaDAO cuentaDAO;
 
-    public SolicitarRetiroFrame(IClienteDAO clienteDAO, ICuentaDAO cuentaDAO) {
+    public SolicitarRetiroFrame() {
         initComponents();
-        this.clienteDAO = clienteDAO;
-        this.cuentaDAO = cuentaDAO;
     }
 
-    public SolicitarRetiroFrame(IClienteDAO clienteDAO, Cliente cliente, ICuentaDAO cuentaDAO) {
-        this.clienteDAO = clienteDAO;
+    public SolicitarRetiroFrame(Cliente cliente) {
         initComponents();
         this.cliente = cliente;
-        this.cuentaDAO = cuentaDAO;
         try {
-            List<Cuenta> listaCuentas = clienteDAO.consultarCuentas(this.cliente);
+            List<Cuenta> listaCuentas = Banco.clienteDao.consultarCuentas(this.cliente);
 
             DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
 
@@ -56,13 +50,13 @@ public class SolicitarRetiroFrame extends javax.swing.JFrame {
         }
     }
 
-    public void realizarRetiro() {
+    public RetiroSinCuentaDTO realizarRetiro() {
         Cuenta cuenta = new Cuenta();
         String cuentaString = (String) cuentaCmbBox.getSelectedItem();
         int monto = Integer.parseInt(txtMonto.getText());
         List<Cuenta> listaCuentas;
         try {
-            listaCuentas = clienteDAO.consultarCuentas(this.cliente);
+            listaCuentas = Banco.clienteDao.consultarCuentas(this.cliente);
             for (Cuenta account : listaCuentas) {
                 if (String.valueOf(account.getNumCuenta()).equals(cuentaString)) {
                     cuenta = account;
@@ -78,17 +72,18 @@ public class SolicitarRetiroFrame extends javax.swing.JFrame {
             } else {
                 LocalDateTime fechaHoraActual = LocalDateTime.now();
                 RetiroSinCuentaDTO retiro = new RetiroSinCuentaDTO();
-                retiro.setIdCuenta(Integer.parseInt(cuenta.getNumCuenta()));
+                retiro.setIdCuenta(cuenta.getNumCuenta());
                 retiro.setFolio();
                 retiro.setContraseñaRetiro();
                 retiro.setMonto(monto);
                 retiro.setFechaHora(fechaHoraActual);
-                Banco.retiroDao.solicitarRetiro(retiro, cuentaDAO);
-                dispose();
+                Banco.retiroDao.solicitarRetiro(retiro, Banco.cuentaDao);
+                return retiro;
             }
         } catch (PersistenciaException ex) {
             JOptionPane.showMessageDialog(this, "No fue posible realizar la transferencia", "Error de almacenamiento", JOptionPane.ERROR_MESSAGE);
         }
+        return null;
     }
 
     /**
@@ -280,11 +275,14 @@ public class SolicitarRetiroFrame extends javax.swing.JFrame {
 
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
         realizarRetiro();
+        DatosRetiroForm datosRetiro = new DatosRetiroForm(this.realizarRetiro());
+        datosRetiro.setVisible(true);
+        dispose();
     }//GEN-LAST:event_confirmarBtnActionPerformed
 
     private void txtCerrarSesionTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCerrarSesionTActionPerformed
         JOptionPane.showMessageDialog(this, "Se ha cerrado sesión correctamente.", "Notificación", JOptionPane.INFORMATION_MESSAGE);
-        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(clienteDAO, cuentaDAO);
+        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame();
         iniciarSesion.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_txtCerrarSesionTActionPerformed

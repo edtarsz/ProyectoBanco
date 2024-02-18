@@ -22,17 +22,13 @@ import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
  */
 public class RegistrarUsuarioFrame extends javax.swing.JFrame {
 
-    private IClienteDAO clienteDAO;
-    private ICuentaDAO cuentaDAO;
 
     /**
      * Creates new form RegistrarUsuarioFrame
      *
      * @param clienteDAO
      */
-    public RegistrarUsuarioFrame(IClienteDAO clienteDAO, ICuentaDAO cuentaDAO) {
-        this.clienteDAO = clienteDAO;
-        this.cuentaDAO = cuentaDAO;
+    public RegistrarUsuarioFrame() {
         initComponents();
     }
 
@@ -87,11 +83,11 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
                 if (!validarCampo()) {
                     JOptionPane.showMessageDialog(this, "Rellene todos los campos", "Notificación", JOptionPane.INFORMATION_MESSAGE);
                 } else if (clienteNuevo.esValido()) {
-                    this.clienteDAO.agregar(clienteNuevo);
+                    Banco.clienteDao.agregar(clienteNuevo);
                     limpiarCampos();
                     JOptionPane.showMessageDialog(this, "Se registra al cliente", "Notificación", JOptionPane.INFORMATION_MESSAGE);
                     JOptionPane.showMessageDialog(this, "Tu usuario es: " + clienteNuevo.getUsuario(), "Notificación", JOptionPane.INFORMATION_MESSAGE);
-                    IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(clienteDAO, cuentaDAO);
+                    IniciarSesionFrame iniciarSesion = new IniciarSesionFrame();
                     iniciarSesion.setVisible(true);
                     this.dispose();
                 }
@@ -577,13 +573,13 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_pswContraseñaConfirmarMouseClicked
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-        IndiceFrame indiceFrame = new IndiceFrame(clienteDAO, cuentaDAO);
+        IndiceFrame indiceFrame = new IndiceFrame();
         indiceFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
-        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(clienteDAO, cuentaDAO);
+        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame();
         iniciarSesion.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel13MouseClicked

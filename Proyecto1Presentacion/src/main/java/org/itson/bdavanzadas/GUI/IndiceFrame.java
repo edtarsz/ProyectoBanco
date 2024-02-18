@@ -13,17 +13,9 @@ import org.itson.bdavanzadas.proyecto.daos.ICuentaDAO;
  */
 public class IndiceFrame extends javax.swing.JFrame {
 
-    private ICuentaDAO cuentaDAO;
-    private IClienteDAO clienteDAO;
 
-    /**
-     * Creates new form IndiceFrame
-     *
-     * @param cuentaDAO
-     */
-    public IndiceFrame(IClienteDAO clienteDAO, ICuentaDAO cuentaDAO) {
-        this.clienteDAO = clienteDAO;
-        this.cuentaDAO = cuentaDAO;
+ 
+    public IndiceFrame() {
         initComponents();
     }
 
@@ -38,8 +30,8 @@ public class IndiceFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         label1 = new java.awt.Label();
         label2 = new java.awt.Label();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        iniciarSesionBtn = new javax.swing.JButton();
+        retiroBtn = new javax.swing.JButton();
         label3 = new java.awt.Label();
         jButton3 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -59,25 +51,25 @@ public class IndiceFrame extends javax.swing.JFrame {
         label2.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         label2.setText("La llave para tu bienestar financiero está a un clic de distancia.");
 
-        jButton1.setBackground(new java.awt.Color(42, 98, 143));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Iniciar sesión");
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        iniciarSesionBtn.setBackground(new java.awt.Color(42, 98, 143));
+        iniciarSesionBtn.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        iniciarSesionBtn.setForeground(new java.awt.Color(255, 255, 255));
+        iniciarSesionBtn.setText("Iniciar sesión");
+        iniciarSesionBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        iniciarSesionBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                iniciarSesionBtnActionPerformed(evt);
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(42, 98, 143));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Retiro sin tarjeta");
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        retiroBtn.setBackground(new java.awt.Color(42, 98, 143));
+        retiroBtn.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        retiroBtn.setForeground(new java.awt.Color(255, 255, 255));
+        retiroBtn.setText("Retiro sin tarjeta");
+        retiroBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        retiroBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                retiroBtnActionPerformed(evt);
             }
         });
 
@@ -112,9 +104,9 @@ public class IndiceFrame extends javax.swing.JFrame {
                         .addGap(2, 2, 2)
                         .addComponent(jButton3))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(retiroBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(37, 37, 37)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(iniciarSesionBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(77, 77, 77)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -143,8 +135,8 @@ public class IndiceFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(iniciarSesionBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(retiroBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(21, 21, 21)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(label3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -176,25 +168,26 @@ public class IndiceFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(clienteDAO, cuentaDAO);
+    private void iniciarSesionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionBtnActionPerformed
+        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame();
         iniciarSesion.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_iniciarSesionBtnActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void retiroBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retiroBtnActionPerformed
+        HacerRetiroFrame retiro = new HacerRetiroFrame();
+        retiro.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_retiroBtnActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame(clienteDAO, cuentaDAO);
+        RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame();
         registrarUsuario.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton iniciarSesionBtn;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -202,5 +195,6 @@ public class IndiceFrame extends javax.swing.JFrame {
     private java.awt.Label label1;
     private java.awt.Label label2;
     private java.awt.Label label3;
+    private javax.swing.JButton retiroBtn;
     // End of variables declaration//GEN-END:variables
 }

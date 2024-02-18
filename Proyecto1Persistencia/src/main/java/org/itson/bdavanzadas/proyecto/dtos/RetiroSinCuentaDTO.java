@@ -13,15 +13,22 @@ import org.itson.bdavanzadas.proyectodominio.Operacion;
  * @author JoseH
  */
 public class RetiroSinCuentaDTO extends Operacion{
-    int idCuenta;
+    String idCuenta;
     String folio;
     String contraseñaRetiro;
+    String estado;
 
-    public int getIdCuenta() {
+    public String getEstado() {
+        return estado;
+    }
+    
+    
+
+    public String getIdCuenta() {
         return idCuenta;
     }
 
-    public void setIdCuenta(int idCuenta) {
+    public void setIdCuenta(String idCuenta) {
         this.idCuenta = idCuenta;
     }
 

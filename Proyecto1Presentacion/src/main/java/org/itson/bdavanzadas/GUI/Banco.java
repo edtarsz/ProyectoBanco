@@ -12,7 +12,9 @@ import org.itson.bdavanzadas.proyecto.daos.CuentaDAO;
 import org.itson.bdavanzadas.proyecto.daos.IClienteDAO;
 import org.itson.bdavanzadas.proyecto.daos.ICuentaDAO;
 import org.itson.bdavanzadas.proyecto.daos.IRetiroDAO;
+import org.itson.bdavanzadas.proyecto.daos.ITransferenciaDAO;
 import org.itson.bdavanzadas.proyecto.daos.RetiroDAO;
+import org.itson.bdavanzadas.proyecto.daos.TransferenciaDAO;
 
 /**
  *
@@ -24,24 +26,26 @@ public class Banco {
     public static IClienteDAO clienteDao;
     public static ICuentaDAO cuentaDao;
     public static IRetiroDAO retiroDao;
+    public static ITransferenciaDAO transferenciaDao;
 
     public static void main(String[] args) throws Exception {
         String cadenaConexion = "jdbc:mysql://localhost/banco";
         String usuario = "root";
-        String contrasenia = "18509Tal";
+        String contrasenia = "CheemSITO357";
 
         IConexion conexion = new Conexion(cadenaConexion, usuario, contrasenia);
 
         clienteDao = new ClienteDAO(conexion);
-        ICuentaDAO cuentaDao = new CuentaDAO(conexion);
-        IRetiroDAO retiroDao = new RetiroDAO(conexion);
+        cuentaDao = new CuentaDAO(conexion);
+        retiroDao = new RetiroDAO(conexion);
+        transferenciaDao = new TransferenciaDAO(conexion);
 
-        IndiceFrame indiceFrame = new IndiceFrame(clienteDao, cuentaDao);
-        RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame(clienteDao, cuentaDao);
-        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(clienteDao, cuentaDao);
-        MenuCuentaFrame menuCuenta = new MenuCuentaFrame(clienteDao);
-        TransferenciaFrame transferencia = new TransferenciaFrame(clienteDao);
-        SolicitarRetiroFrame retiro = new SolicitarRetiroFrame(clienteDao, cuentaDao);
+        IndiceFrame indiceFrame = new IndiceFrame();
+        RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame();
+        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame();
+        MenuCuentaFrame menuCuenta = new MenuCuentaFrame();
+        TransferenciaFrame transferencia = new TransferenciaFrame();
+        SolicitarRetiroFrame retiro = new SolicitarRetiroFrame();
 
         indiceFrame.setVisible(true);
     }

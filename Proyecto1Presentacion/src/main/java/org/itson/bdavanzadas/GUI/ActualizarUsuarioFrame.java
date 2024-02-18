@@ -24,8 +24,6 @@ import org.itson.bdavanzadas.proyectodominio.Cliente;
  */
 public class ActualizarUsuarioFrame extends javax.swing.JFrame {
 
-    private ICuentaDAO cuentaDAO;
-    private IClienteDAO clienteDAO;
     private Cliente cliente;
 
     /**
@@ -34,16 +32,13 @@ public class ActualizarUsuarioFrame extends javax.swing.JFrame {
      * @param clienteDAO
      * @param cuentaDAO
      */
-    public ActualizarUsuarioFrame(IClienteDAO clienteDAO, ICuentaDAO cuentaDAO) {
-        this.clienteDAO = clienteDAO;
-        this.cuentaDAO = cuentaDAO;
+    public ActualizarUsuarioFrame() {
         initComponents();
     }
 
-    public ActualizarUsuarioFrame(IClienteDAO clienteDAO, Cliente cliente) {
+    public ActualizarUsuarioFrame(Cliente cliente) {
         initComponents();
 
-        this.clienteDAO = clienteDAO;
         this.cliente = cliente;
 
         txtNombre.setText(cliente.getNombre());
@@ -118,11 +113,11 @@ public class ActualizarUsuarioFrame extends javax.swing.JFrame {
                 if (!validarCampo()) {
                     JOptionPane.showMessageDialog(this, "Rellene todos los campos", "Notificación", JOptionPane.INFORMATION_MESSAGE);
                 } else if (clienteActualizado.esValido()) {
-                    Cliente clienteTrasActualizar = this.clienteDAO.actualizar(cliente.getIdCliente(), clienteActualizado);
+                    Cliente clienteTrasActualizar = Banco.clienteDao.actualizar(cliente.getIdCliente(), clienteActualizado);
                     clienteTrasActualizar.setIdCliente(cliente.getIdCliente());
                     JOptionPane.showMessageDialog(this, "Se ha actualizado el usuario", "Notificación", JOptionPane.INFORMATION_MESSAGE);
                     JOptionPane.showMessageDialog(this, "Tu usuario es: " + clienteActualizado.getUsuario(), "Notificación", JOptionPane.INFORMATION_MESSAGE);
-                    MenuCuentaFrame menuCuenta = new MenuCuentaFrame(clienteDAO, clienteTrasActualizar, cuentaDAO);
+                    MenuCuentaFrame menuCuenta = new MenuCuentaFrame(clienteTrasActualizar);
                     menuCuenta.setVisible(true);
                     this.dispose();
                 }
@@ -593,13 +588,13 @@ public class ActualizarUsuarioFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_pswContraseñaConfirmarMouseClicked
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-        IndiceFrame indiceFrame = new IndiceFrame(clienteDAO, cuentaDAO);
+        IndiceFrame indiceFrame = new IndiceFrame();
         indiceFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
-        MenuCuentaFrame menuCuenta = new MenuCuentaFrame(clienteDAO);
+        MenuCuentaFrame menuCuenta = new MenuCuentaFrame();
         menuCuenta.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel13MouseClicked

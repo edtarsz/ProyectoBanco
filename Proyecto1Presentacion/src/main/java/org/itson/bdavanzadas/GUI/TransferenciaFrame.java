@@ -25,23 +25,18 @@ import org.itson.bdavanzadas.proyectodominio.Cuenta;
  */
 public class TransferenciaFrame extends javax.swing.JFrame {
 
-    private ICuentaDAO cuentaDAO;
     private boolean estadoDesplegado = false;
-    private IClienteDAO clienteDAO;
     private Cliente cliente;
 
-    public TransferenciaFrame(IClienteDAO clienteDAO) {
-        this.clienteDAO = clienteDAO;
+    public TransferenciaFrame() {
         initComponents();
     }
 
-    public TransferenciaFrame(IClienteDAO clienteDAO, Cliente cliente, ICuentaDAO cuentaDAO) {
-        this.clienteDAO = clienteDAO;
-        this.cuentaDAO = cuentaDAO;
+    public TransferenciaFrame(Cliente cliente) {
         initComponents();
         this.cliente = cliente;
         try {
-            List<Cuenta> listaCuentas = clienteDAO.consultarCuentas(this.cliente);
+            List<Cuenta> listaCuentas = Banco.clienteDao.consultarCuentas(this.cliente);
 
             DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
 
@@ -68,7 +63,7 @@ public class TransferenciaFrame extends javax.swing.JFrame {
         int monto = Integer.parseInt(txtImporte.getText());
         List<Cuenta> listaCuentas;
         try {
-            listaCuentas = clienteDAO.consultarCuentas(this.cliente);
+            listaCuentas = Banco.clienteDao.consultarCuentas(this.cliente);
             for (Cuenta account : listaCuentas) {
                 if (String.valueOf(account.getNumCuenta()).equals(cuentaString)) {
                     cuenta = account;
@@ -78,22 +73,18 @@ public class TransferenciaFrame extends javax.swing.JFrame {
             Logger.getLogger(TransferenciaFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        try {
-            if (String.valueOf(idCuentaDestino).isEmpty() || String.valueOf(idCuentaDestino) == null || String.valueOf(monto).isEmpty() || String.valueOf(monto) == null) {
-                JOptionPane.showMessageDialog(this, "Rellene todos los campos", "Notificación", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                LocalDateTime fechaActual = LocalDateTime.now();
-                TransferenciaDTO transferencia = new TransferenciaDTO();
-                transferencia.setIdCuenta(Integer.parseInt(cuenta.getNumCuenta()));
-                transferencia.setIdCuentaDestino(idCuentaDestino);
-                transferencia.setFechaHora(fechaActual);
-                transferencia.setMonto(monto);
-                dispose();
-                ConfirmarTransferenciaFrame confirmar = new ConfirmarTransferenciaFrame(clienteDAO, this.clienteDAO.realizarTransferencia(transferencia), cliente, cuentaDAO);
-                confirmar.setVisible(true);
-            }
-        } catch (PersistenciaException ex) {
-            JOptionPane.showMessageDialog(this, "No fue posible realizar la transferencia", "Error de almacenamiento", JOptionPane.ERROR_MESSAGE);
+        if (String.valueOf(idCuentaDestino).isEmpty() || String.valueOf(idCuentaDestino) == null || String.valueOf(monto).isEmpty() || String.valueOf(monto) == null) {
+            JOptionPane.showMessageDialog(this, "Rellene todos los campos", "Notificación", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            LocalDateTime fechaActual = LocalDateTime.now();
+            TransferenciaDTO transferencia = new TransferenciaDTO();
+            transferencia.setIdCuenta(Integer.parseInt(cuenta.getNumCuenta()));
+            transferencia.setIdCuentaDestino(idCuentaDestino);
+            transferencia.setFechaHora(fechaActual);
+            transferencia.setMonto(monto);
+            dispose();
+            ConfirmarTransferenciaFrame confirmar = new ConfirmarTransferenciaFrame(transferencia, cliente);
+            confirmar.setVisible(true);
         }
     }
 
@@ -381,7 +372,7 @@ public class TransferenciaFrame extends javax.swing.JFrame {
 
     private void txtCerrarSesionTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCerrarSesionTActionPerformed
         JOptionPane.showMessageDialog(this, "Se ha cerrado sesión correctamente.", "Notificación", JOptionPane.INFORMATION_MESSAGE);
-        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(clienteDAO, cuentaDAO);
+        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame();
         iniciarSesion.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_txtCerrarSesionTActionPerformed

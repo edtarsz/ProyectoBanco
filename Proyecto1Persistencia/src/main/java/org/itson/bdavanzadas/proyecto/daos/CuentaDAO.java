@@ -29,13 +29,13 @@ public class CuentaDAO implements ICuentaDAO {
     }
 
     @Override
-    public Cuenta obtenerCuenta(int numCuenta) throws PersistenciaException {
+    public Cuenta obtenerCuenta(String numCuenta) throws PersistenciaException {
         String sentenciaSQL = "SELECT * FROM cuentas WHERE numCuenta = ?";
         Cuenta cuenta = null;
 
         try (
                 Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL);) {
-            comando.setInt(1, numCuenta);
+            comando.setString(1, numCuenta);
 
             ResultSet resultado = comando.executeQuery();
             if (resultado.next()) {

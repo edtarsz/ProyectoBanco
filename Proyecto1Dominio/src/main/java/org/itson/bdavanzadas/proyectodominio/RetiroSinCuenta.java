@@ -13,15 +13,18 @@ import java.util.Objects;
  * @author Ramosz
  */
 public class RetiroSinCuenta extends Operacion {
-    int idCuenta;
+    String idCuenta;
     String folio;
     String contraseñaRetiro;
+    String estado;
 
-    public RetiroSinCuenta(int idOperacion, LocalDateTime fechaHora, float monto, String folio, String contraseñaRetiro) {
+    public RetiroSinCuenta(int idOperacion, LocalDateTime fechaHora, float monto, String folio, String contraseñaRetiro, String idCuenta, String estado) {
         super(idOperacion, fechaHora, monto);
         this.idOperacion = idOperacion;
         this.folio = folio;
         this.contraseñaRetiro = contraseñaRetiro;
+        this.idCuenta = idCuenta;
+        this.estado = estado;
     }
 
     public RetiroSinCuenta(String folio, String contraseñaRetiro) {
@@ -29,11 +32,11 @@ public class RetiroSinCuenta extends Operacion {
         this.contraseñaRetiro = contraseñaRetiro;
     }
     
-    public int getIdCuenta() {
+    public String getIdCuenta() {
         return idCuenta;
     }
 
-    public void setIdCuenta(int idCuenta) {
+    public void setIdCuenta(String idCuenta) {
         this.idCuenta = idCuenta;
     }
     

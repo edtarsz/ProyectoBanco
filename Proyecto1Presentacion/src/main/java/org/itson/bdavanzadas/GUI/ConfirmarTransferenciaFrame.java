@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.itson.bdavanzadas.proyecto.daos.IClienteDAO;
 import org.itson.bdavanzadas.proyecto.daos.ICuentaDAO;
+import org.itson.bdavanzadas.proyecto.dtos.TransferenciaDTO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyectodominio.Cliente;
 import org.itson.bdavanzadas.proyectodominio.Transferencia;
@@ -19,18 +20,18 @@ import org.itson.bdavanzadas.proyectodominio.Transferencia;
  */
 public class ConfirmarTransferenciaFrame extends javax.swing.JFrame {
 
-    private ICuentaDAO cuentaDAO;
-    private IClienteDAO clienteDAO;
-    Transferencia transferencia;
+    TransferenciaDTO transferencia;
     Cliente cliente;
+    
+    public ConfirmarTransferenciaFrame(){
+        initComponents();
+    }
     
     /**
      * Creates new form ConfirmarTransferenciaFrame
      */
-    public ConfirmarTransferenciaFrame(IClienteDAO clienteDAO, Transferencia trans, Cliente cliente, ICuentaDAO cuentaDAO) {
+    public ConfirmarTransferenciaFrame(TransferenciaDTO trans, Cliente cliente) {
         initComponents();
-        this.cuentaDAO = cuentaDAO;
-        this.clienteDAO = clienteDAO;
         this.transferencia = trans;
         this.cliente = cliente;
         
@@ -203,7 +204,7 @@ public class ConfirmarTransferenciaFrame extends javax.swing.JFrame {
        dispose();
        MenuCuentaFrame menuCuentaFrm;
         try {
-            menuCuentaFrm = new MenuCuentaFrame(clienteDAO, this.cliente, cuentaDAO);
+            menuCuentaFrm = new MenuCuentaFrame(this.cliente);
             menuCuentaFrm.setVisible(true);
         } catch (PersistenciaException ex) {
             Logger.getLogger(ConfirmarTransferenciaFrame.class.getName()).log(Level.SEVERE, null, ex);

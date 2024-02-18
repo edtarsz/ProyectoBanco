@@ -4,15 +4,14 @@
  */
 package org.itson.bdavanzadas.proyecto.daos;
 
+import org.itson.bdavanzadas.proyecto.dtos.TransferenciaDTO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
-import org.itson.bdavanzadas.proyectodominio.Cuenta;
+import org.itson.bdavanzadas.proyectodominio.Transferencia;
 
 /**
  *
- * @author Ramosz
+ * @author JoseH
  */
-public interface ICuentaDAO {
-
-    Cuenta obtenerCuenta(String numCuenta) throws PersistenciaException;
-
+public interface ITransferenciaDAO {
+    Transferencia realizarTransferencia(TransferenciaDTO transferenciaNueva) throws PersistenciaException;
 }

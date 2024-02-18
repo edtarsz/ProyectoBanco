@@ -27,30 +27,21 @@ import org.itson.bdavanzadas.proyectodominio.Cuenta;
 public class MenuCuentaFrame extends javax.swing.JFrame {
 
     private Cuenta cuentaMostrada;
-    private IClienteDAO clienteDAO;
-    private ICuentaDAO cuentaDAO;
     private Cliente cliente;
     private boolean estadoDesplegado = false;
 
-    /**
-     * Creates new form MenuCuentaFrame
-     *
-     * @param clienteDAO
-     */
-    public MenuCuentaFrame(IClienteDAO clienteDAO) {
-        this.clienteDAO = clienteDAO;
+ 
+    public MenuCuentaFrame() {
         initComponents();
     }
 
-    public MenuCuentaFrame(IClienteDAO clienteDAO, Cliente cliente, ICuentaDAO cuentaDAO) throws PersistenciaException {
+    public MenuCuentaFrame(Cliente cliente) throws PersistenciaException {
         initComponents();
 
-        this.clienteDAO = clienteDAO;
-        this.cuentaDAO = cuentaDAO;
         this.cliente = cliente;
         nombreUsuario.setText(cliente.getNombre());
 
-        if (this.cliente != null && !clienteDAO.consultarCuentas(this.cliente).isEmpty()) {
+        if (this.cliente != null && !Banco.clienteDao.consultarCuentas(this.cliente).isEmpty()) {
             mostrarCuentas();
         }
     }
@@ -67,7 +58,7 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         System.out.println("Cuenta nueva: " + cuentaNueva);
         try {
             if (cuentaNueva.esValido()) {
-                cuentaMostrada = this.clienteDAO.agregarCuenta(cuentaNueva);
+                cuentaMostrada = Banco.clienteDao.agregarCuenta(cuentaNueva);
                 JOptionPane.showMessageDialog(this, "Se registra la cuenta", "Notificación", JOptionPane.INFORMATION_MESSAGE);
                 mostrarCuentas();
             }
@@ -88,7 +79,7 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
 
                 if (opcion == JOptionPane.YES_OPTION) {
                     String numCuenta = cuentaSeleccionada;
-                    this.clienteDAO.cambiarEstadoCuenta(selectedItem.toString(), "Cancelada");
+                    Banco.clienteDao.cambiarEstadoCuenta(selectedItem.toString(), "Cancelada");
                     JOptionPane.showMessageDialog(this, "Se canceló la cuenta", "Notificación", JOptionPane.INFORMATION_MESSAGE);
                     mostrarCuentas();
                 }
@@ -102,7 +93,7 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
 
     private void mostrarCuentas() {
         try {
-            List<Cuenta> listaCuentas = clienteDAO.consultarCuentas(this.cliente);
+            List<Cuenta> listaCuentas = Banco.clienteDao.consultarCuentas(this.cliente);
 
             DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
 
@@ -428,19 +419,19 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_agregarCuentabtnActionPerformed
 
     private void transferenciaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferenciaBtnActionPerformed
-        TransferenciaFrame transferencia = new TransferenciaFrame(clienteDAO, cliente, cuentaDAO);
+        TransferenciaFrame transferencia = new TransferenciaFrame(cliente);
         transferencia.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_transferenciaBtnActionPerformed
 
     private void retiroBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retiroBtnActionPerformed
-        SolicitarRetiroFrame retiroFrm = new SolicitarRetiroFrame(clienteDAO, cliente, cuentaDAO);
+        SolicitarRetiroFrame retiroFrm = new SolicitarRetiroFrame(cliente);
         retiroFrm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_retiroBtnActionPerformed
 
     private void txtEditarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEditarPerfilActionPerformed
-        ActualizarUsuarioFrame editarPerfil = new ActualizarUsuarioFrame(clienteDAO, cliente);
+        ActualizarUsuarioFrame editarPerfil = new ActualizarUsuarioFrame(cliente);
         editarPerfil.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_txtEditarPerfilActionPerformed
@@ -451,7 +442,7 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
 
     private void txtCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCerrarSesionActionPerformed
         JOptionPane.showMessageDialog(this, "Se ha cerrado sesión correctamente.", "Notificación", JOptionPane.INFORMATION_MESSAGE);
-        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame(clienteDAO, cuentaDAO);
+        IniciarSesionFrame iniciarSesion = new IniciarSesionFrame();
         iniciarSesion.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_txtCerrarSesionActionPerformed

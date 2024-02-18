@@ -17,19 +17,10 @@ import org.itson.bdavanzadas.proyectodominio.Cliente;
  */
 public class IniciarSesionFrame extends javax.swing.JFrame {
 
-    private ICuentaDAO cuentaDAO;
-    private IClienteDAO clienteDAO;
     private Cliente usuario;
 
-    /**
-     * Creates new form IniciarSesionFrame
-     *
-     * @param clienteDAO
-     * @param cuentaDAO
-     */
-    public IniciarSesionFrame(IClienteDAO clienteDAO, ICuentaDAO cuentaDAO) {
-        this.clienteDAO = clienteDAO;
-        this.cuentaDAO = cuentaDAO;
+
+    public IniciarSesionFrame() {
         initComponents();
     }
 
@@ -285,7 +276,7 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
 
         if (validarCampo()) {
             try {
-                for (Cliente cliente : this.clienteDAO.consultar()) {
+                for (Cliente cliente : Banco.clienteDao.consultar()) {
                     if (cliente.getUsuario().equals(usuario) && cliente.getContraseña().equals(contrasenia)) {
                         this.usuario = cliente;
                         existeUsuario = true;
@@ -301,7 +292,7 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
         if (existeUsuario) {
             try {
                 System.out.println(this.usuario.getNombre());
-                MenuCuentaFrame menuCuentaFrm = new MenuCuentaFrame(clienteDAO, this.usuario, cuentaDAO);
+                MenuCuentaFrame menuCuentaFrm = new MenuCuentaFrame(this.usuario);
                 menuCuentaFrm.setVisible(true);
                 this.dispose();
             } catch (PersistenciaException ex) {
@@ -313,7 +304,7 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
     private void btnRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroActionPerformed
-        RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame(clienteDAO, cuentaDAO);
+        RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame();
         registrarUsuario.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegistroActionPerformed
@@ -327,13 +318,13 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_pswContraseniaMouseClicked
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-        IndiceFrame indiceFrame = new IndiceFrame(clienteDAO, cuentaDAO);
+        IndiceFrame indiceFrame = new IndiceFrame();
         indiceFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-        IndiceFrame indiceFrame = new IndiceFrame(clienteDAO, cuentaDAO);
+        IndiceFrame indiceFrame = new IndiceFrame();
         indiceFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel6MouseClicked
