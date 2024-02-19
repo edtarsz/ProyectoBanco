@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 public class Cliente {
 
-    private Long idCliente;
+    private int idCliente;
     private String usuario;
     private String nombre;
     private String apellidoPaterno;
@@ -43,7 +43,7 @@ public class Cliente {
         this.ciudad = ciudad;
     }
 
-    public Cliente(Long idCliente, String usuario, String nombre, String apellidoPaterno, String apellidoMaterno, String contraseña, String fechaNacimiento, String codigoPostal, String numExterior, String calle, String colonia, String ciudad) {
+    public Cliente(int idCliente, String usuario, String nombre, String apellidoPaterno, String apellidoMaterno, String contraseña, String fechaNacimiento, String codigoPostal, String numExterior, String calle, String colonia, String ciudad) {
         this.usuario = usuario;
         this.idCliente = idCliente;
         this.nombre = nombre;
@@ -58,7 +58,7 @@ public class Cliente {
         this.ciudad = ciudad;
     }
 
-    public Cliente(Long idCliente, String usuario, String nombre, String apellidoPaterno, String apellidoMaterno, String contraseña, String fechaNacimiento, String codigoPostal, String numExterior, String calle, String colonia, String ciudad, int edad) {
+    public Cliente(int idCliente, String usuario, String nombre, String apellidoPaterno, String apellidoMaterno, String contraseña, String fechaNacimiento, String codigoPostal, String numExterior, String calle, String colonia, String ciudad, int edad) {
         this.usuario = usuario;
         this.idCliente = idCliente;
         this.nombre = nombre;
@@ -89,7 +89,7 @@ public class Cliente {
         this.edad = edad;
     }
 
-    public Long getIdCliente() {
+    public int getIdCliente() {
         return idCliente;
     }
 
@@ -141,7 +141,7 @@ public class Cliente {
         return ciudad;
     }
 
-    public void setIdCliente(Long idCliente) {
+    public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
     }
 

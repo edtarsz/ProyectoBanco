@@ -15,7 +15,7 @@ import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
 public class CuentaDTO {
 
     String numCuenta;
-    Long idCliente;
+    int idCliente;
     float saldo;
     Date fechaApertura;
     String estado;
@@ -24,7 +24,7 @@ public class CuentaDTO {
         return numCuenta;
     }
 
-    public Long getIdCliente() {
+    public int getIdCliente() {
         return idCliente;
     }
 
@@ -49,7 +49,7 @@ public class CuentaDTO {
         this.numCuenta = Integer.toString(randomNumber);
     }
 
-    public void setIdCliente(Long idCliente) {
+    public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
     }
 

@@ -16,27 +16,27 @@ public class Cuenta {
 
     String numCuenta;
     String estado;
-    Long idCliente;
+    int idCliente;
     float saldo;
     Date fechaApertura;
 
     public Cuenta() {
     }
 
-    public Cuenta(Long idCliente, float saldo, Date fechaApertura) {
+    public Cuenta(int idCliente, float saldo, Date fechaApertura) {
         this.idCliente = idCliente;
         this.saldo = saldo;
         this.fechaApertura = fechaApertura;
     }
 
-    public Cuenta(Long idCliente, String numCuenta, float saldo, String estado) {
+    public Cuenta(int idCliente, String numCuenta, float saldo, String estado) {
         this.idCliente = idCliente;
         this.numCuenta = numCuenta;
         this.saldo = saldo;
         this.estado = estado;
     }
 
-    public Cuenta(String numCuenta, Long idCliente, float saldo, Date fechaApertura, String estado) {
+    public Cuenta(String numCuenta, int idCliente, float saldo, Date fechaApertura, String estado) {
         this.numCuenta = numCuenta;
         this.idCliente = idCliente;
         this.saldo = saldo;
@@ -52,7 +52,7 @@ public class Cuenta {
         return numCuenta;
     }
 
-    public Long getIdCliente() {
+    public int getIdCliente() {
         return idCliente;
     }
 
@@ -74,7 +74,7 @@ public class Cuenta {
         this.numCuenta = sb.toString();
     }
 
-    public void setIdCliente(Long idCliente) {
+    public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
     }
 

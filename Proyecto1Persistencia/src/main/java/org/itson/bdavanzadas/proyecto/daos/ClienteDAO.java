@@ -64,7 +64,7 @@ public class ClienteDAO implements IClienteDAO {
             idGenerado.next();
 
             Cliente cliente = new Cliente(
-                    idGenerado.getLong(1),
+                    idGenerado.getInt(1),
                     clienteNuevo.getUsuario(),
                     clienteNuevo.getNombre(),
                     clienteNuevo.getApellidoPaterno(),
@@ -94,7 +94,7 @@ public class ClienteDAO implements IClienteDAO {
         try (Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL); ResultSet resultados = comando.executeQuery()) {
 
             while (resultados.next()) {
-                Long idCliente = resultados.getLong("idCliente");
+                int idCliente = resultados.getInt("idCliente");
                 String usuario = resultados.getString("Usuario");
                 String nombre = resultados.getString("Nombre");
                 String apellidoPaterno = resultados.getString("ApellidoPaterno");
@@ -136,7 +136,7 @@ public class ClienteDAO implements IClienteDAO {
         try (
                 Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);) {
             comando.setString(1, cuentaNueva.getNumCuenta());
-            comando.setLong(2, cuentaNueva.getIdCliente());
+            comando.setInt(2, cuentaNueva.getIdCliente());
             comando.setFloat(3, cuentaNueva.getSaldo());
             comando.setDate(4, new java.sql.Date(cuentaNueva.getFechaApertura().getTime()));
             comando.setString(5, cuentaNueva.getEstado());

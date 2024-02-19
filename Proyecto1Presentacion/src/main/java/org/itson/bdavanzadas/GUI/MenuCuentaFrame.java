@@ -408,7 +408,9 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUsuarioActionPerformed
 
     private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
-        // TODO add your handling code here:
+        HistorialOperacionesFrame historialFrame = new HistorialOperacionesFrame(cliente);
+        historialFrame.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnHistorialActionPerformed
 
     private void agregarCuentabtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCuentabtnActionPerformed

@@ -22,7 +22,9 @@ import org.itson.bdavanzadas.proyecto.daos.TransferenciaDAO;
  */
 public class Banco {
 
+    
     static final Logger logger = Logger.getLogger(Banco.class.getName());
+    public static IConexion conexion;
     public static IClienteDAO clienteDao;
     public static ICuentaDAO cuentaDao;
     public static IRetiroDAO retiroDao;
@@ -31,15 +33,15 @@ public class Banco {
     public static void main(String[] args) throws Exception {
         String cadenaConexion = "jdbc:mysql://localhost/banco";
         String usuario = "root";
-        String contrasenia = "18509Tal";
+        String contrasenia = "CheemSITO357";
 
-        IConexion conexion = new Conexion(cadenaConexion, usuario, contrasenia);
+        conexion = new Conexion(cadenaConexion, usuario, contrasenia);
 
         clienteDao = new ClienteDAO(conexion);
         cuentaDao = new CuentaDAO(conexion);
         retiroDao = new RetiroDAO(conexion);
         transferenciaDao = new TransferenciaDAO(conexion);
-
+        
         IndiceFrame indiceFrame = new IndiceFrame();
         RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame();
         IniciarSesionFrame iniciarSesion = new IniciarSesionFrame();
