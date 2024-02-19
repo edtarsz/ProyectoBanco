@@ -22,11 +22,11 @@ public class ConfirmarTransferenciaFrame extends javax.swing.JFrame {
 
     TransferenciaDTO transferencia;
     Cliente cliente;
-    
-    public ConfirmarTransferenciaFrame(){
+
+    public ConfirmarTransferenciaFrame() {
         initComponents();
     }
-    
+
     /**
      * Creates new form ConfirmarTransferenciaFrame
      */
@@ -34,7 +34,7 @@ public class ConfirmarTransferenciaFrame extends javax.swing.JFrame {
         initComponents();
         this.transferencia = trans;
         this.cliente = cliente;
-        
+
         txtCuentaDestino.setText(String.valueOf(trans.getIdCuentaDestino()));
         txtCuentaOrigen.setText(String.valueOf(trans.getIdCuenta()));
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -70,6 +70,11 @@ public class ConfirmarTransferenciaFrame extends javax.swing.JFrame {
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/vbankchico.png"))); // NOI18N
         jLabel3.setText("jLabel1");
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
 
         jLabel7.setBackground(new java.awt.Color(102, 102, 102));
         jLabel7.setForeground(new java.awt.Color(153, 153, 153));
@@ -130,23 +135,21 @@ public class ConfirmarTransferenciaFrame extends javax.swing.JFrame {
                     .addComponent(txtMonto, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txtFechaOperacion, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(186, 186, 186))
-            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel3Layout.createSequentialGroup()
-                    .addGap(47, 47, 47)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addGap(6, 6, 6)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel7)
-                                .addComponent(confirmarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addContainerGap(54, Short.MAX_VALUE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGroup(jPanel3Layout.createSequentialGroup()
-                    .addGap(214, 214, 214)
-                    .addComponent(jLabel9)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7)
+                                    .addComponent(confirmarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(214, 214, 214)
+                        .addComponent(jLabel9)))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,15 +204,26 @@ public class ConfirmarTransferenciaFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
-       dispose();
-       MenuCuentaFrame menuCuentaFrm;
+        dispose();
+        MenuCuentaFrame menuCuentaFrm;
         try {
-            menuCuentaFrm = new MenuCuentaFrame(this.cliente);
+            menuCuentaFrm = new MenuCuentaFrame(cliente);
             menuCuentaFrm.setVisible(true);
         } catch (PersistenciaException ex) {
             Logger.getLogger(ConfirmarTransferenciaFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_confirmarBtnActionPerformed
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        dispose();
+        MenuCuentaFrame menuCuentaFrm;
+        try {
+            menuCuentaFrm = new MenuCuentaFrame(cliente);
+            menuCuentaFrm.setVisible(true);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(ConfirmarTransferenciaFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jLabel3MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton confirmarBtn;

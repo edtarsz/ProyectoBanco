@@ -10,8 +10,6 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import javax.swing.JOptionPane;
-import org.itson.bdavanzadas.proyecto.daos.IClienteDAO;
-import org.itson.bdavanzadas.proyecto.daos.ICuentaDAO;
 import org.itson.bdavanzadas.proyecto.dtos.ClienteDTO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
@@ -26,7 +24,6 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
     /**
      * Creates new form RegistrarUsuarioFrame
      *
-     * @param clienteDAO
      */
     public RegistrarUsuarioFrame() {
         initComponents();

@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.itson.bdavanzadas.proyecto.daos.IClienteDAO;
 import org.itson.bdavanzadas.proyecto.daos.ICuentaDAO;
@@ -594,7 +596,12 @@ public class ActualizarUsuarioFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
-        MenuCuentaFrame menuCuenta = new MenuCuentaFrame();
+        MenuCuentaFrame menuCuenta = null;
+        try {
+            menuCuenta = new MenuCuentaFrame(this.cliente);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(ActualizarUsuarioFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
         menuCuenta.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel13MouseClicked

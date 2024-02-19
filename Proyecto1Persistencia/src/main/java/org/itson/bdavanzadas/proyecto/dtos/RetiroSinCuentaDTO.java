@@ -12,7 +12,8 @@ import org.itson.bdavanzadas.proyectodominio.Operacion;
  *
  * @author JoseH
  */
-public class RetiroSinCuentaDTO extends Operacion{
+public class RetiroSinCuentaDTO extends Operacion {
+
     String idCuenta;
     String folio;
     String contraseñaRetiro;
@@ -21,8 +22,6 @@ public class RetiroSinCuentaDTO extends Operacion{
     public String getEstado() {
         return estado;
     }
-    
-    
 
     public String getIdCuenta() {
         return idCuenta;
@@ -32,7 +31,6 @@ public class RetiroSinCuentaDTO extends Operacion{
         this.idCuenta = idCuenta;
     }
 
-    
     public String getFolio() {
         return folio;
     }
@@ -55,11 +53,10 @@ public class RetiroSinCuentaDTO extends Operacion{
         StringBuilder sb = new StringBuilder();
         SecureRandom random = new SecureRandom();
 
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < 3; i++) {
             sb.append(random.nextInt(10));
         }
-        
-        
+
         for (int i = 0; i < 5; i++) {
             char randomChar = (char) ('a' + random.nextInt(26));
             sb.append(randomChar);
@@ -67,8 +64,5 @@ public class RetiroSinCuentaDTO extends Operacion{
 
         this.contraseñaRetiro = sb.toString();
     }
-    
-    
-    
-    
+
 }

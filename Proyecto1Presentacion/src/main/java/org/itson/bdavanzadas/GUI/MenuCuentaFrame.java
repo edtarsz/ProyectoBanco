@@ -12,8 +12,6 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
-import org.itson.bdavanzadas.proyecto.daos.IClienteDAO;
-import org.itson.bdavanzadas.proyecto.daos.ICuentaDAO;
 import org.itson.bdavanzadas.proyecto.dtos.CuentaDTO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
@@ -70,16 +68,16 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
     }
 
     public void cancelarCuenta() {
-        Object selectedItem = cmbCuentas.getSelectedItem();
+        String cuentaSelect = (String) cmbCuentas.getSelectedItem();
+        String[] partes = cuentaSelect.split(" ");
+        String numeroCuenta = partes[0].substring(0);
 
         try {
-            if (selectedItem != null && selectedItem instanceof String) {
-                String cuentaSeleccionada = (String) selectedItem;
+            if (cuentaSelect != null && cuentaSelect instanceof String) {
                 int opcion = JOptionPane.showConfirmDialog(this, "¿Está seguro de cancelar la cuenta?", "Confirmación", JOptionPane.YES_NO_OPTION);
-
+                System.out.println(numeroCuenta);
                 if (opcion == JOptionPane.YES_OPTION) {
-                    String numCuenta = cuentaSeleccionada;
-                    Banco.clienteDao.cambiarEstadoCuenta(selectedItem.toString(), "Cancelada");
+                    Banco.clienteDao.cambiarEstadoCuenta(numeroCuenta, "Cancelada");
                     JOptionPane.showMessageDialog(this, "Se canceló la cuenta", "Notificación", JOptionPane.INFORMATION_MESSAGE);
                     mostrarCuentas();
                 }
@@ -99,7 +97,7 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
 
             for (Cuenta cuenta : listaCuentas) {
                 if ("Activa".equals(cuenta.getEstado())) {
-                    model.addElement(String.valueOf(cuenta.getNumCuenta()));
+                    model.addElement(String.valueOf(cuenta.getNumCuenta()) + "      Saldo:" + cuenta.getSaldo());
                 }
             }
             cmbCuentas.setModel(model);
