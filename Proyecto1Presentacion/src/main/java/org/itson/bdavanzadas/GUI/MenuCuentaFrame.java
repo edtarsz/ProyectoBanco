@@ -30,7 +30,6 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
     private Cliente cliente;
     private boolean estadoDesplegado = false;
 
- 
     public MenuCuentaFrame() {
         initComponents();
     }
@@ -51,6 +50,7 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         cuentaNueva.setNumCuenta();
         cuentaNueva.setIdCliente(cliente.getIdCliente());
         cuentaNueva.setSaldo((float) 10000.00);
+        cuentaNueva.setEstado("Activa");
 
         Date fechaActual = new Date();
         cuentaNueva.setFechaApertura(fechaActual);
@@ -98,11 +98,8 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
             DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
 
             for (Cuenta cuenta : listaCuentas) {
-                if (cuenta.getEstado() == "Cancelada") {
-                    model.addElement(String.valueOf("Cuenta cancelada: " + cuenta.getNumCuenta()));
-                } else {
+                if ("Activa".equals(cuenta.getEstado())) {
                     model.addElement(String.valueOf(cuenta.getNumCuenta()));
-                    model.addElement(String.valueOf("Saldo: " + cuenta.getSaldo()));
                 }
             }
             cmbCuentas.setModel(model);

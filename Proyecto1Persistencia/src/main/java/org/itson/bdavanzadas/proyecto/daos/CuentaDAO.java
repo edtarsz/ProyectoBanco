@@ -43,7 +43,8 @@ public class CuentaDAO implements ICuentaDAO {
                         resultado.getString("numCuenta"),
                         resultado.getLong("idCliente"),
                         resultado.getFloat("saldo"),
-                        resultado.getDate("fechaApertura")
+                        resultado.getDate("fechaApertura"),
+                        resultado.getString("estado")
                 );
             }
         } catch (SQLException ex) {

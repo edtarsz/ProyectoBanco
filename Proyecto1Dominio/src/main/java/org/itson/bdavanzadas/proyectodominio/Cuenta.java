@@ -23,23 +23,25 @@ public class Cuenta {
     public Cuenta() {
     }
 
-    public Cuenta(Long idCliente, String numCuenta, float saldo) {
-        this.numCuenta = numCuenta;
-        this.saldo = saldo;
-        this.idCliente = idCliente;
-    }
-
     public Cuenta(Long idCliente, float saldo, Date fechaApertura) {
         this.idCliente = idCliente;
         this.saldo = saldo;
         this.fechaApertura = fechaApertura;
     }
 
-    public Cuenta(String numCuenta, Long idCliente, float saldo, Date fechaApertura) {
+    public Cuenta(Long idCliente, String numCuenta, float saldo, String estado) {
+        this.idCliente = idCliente;
+        this.numCuenta = numCuenta;
+        this.saldo = saldo;
+        this.estado = estado;
+    }
+
+    public Cuenta(String numCuenta, Long idCliente, float saldo, Date fechaApertura, String estado) {
         this.numCuenta = numCuenta;
         this.idCliente = idCliente;
         this.saldo = saldo;
         this.fechaApertura = fechaApertura;
+        this.estado = estado;
     }
 
     public String getEstado() {
@@ -90,12 +92,12 @@ public class Cuenta {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 41 * hash + Objects.hashCode(this.numCuenta);
-        hash = 41 * hash + Objects.hashCode(this.estado);
-        hash = 41 * hash + Objects.hashCode(this.idCliente);
-        hash = 41 * hash + Float.floatToIntBits(this.saldo);
-        hash = 41 * hash + Objects.hashCode(this.fechaApertura);
+        int hash = 5;
+        hash = 59 * hash + Objects.hashCode(this.numCuenta);
+        hash = 59 * hash + Objects.hashCode(this.estado);
+        hash = 59 * hash + Objects.hashCode(this.idCliente);
+        hash = 59 * hash + Float.floatToIntBits(this.saldo);
+        hash = 59 * hash + Objects.hashCode(this.fechaApertura);
         return hash;
     }
 
@@ -138,5 +140,4 @@ public class Cuenta {
         sb.append('}');
         return sb.toString();
     }
-
 }

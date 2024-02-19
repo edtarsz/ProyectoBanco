@@ -131,14 +131,15 @@ public class ClienteDAO implements IClienteDAO {
     @Override
     public Cuenta agregarCuenta(CuentaDTO cuentaNueva) throws PersistenciaException {
         String sentenciaSQL = """
-        INSERT INTO cuentas(numCuenta, idCliente, saldo, fechaApertura)
-        VALUES (?, ?, ?, ?);""";
+        INSERT INTO cuentas(numCuenta, idCliente, saldo, fechaApertura, estado)
+        VALUES (?, ?, ?, ?, ?);""";
         try (
                 Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);) {
             comando.setString(1, cuentaNueva.getNumCuenta());
             comando.setLong(2, cuentaNueva.getIdCliente());
             comando.setFloat(3, cuentaNueva.getSaldo());
             comando.setDate(4, new java.sql.Date(cuentaNueva.getFechaApertura().getTime()));
+            comando.setString(5, cuentaNueva.getEstado());
 
             int numeroRegistrosInsertados = comando.executeUpdate();
             logger.log(Level.INFO, "Se agregaron {0} cuentas", numeroRegistrosInsertados);
@@ -149,7 +150,8 @@ public class ClienteDAO implements IClienteDAO {
                     cuentaNueva.getNumCuenta(),
                     cuentaNueva.getIdCliente(),
                     cuentaNueva.getSaldo(),
-                    cuentaNueva.getFechaApertura());
+                    cuentaNueva.getFechaApertura(),
+                    cuentaNueva.getEstado());
             return cuenta;
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, "No se pudo guardar la cuenta", ex);
@@ -159,7 +161,7 @@ public class ClienteDAO implements IClienteDAO {
 
     @Override
     public List<Cuenta> consultarCuentas(Cliente cliente) throws PersistenciaException {
-        String sentenciaSQL = "SELECT numCuenta, saldo FROM Cuentas WHERE idCliente = ?;";
+        String sentenciaSQL = "SELECT numCuenta, saldo, estado FROM Cuentas WHERE idCliente = ?;";
         List<Cuenta> listaCuentas = new LinkedList<>();
 
         try (Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL)) {
@@ -170,8 +172,9 @@ public class ClienteDAO implements IClienteDAO {
                 while (resultados.next()) {
                     String numCuenta = resultados.getString("numCuenta");
                     float saldo = resultados.getFloat("saldo");
+                    String estado = resultados.getString("estado");
 
-                    Cuenta cuenta = new Cuenta(cliente.getIdCliente(), numCuenta, saldo);
+                    Cuenta cuenta = new Cuenta(cliente.getIdCliente(), numCuenta, saldo, estado);
                     listaCuentas.add(cuenta);
                 }
             }

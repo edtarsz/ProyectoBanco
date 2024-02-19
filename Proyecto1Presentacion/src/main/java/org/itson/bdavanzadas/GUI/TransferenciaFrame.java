@@ -41,7 +41,9 @@ public class TransferenciaFrame extends javax.swing.JFrame {
             DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
 
             for (Cuenta cuenta : listaCuentas) {
-                model.addElement(String.valueOf(cuenta.getNumCuenta()));
+                if ("Activa".equals(cuenta.getEstado())) {
+                    model.addElement(String.valueOf(cuenta.getNumCuenta()));
+                }
             }
 
             cuentaOrigenCmbBox.setModel(model);

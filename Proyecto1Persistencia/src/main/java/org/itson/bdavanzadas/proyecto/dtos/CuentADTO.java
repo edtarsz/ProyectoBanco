@@ -15,10 +15,10 @@ import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
 public class CuentaDTO {
 
     String numCuenta;
-    String estado;
     Long idCliente;
     float saldo;
     Date fechaApertura;
+    String estado;
 
     public String getNumCuenta() {
         return numCuenta;

@@ -8,11 +8,9 @@ import java.util.List;
 import org.itson.bdavanzadas.proyecto.dtos.ClienteActualizadoDTO;
 import org.itson.bdavanzadas.proyecto.dtos.ClienteDTO;
 import org.itson.bdavanzadas.proyecto.dtos.CuentaDTO;
-import org.itson.bdavanzadas.proyecto.dtos.TransferenciaDTO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyectodominio.Cliente;
 import org.itson.bdavanzadas.proyectodominio.Cuenta;
-import org.itson.bdavanzadas.proyectodominio.Transferencia;
 
 /**
  *
