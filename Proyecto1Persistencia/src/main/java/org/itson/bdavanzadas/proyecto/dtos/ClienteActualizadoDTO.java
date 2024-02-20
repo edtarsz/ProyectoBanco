@@ -140,7 +140,39 @@ public class ClienteActualizadoDTO {
     }
 
     public boolean esValido() throws ValidacionDTOException {
+        if (this.nombre.trim().length() > 50) {
+            throw new ValidacionDTOException("Nombre inválido");
+        }
+        if (this.apellidoMaterno.trim().length() > 50) {
+            throw new ValidacionDTOException("Apellido materno inválido");
+        }
+        if (this.apellidoPaterno.trim().length() > 50) {
+            throw new ValidacionDTOException("Apellido paterno inválido");
+        }
+        if (this.contraseña == null || this.apellidoPaterno.trim().length() > 20) {
+            throw new ValidacionDTOException("Contraseña inválida");
+        }
+        if (this.fechaNacimiento == null || this.fechaNacimiento.isBlank()) {
+            throw new ValidacionDTOException("Fecha de nacimiento inválido");
+        }
+        if (this.codigoPostal.trim().length() > 10) {
+            throw new ValidacionDTOException("Código postal inválido");
+        }
+        if (this.numExterior.trim().length() > 10) {
+            throw new ValidacionDTOException("Número exterior inválido");
+        }
+        if (this.calle.trim().length() > 30) {
+            throw new ValidacionDTOException("Calle inválida");
+        }
+        if (this.colonia.trim().length() > 30) {
+            throw new ValidacionDTOException("Colonia inválida");
+        }
+        if (this.ciudad.trim().length() > 20) {
+            throw new ValidacionDTOException("Ciudad inválida");
+        }
+        if (this.edad < 18) {
+            throw new ValidacionDTOException("Menor de edad no permitido");
+        }
         return true;
     }
-
 }

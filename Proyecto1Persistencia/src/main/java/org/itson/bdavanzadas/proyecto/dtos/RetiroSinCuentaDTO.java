@@ -6,6 +6,7 @@ package org.itson.bdavanzadas.proyecto.dtos;
 
 import java.security.SecureRandom;
 import java.util.Random;
+import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
 import org.itson.bdavanzadas.proyectodominio.Operacion;
 
 /**
@@ -75,6 +76,22 @@ public class RetiroSinCuentaDTO extends Operacion {
             sb.append(random.nextInt(10));
         }
         this.folio = sb.toString();
+    }
+
+    public boolean esValido() throws ValidacionDTOException {
+        if (this.idCuenta == null) {
+            throw new ValidacionDTOException("Número de cuenta inválido");
+        }
+        if (this.folio.length() > 30) {
+            throw new ValidacionDTOException("Saldo inválido");
+        }
+        if (this.contraseñaRetiro.length() > 30) {
+            throw new ValidacionDTOException("Fecha de apertura inválido");
+        }
+        if (this.estado == null || this.estado.length() > 20) {
+            throw new ValidacionDTOException("Estado inválido: debe tener 20 caracteres o menos");
+        }
+        return true;
     }
 
 }

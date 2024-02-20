@@ -66,17 +66,20 @@ public class CuentaDTO {
     }
 
     public boolean esValido() throws ValidacionDTOException {
-        if (this.numCuenta.isEmpty() || this.numCuenta == null) {
+        if (this.numCuenta == null) {
             throw new ValidacionDTOException("Número de cuenta inválido");
         }
-        if (Long.toString(this.idCliente).isEmpty() || Long.toString(this.idCliente) == null) {
+        if (Long.toString(this.idCliente) == null) {
             throw new ValidacionDTOException("Cliente inválido");
         }
-        if (this.saldo < 0 || Float.toString(this.saldo).isEmpty() || Float.toString(this.saldo) == null) {
+        if (this.saldo < 0) {
             throw new ValidacionDTOException("Saldo inválido");
         }
         if (this.fechaApertura == null) {
             throw new ValidacionDTOException("Fecha de apertura inválido");
+        }
+        if (this.estado == null || this.estado.length() > 20) {
+            throw new ValidacionDTOException("Estado inválido: debe tener 20 caracteres o menos");
         }
         return true;
     }
