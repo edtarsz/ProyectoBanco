@@ -7,18 +7,13 @@ package org.itson.bdavanzadas.GUI;
 import java.awt.BorderLayout;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,38 +23,50 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import org.itson.bdavanzadas.proyecto.conexion.Conexion;
-import org.itson.bdavanzadas.proyecto.conexion.IConexion;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyectodominio.Cliente;
-import org.itson.bdavanzadas.proyectodominio.Cuenta;
-import org.itson.bdavanzadas.proyectodominio.Operacion;
-import org.itson.bdavanzadas.proyectodominio.RetiroSinCuenta;
 
 /**
+ * Clase que representa la ventana de historial de operaciones para un cliente. Permite visualizar las operaciones realizadas por el cliente.
  *
- * @author JoseH
+ * @author Eduardo Talavera Ramos | 00000245244
+ * @author Angel Huerta Amparán | 00000245345
  */
 public class HistorialOperacionesFrame extends javax.swing.JFrame {
 
-    Cliente cliente;
+    // Cliente asociado a esta ventana de historial de operaciones
+    private Cliente cliente;
+
+    // Componentes de la interfaz gráfica
     private JPanel panelTablaOperaciones;
     private JTable tableOperaciones;
     private JScrollPane scrollPaneOperaciones;
+
+    // Logger para registrar eventos y mensajes
     static final Logger logger = Logger.getLogger(Conexion.class.getName());
+
+    // Estado para controlar si la tabla de operaciones está desplegada o no
     private boolean estadoDesplegado = false;
 
     /**
-     * Creates new form HistorialOperacionesFrame
+     * Constructor que inicializa la ventana de historial de operaciones para un cliente. Crea los componentes de la interfaz gráfica y agrega la tabla de operaciones al panel.
+     *
+     * @param cliente Objeto Cliente asociado a esta ventana.
      */
     public HistorialOperacionesFrame(Cliente cliente) {
         initComponents();
         this.cliente = cliente;
+
+        // Inicialización de componentes gráficos
         panelTablaOperaciones = new JPanel();
         tableOperaciones = new JTable();
         scrollPaneOperaciones = new JScrollPane();
 
+        // Agrega el panel de la tabla de operaciones a la ventana
         this.add(panelTablaOperaciones);
         panelTablaOperaciones.setBounds(10, 320, 780, 150);
+
+        // Agrega la tabla de operaciones al panel
         agregarTablaOperacionesPanel();
     }
 
@@ -244,6 +251,9 @@ public class HistorialOperacionesFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnUsuarioMouseClicked
 
+    /**
+     * Maneja el evento de clic en el botón de usuario. Despliega o oculta opciones de usuario. Si no está desplegado, muestra opciones; de lo contrario, oculta el texto de las opciones.
+     */
     private void btnUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuarioActionPerformed
         if (!estadoDesplegado) {
             txtEditarPerfil.setText("* Editar perfil");
@@ -258,14 +268,31 @@ public class HistorialOperacionesFrame extends javax.swing.JFrame {
         estadoDesplegado = !estadoDesplegado;
     }//GEN-LAST:event_btnUsuarioActionPerformed
 
+    /**
+     * Consulta las operaciones según los parámetros seleccionados (tipo, fecha de inicio y fecha final). Llena la tabla de operaciones con los resultados obtenidos de la base de datos.
+     *
+     * @throws PersistenciaException Si hay un error al realizar la consulta en la base de datos.
+     */
     public void consultarOperaciones() throws PersistenciaException {
+        // Lista para almacenar los resultados de la consulta.
         List<Object[]> dataList = new ArrayList<>();
+
+        // Nombres de las columnas de la tabla de operaciones.
         String[] nombresColumnas = {"Fecha Hora", "Monto", "Tipo", "Cuenta Origen", "Cuenta Destino"};
+
+        // Formato de fecha para convertir las fechas seleccionadas.
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+
+        // Sentencia SQL para llamar al procedimiento almacenado GetOperaciones.
         String sentenciaSQL = "CALL GetOperaciones(?, ?, ?, ?);";
+
         try (
+                // Establece la conexión y prepara la llamada al procedimiento almacenado.
                 Connection conexion = Banco.conexion.obtenerConexion(); CallableStatement comando = conexion.prepareCall(sentenciaSQL);) {
+            // Configuración de parámetros para el procedimiento almacenado.
             comando.setString(1, cmbOperaciones.getSelectedItem().toString());
+
+            // Configuración de fecha de inicio.
             if (txtFechaInicio.getDate() != null) {
                 Date fechaInicio = txtFechaInicio.getDate();
                 String fechaFormInicio = formato.format(fechaInicio);
@@ -273,6 +300,8 @@ public class HistorialOperacionesFrame extends javax.swing.JFrame {
             } else {
                 comando.setNull(2, Types.VARCHAR);
             }
+
+            // Configuración de fecha final.
             if (txtFechaFinal.getDate() != null) {
                 Date fechaFinal = txtFechaFinal.getDate();
                 String fechaFormFinal = formato.format(fechaFinal);
@@ -280,9 +309,11 @@ public class HistorialOperacionesFrame extends javax.swing.JFrame {
             } else {
                 comando.setNull(3, Types.VARCHAR);
             }
-            // Asumiendo que este es el lugar correcto para setear el id del cliente y no sobrescribir otro parámetro.
+
+            // Seteo del id del cliente en el cuarto parámetro.
             comando.setInt(4, cliente.getIdCliente());
 
+            // Ejecución de la consulta y procesamiento de resultados.
             try (ResultSet resultados = comando.executeQuery()) {
                 while (resultados.next()) {
                     LocalDateTime fechaHora = resultados.getTimestamp("fechaHora").toLocalDateTime();
@@ -291,20 +322,28 @@ public class HistorialOperacionesFrame extends javax.swing.JFrame {
                     int cuentaOrigen = resultados.getInt("cuentaOrigen");
                     Integer cuentaDestino = resultados.wasNull() ? null : resultados.getInt("cuentaDestino");
 
+                    // Agrega los resultados a la lista.
                     dataList.add(new Object[]{fechaHora, monto, tipo, cuentaOrigen, cuentaDestino});
                 }
             }
 
-            Object[][] data = dataList.toArray(new Object[0][]); // Convierte la lista a un array bidimensional.
+            // Convierte la lista de resultados a un array bidimensional.
+            Object[][] data = dataList.toArray(new Object[0][]);
+
+            // Crea y establece el modelo de la tabla de operaciones.
             DefaultTableModel tableModel = new DefaultTableModel(data, nombresColumnas);
             tableOperaciones.setModel(tableModel);
 
         } catch (SQLException ex) {
+            // Manejo de excepciones y registro de errores.
             logger.log(Level.SEVERE, "No se pudo consultar la tabla de operaciones", ex);
             throw new PersistenciaException("No se pudo consultar la tabla de operaciones", ex);
         }
     }
 
+    /**
+     * Agrega la tabla de operaciones al panel correspondiente en la interfaz gráfica.
+     */
     private void agregarTablaOperacionesPanel() {
         tableOperaciones = new JTable();
         scrollPaneOperaciones = new JScrollPane(tableOperaciones);
@@ -312,7 +351,11 @@ public class HistorialOperacionesFrame extends javax.swing.JFrame {
         panelTablaOperaciones.add(scrollPaneOperaciones, BorderLayout.CENTER);
     }
 
-
+    /**
+     * Maneja el evento de clic en el botón de búsqueda. Realiza la consulta de operaciones y actualiza la interfaz gráfica.
+     *
+     * @param evt Evento de clic en el botón de búsqueda.
+     */
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         try {
             consultarOperaciones();
@@ -325,6 +368,11 @@ public class HistorialOperacionesFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    /**
+     * Maneja el evento de cierre de sesión. Muestra un mensaje de notificación y abre la ventana de inicio de sesión.
+     *
+     * @param evt Evento de acción que desencadena el cierre de sesión.
+     */
     private void txtCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCerrarSesionActionPerformed
         JOptionPane.showMessageDialog(this, "Se ha cerrado sesión correctamente.", "Notificación", JOptionPane.INFORMATION_MESSAGE);
         IniciarSesionFrame iniciarSesion = new IniciarSesionFrame();
@@ -336,12 +384,22 @@ public class HistorialOperacionesFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_cmbOperacionesActionPerformed
 
+    /**
+     * Maneja el evento de edición de perfil. Abre la ventana de actualización de usuario para permitir la edición del perfil del cliente actual.
+     *
+     * @param evt Evento de acción que desencadena la edición del perfil.
+     */
     private void txtEditarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEditarPerfilActionPerformed
         ActualizarUsuarioFrame editarPerfil = new ActualizarUsuarioFrame(cliente);
         editarPerfil.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_txtEditarPerfilActionPerformed
 
+    /**
+     * Maneja el evento de clic en el componente JLabel8. Abre la ventana del menú de cuenta, permitiendo al usuario acceder a las funciones relacionadas con su cuenta.
+     *
+     * @param evt Evento de ratón que desencadena la apertura del menú de cuenta.
+     */
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
         MenuCuentaFrame menuCuenta = null;
         try {

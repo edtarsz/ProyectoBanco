@@ -15,26 +15,31 @@ import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
 
 /**
+ * Clase que representa la interfaz gráfica para el registro de un nuevo usuario. Permite ingresar información como nombre, apellidos, contraseña, dirección, fecha de nacimiento, etc. Al confirmar el registro, verifica la validez de los datos y agrega al cliente en caso de ser correctos. Muestra mensajes de notificación en caso de errores o éxito en el registro. También proporciona un enlace para iniciar sesión.
  *
- * @author JoseH
+ * @author Eduardo Talavera Ramos | 00000245244
+ * @author Angel Huerta Amparán | 00000245345
  */
 public class RegistrarUsuarioFrame extends javax.swing.JFrame {
 
-
     /**
-     * Creates new form RegistrarUsuarioFrame
-     *
+     * Constructor que inicializa la interfaz gráfica del formulario de registro.
      */
     public RegistrarUsuarioFrame() {
         initComponents();
     }
 
+    /**
+     * Método para agregar un nuevo cliente al sistema, utilizando la información ingresada en el formulario. Realiza validaciones de contraseñas y campos obligatorios. Muestra mensajes de notificación en caso de éxito o error.
+     */
     private void agregar() {
+        // Obtener las contraseñas del formulario
         char[] contrasenaCharArray = pswContraseña.getPassword();
         char[] contrasenaConfiCharArray = pswContraseñaConfirmar.getPassword();
         String contraseña = new String(contrasenaCharArray);
         String contraseñaConfirmar = new String(contrasenaConfiCharArray);
 
+        // Variables para almacenar la información del cliente
         int edad;
         String nombre = txtNombre.getText();
         String apellidoPaterno = txtPaterno.getText();
@@ -45,11 +50,14 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         String calle = txtCalle.getText();
         String numExterior = txtNumExterior.getText();
 
+        // Obtener la fecha de nacimiento del formulario
         Date fecha = txtfechaNacimiento.getDate();
         String fechaNacimiento = (fecha != null) ? new SimpleDateFormat("yyyy-MM-dd").format(fecha) : "Fecha no seleccionada";
 
+        // Crear un objeto ClienteDTO para almacenar la información del cliente
         ClienteDTO clienteNuevo = new ClienteDTO();
 
+        // Configurar los atributos del cliente
         clienteNuevo.setNombre(nombre);
         clienteNuevo.setApellidoPaterno(apellidoPaterno);
         clienteNuevo.setApellidoMaterno(apellidoMaterno);
@@ -62,46 +70,62 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         clienteNuevo.setFechaNacimiento(fechaNacimiento);
 
         try {
+            // Calcular la edad del cliente a partir de la fecha de nacimiento
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate fechaNacimientoDate = LocalDate.parse(fechaNacimiento, formatter);
             LocalDate fechaActual = LocalDate.now();
             Period periodo = Period.between(fechaNacimientoDate, fechaActual);
             edad = periodo.getYears();
-            System.out.println("");
             clienteNuevo.setUsuario(nombre);
             clienteNuevo.setEdad(edad);
         } catch (Exception ex) {
         }
+
         try {
+            // Validar las contraseñas ingresadas
             if (!validarContraseñas(contraseña, contraseñaConfirmar)) {
                 errorContraseña.setText("Las contraseñas no coinciden.");
             } else {
                 errorContraseña.setText("");
+                // Validar que se hayan completado todos los campos
                 if (!validarCampo()) {
                     JOptionPane.showMessageDialog(this, "Rellene todos los campos", "Notificación", JOptionPane.INFORMATION_MESSAGE);
                 } else if (clienteNuevo.esValido()) {
+                    // Agregar el cliente a la base de datos
                     Banco.clienteDao.agregar(clienteNuevo);
+                    // Limpiar los campos del formulario
                     limpiarCampos();
+                    // Mostrar mensajes de éxito
                     JOptionPane.showMessageDialog(this, "Se registra al cliente", "Notificación", JOptionPane.INFORMATION_MESSAGE);
                     JOptionPane.showMessageDialog(this, "Tu usuario es: " + clienteNuevo.getUsuario(), "Notificación", JOptionPane.INFORMATION_MESSAGE);
+                    // Redirigir a la pantalla de inicio de sesión
                     IniciarSesionFrame iniciarSesion = new IniciarSesionFrame();
                     iniciarSesion.setVisible(true);
                     this.dispose();
                 }
             }
         } catch (ValidacionDTOException ex) {
+            // Mostrar mensaje de error en caso de validación fallida
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error de validación", JOptionPane.ERROR_MESSAGE);
         } catch (PersistenciaException ex) {
+            // Mostrar mensaje de error en caso de fallo al agregar el cliente a la base de datos
             JOptionPane.showMessageDialog(this, "No fue posible agregar al cliente", "Error de almacenamiento", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    /**
+     * Método para validar que todos los campos obligatorios del formulario estén completos.
+     *
+     * @return true si todos los campos están completos, false si algún campo está vacío.
+     */
     public boolean validarCampo() {
+        // Obtener las contraseñas del formulario
         char[] contrasenaCharArray = pswContraseña.getPassword();
         char[] contrasenaConfiCharArray = pswContraseñaConfirmar.getPassword();
         String contraseña = new String(contrasenaCharArray);
         String contraseñaConfirmar = new String(contrasenaConfiCharArray);
 
+        // Verificar si algún campo obligatorio está vacío
         if (txtNombre.getText().isBlank()
                 || txtPaterno.getText().isBlank()
                 || txtMaterno.getText().isBlank()
@@ -117,8 +141,13 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         return true;
     }
 
+    /**
+     * Método para limpiar todos los campos del formulario.
+     */
     private void limpiarCampos() {
+        // Limpiar mensajes de error
         errorContraseña.setText("");
+        // Limpiar campos de texto
         txtNombre.setText("");
         txtPaterno.setText("");
         txtMaterno.setText("");
@@ -127,13 +156,24 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         txtColonia.setText("");
         txtCalle.setText("");
         txtNumExterior.setText("");
+        // Limpiar campos de contraseña
         pswContraseña.setText("");
         pswContraseñaConfirmar.setText("");
+        // Limpiar campo de fecha de nacimiento
         txtfechaNacimiento.setDate(null);
     }
 
+    /**
+     * Método para validar que las contraseñas ingresadas coincidan.
+     *
+     * @param contraseña Contraseña ingresada.
+     * @param confirmarContraseña Confirmación de la contraseña ingresada.
+     * @return true si las contraseñas coinciden, false si no coinciden.
+     */
     public boolean validarContraseñas(String contraseña, String confirmarContraseña) {
+        // Verificar si las contraseñas coinciden
         if (!contraseña.equals(confirmarContraseña)) {
+            // Mostrar mensaje de error en caso de no coincidencia
             errorContraseña.setText("Las contraseñas no coinciden.");
             return false;
         }
@@ -529,6 +569,12 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Método ejecutado al hacer clic en el botón "Registrar". Invoca el método para agregar un nuevo cliente al sistema.
+     *
+     * @param evt Evento de acción generado al hacer clic en el botón.
+     */
+
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         agregar();
     }//GEN-LAST:event_btnRegistrarActionPerformed
@@ -569,12 +615,22 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         errorContraseña.setText("");
     }//GEN-LAST:event_pswContraseñaConfirmarMouseClicked
 
+    /**
+     * Método ejecutado al hacer clic en el componente con el identificador "jLabel7". Crea una nueva instancia de la clase "IndiceFrame", la hace visible y cierra la ventana actual.
+     *
+     * @param evt Evento de ratón generado al hacer clic en el componente.
+     */
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
         IndiceFrame indiceFrame = new IndiceFrame();
         indiceFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel7MouseClicked
 
+    /**
+     * Método ejecutado al hacer clic en el componente con el identificador "jLabel13". Crea una nueva instancia de la clase "IniciarSesionFrame", la hace visible y cierra la ventana actual.
+     *
+     * @param evt Evento de ratón generado al hacer clic en el componente.
+     */
     private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
         IniciarSesionFrame iniciarSesion = new IniciarSesionFrame();
         iniciarSesion.setVisible(true);

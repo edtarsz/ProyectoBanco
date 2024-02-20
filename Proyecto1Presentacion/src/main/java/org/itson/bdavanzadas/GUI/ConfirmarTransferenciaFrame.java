@@ -5,30 +5,38 @@
 package org.itson.bdavanzadas.GUI;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.itson.bdavanzadas.proyecto.daos.IClienteDAO;
-import org.itson.bdavanzadas.proyecto.daos.ICuentaDAO;
 import org.itson.bdavanzadas.proyecto.dtos.TransferenciaDTO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyectodominio.Cliente;
-import org.itson.bdavanzadas.proyectodominio.Transferencia;
 
 /**
+ * La clase ConfirmarTransferenciaFrame representa una ventana de confirmación para una transferencia exitosa. Esta ventana muestra detalles de la transferencia, como la cuenta de origen, la cuenta de destino, el monto y la fecha de operación. Permite al usuario confirmar la transferencia y regresar al menú de cuenta.
  *
- * @author JoseH
+ * @author Eduardo Talavera Ramos | 00000245244
+ * @author Angel Huerta Amparán | 00000245345
  */
 public class ConfirmarTransferenciaFrame extends javax.swing.JFrame {
 
-    TransferenciaDTO transferencia;
-    Cliente cliente;
+    // Atributos de la clase
+    private TransferenciaDTO transferencia; // Representa los detalles de la transferencia
+    private Cliente cliente; // Representa al cliente asociado a la transferencia
 
+    /**
+     * Constructor predeterminado de la clase ConfirmarTransferenciaFrame. Crea una nueva instancia de la ventana sin inicializar detalles de transferencia ni cliente.
+     */
     public ConfirmarTransferenciaFrame() {
         initComponents();
     }
 
     /**
-     * Creates new form ConfirmarTransferenciaFrame
+     * Constructor de la clase ConfirmarTransferenciaFrame que recibe una TransferenciaDTO y un Cliente. Inicializa la ventana con los detalles de la transferencia y el cliente proporcionados.
+     *
+     * @param trans Detalles de la transferencia a confirmar.
+     * @param cliente Cliente asociado a la transferencia.
      */
     public ConfirmarTransferenciaFrame(TransferenciaDTO trans, Cliente cliente) {
         initComponents();
@@ -37,8 +45,9 @@ public class ConfirmarTransferenciaFrame extends javax.swing.JFrame {
 
         txtCuentaDestino.setText(String.valueOf(trans.getIdCuentaDestino()));
         txtCuentaOrigen.setText(String.valueOf(trans.getIdCuenta()));
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        String fechaString = formatter.format(trans.getFechaHora());
+        LocalDateTime fechaHora = trans.getFechaHora();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String fechaString = fechaHora.format(formatter);
         txtFechaOperacion.setText(fechaString);
         txtMonto.setText(String.valueOf(trans.getMonto()));
     }
@@ -201,12 +210,19 @@ public class ConfirmarTransferenciaFrame extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Método llamado cuando se hace clic en el botón de confirmar. Cierra la ventana y abre el menú de cuenta asociado al cliente.
+     *
+     * @param evt Evento de acción del botón.
+     */
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
-        dispose();
+        dispose(); // Cierra la ventana actual
         MenuCuentaFrame menuCuentaFrm;
         try {
+            // Abre el menú de cuenta asociado al cliente
             menuCuentaFrm = new MenuCuentaFrame(cliente);
             menuCuentaFrm.setVisible(true);
         } catch (PersistenciaException ex) {
@@ -214,10 +230,16 @@ public class ConfirmarTransferenciaFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_confirmarBtnActionPerformed
 
+    /**
+     * Método llamado cuando se hace clic en el logotipo del banco. Cierra la ventana actual y abre el menú de cuenta asociado al cliente.
+     *
+     * @param evt Evento de clic del mouse en el logotipo.
+     */
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        dispose();
+        dispose(); // Cierra la ventana actual
         MenuCuentaFrame menuCuentaFrm;
         try {
+            // Abre el menú de cuenta asociado al cliente
             menuCuentaFrm = new MenuCuentaFrame(cliente);
             menuCuentaFrm.setVisible(true);
         } catch (PersistenciaException ex) {

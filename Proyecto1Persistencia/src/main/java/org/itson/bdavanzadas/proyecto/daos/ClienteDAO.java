@@ -24,7 +24,8 @@ import org.itson.bdavanzadas.proyectodominio.Cuenta;
 
 /**
  *
- * @author Ramosz
+ * @author Eduardo Talavera Ramos | 00000245244
+ * @author Angel Huerta Amparán | 00000245345
  */
 public class ClienteDAO implements IClienteDAO {
 

@@ -10,16 +10,22 @@ import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
 import org.itson.bdavanzadas.proyectodominio.Operacion;
 
 /**
+ * DTO (Data Transfer Object) para representar la información de un retiro sin cuenta.
  *
- * @author JoseH
+ * Esta clase hereda de la clase Operacion y agrega atributos y métodos específicos para un retiro sin cuenta. También incluye validaciones para asegurar la integridad de los datos.
+ *
+ * @author Eduardo Talavera Ramos | 00000245244
+ * @author Angel Huerta Amparán | 00000245345
  */
 public class RetiroSinCuentaDTO extends Operacion {
 
+    // Atributos adicionales para un retiro sin cuenta
     String idCuenta;
     String folio;
     String contraseñaRetiro;
     String estado;
 
+    // Métodos para obtener los atributos específicos de un retiro sin cuenta
     public String getEstado() {
         return estado;
     }
@@ -36,6 +42,7 @@ public class RetiroSinCuentaDTO extends Operacion {
         return contraseñaRetiro;
     }
 
+    // Métodos para establecer los atributos específicos de un retiro sin cuenta
     public void setIdCuenta(String idCuenta) {
         this.idCuenta = idCuenta;
     }
@@ -44,6 +51,7 @@ public class RetiroSinCuentaDTO extends Operacion {
         this.folio = folio;
     }
 
+    // Método para generar una contraseña encriptada de forma segura, primero genera la contraseña aleatoria y luego la encripta.
     public void setContraseñaEcriptada() {
         char[] contraseñaArray = new char[8];
 
@@ -63,8 +71,9 @@ public class RetiroSinCuentaDTO extends Operacion {
 
         this.contraseñaRetiro = new String(contraseñaArray);
     }
-    
-    public void setContraseñaRetiro(String contraseñaRetiro){
+
+    // Método para establecer la contraseña de retiro directamente
+    public void setContraseñaRetiro(String contraseñaRetiro) {
         this.contraseñaRetiro = contraseñaRetiro;
     }
 
@@ -72,6 +81,7 @@ public class RetiroSinCuentaDTO extends Operacion {
         this.estado = estado;
     }
 
+    // Método para generar un folio aleatorio utilizando la clase random
     public void setFolio() {
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
@@ -82,7 +92,9 @@ public class RetiroSinCuentaDTO extends Operacion {
         this.folio = sb.toString();
     }
 
+    // Método para validar la integridad de los datos
     public boolean esValido() throws ValidacionDTOException {
+        // Validaciones para cada atributo, corroborar que cumplan las condiciones de la base de datos.
         if (this.idCuenta == null) {
             throw new ValidacionDTOException("Número de cuenta inválido");
         }
@@ -95,7 +107,7 @@ public class RetiroSinCuentaDTO extends Operacion {
         if (this.estado == null || this.estado.length() > 20) {
             throw new ValidacionDTOException("Estado inválido: debe tener 20 caracteres o menos");
         }
+        // Si todas las validaciones son exitosas, retorna verdadero
         return true;
     }
-
 }

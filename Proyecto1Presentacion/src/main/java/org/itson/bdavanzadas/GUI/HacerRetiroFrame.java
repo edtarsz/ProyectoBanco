@@ -11,29 +11,39 @@ import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyectodominio.RetiroSinCuenta;
 
 /**
+ * Clase que representa la interfaz gráfica para realizar un retiro sin cuenta. Extiende javax.swing.JFrame.
  *
- * @author JoseH
+ * La clase permite al usuario ingresar los datos necesarios para realizar un retiro sin cuenta, como el folio, contraseña y monto. Además, proporciona funcionalidad para confirmar el retiro.
+ *
+ * @author Eduardo Talavera Ramos | 00000245244
+ * @author Angel Huerta Amparán | 00000245345
  */
 public class HacerRetiroFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form HacerRetiroFrame
+     * Constructor que inicializa la interfaz gráfica.
      */
     public HacerRetiroFrame() {
         initComponents();
     }
 
+    /**
+     * Método para realizar el retiro sin cuenta. Verifica que los campos estén completos y luego procesa el retiro, mostrando los resultados.
+     *
+     * @throws PersistenciaException Si hay un error al interactuar con la capa de persistencia.
+     */
     public void realizarRetiro() throws PersistenciaException {
-        if (txtFolio.getText() == null || txtFolio.getText().isEmpty() || txtContraseña.getText() == null || txtContraseña.getText().isEmpty()){
+        if (txtFolio.getText() == null || txtFolio.getText().isEmpty() || txtContraseña.getText() == null || txtContraseña.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Rellene todos los campos", "Notificación", JOptionPane.INFORMATION_MESSAGE);
         } else {
-        String folio = txtFolio.getText();
-        String contraseña = txtContraseña.getText();
-        float monto = Integer.parseInt(txtMonto.getText());
-        RetiroSinCuenta retiro = new RetiroSinCuenta(folio, contraseña);
-        Banco.retiroDao.procesarRetiro(Banco.retiroDao.consultarRetiro(retiro));
-        DatosRetiroForm datosFrame = new DatosRetiroForm(retiro);
-    }
+            String folio = txtFolio.getText();
+            String contraseña = txtContraseña.getText();
+            float monto = Integer.parseInt(txtMonto.getText());
+            RetiroSinCuenta retiro = new RetiroSinCuenta(folio, contraseña);
+            Banco.retiroDao.procesarRetiro(Banco.retiroDao.consultarRetiro(retiro));
+            JOptionPane.showMessageDialog(null, "Retiro exitoso en la fecha:" + retiro.getFechaHora());
+
+        }
     }
 
     /**
@@ -180,6 +190,11 @@ public class HacerRetiroFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEditarPerfilTActionPerformed
 
+    /**
+     * Método invocado cuando se hace clic en el botón de confirmar retiro. Intenta realizar el retiro llamando al método realizarRetiro(). Si hay una excepción de tipo PersistenciaException, se registra un mensaje de error en el log.
+     *
+     * @param evt Objeto ActionEvent que representa el evento de acción.
+     */
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
         try {
             realizarRetiro();
@@ -193,6 +208,11 @@ public class HacerRetiroFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtContraseñaActionPerformed
 
+    /**
+     * Método invocado cuando se hace clic en el elemento gráfico con etiqueta jLabel6. Crea y muestra una nueva instancia de IndiceFrame y luego cierra la ventana actual.
+     *
+     * @param evt Objeto MouseEvent que representa el evento de clic del mouse.
+     */
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         IndiceFrame indice = new IndiceFrame();
         indice.setVisible(true);

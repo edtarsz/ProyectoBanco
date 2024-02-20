@@ -19,8 +19,10 @@ import org.itson.bdavanzadas.proyectodominio.Cliente;
 import org.itson.bdavanzadas.proyectodominio.Cuenta;
 
 /**
+ * Clase que representa la interfaz gráfica del menú de cuenta. Permite realizar operaciones relacionadas con las cuentas de un cliente.
  *
- * @author JoseH
+ * @author Eduardo Talavera Ramos | 00000245244
+ * @author Angel Huerta Amparán | 00000245345
  */
 public class MenuCuentaFrame extends javax.swing.JFrame {
 
@@ -28,10 +30,19 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
     private Cliente cliente;
     private boolean estadoDesplegado = false;
 
+    /**
+     * Constructor por defecto de la clase MenuCuentaFrame. Inicializa los componentes de la interfaz gráfica.
+     */
     public MenuCuentaFrame() {
         initComponents();
     }
 
+    /**
+     * Constructor que recibe un cliente como parámetro. Inicializa los componentes de la interfaz gráfica y muestra las cuentas asociadas al cliente.
+     *
+     * @param cliente Cliente para el cual se mostrarán las cuentas.
+     * @throws PersistenciaException Si hay un error al consultar las cuentas del cliente.
+     */
     public MenuCuentaFrame(Cliente cliente) throws PersistenciaException {
         initComponents();
 
@@ -43,66 +54,116 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Método para agregar una nueva cuenta al cliente. Crea una nueva cuenta, la valida y la agrega al cliente.
+     */
     private void agregarCuenta() {
+        // Se crea una nueva instancia de CuentaDTO
         CuentaDTO cuentaNueva = new CuentaDTO();
+
+        // Se asigna un número de cuenta automáticamente
         cuentaNueva.setNumCuenta();
+
+        // Se establece el ID del cliente asociado a la cuenta
         cuentaNueva.setIdCliente(cliente.getIdCliente());
+
+        // Se establece un saldo inicial para la cuenta
         cuentaNueva.setSaldo((float) 10000.00);
+
+        // Se establece el estado inicial de la cuenta como "Activa"
         cuentaNueva.setEstado("Activa");
 
+        // Se obtiene la fecha actual y se establece como la fecha de apertura de la cuenta
         Date fechaActual = new Date();
         cuentaNueva.setFechaApertura(fechaActual);
 
+        // Se imprime en consola información sobre la nueva cuenta
         System.out.println("Cuenta nueva: " + cuentaNueva);
+
         try {
+            // Se valida la cuenta antes de agregarla al cliente
             if (cuentaNueva.esValido()) {
+                // Se agrega la cuenta al cliente a través del DAO de cliente
                 cuentaMostrada = Banco.clienteDao.agregarCuenta(cuentaNueva);
+
+                // Se muestra un mensaje de notificación al usuario
                 JOptionPane.showMessageDialog(this, "Se registra la cuenta", "Notificación", JOptionPane.INFORMATION_MESSAGE);
+
+                // Se actualiza la visualización de las cuentas del cliente
                 mostrarCuentas();
             }
         } catch (ValidacionDTOException ex) {
+            // Si hay errores de validación, se muestra un mensaje de error
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error de validación", JOptionPane.ERROR_MESSAGE);
         } catch (PersistenciaException ex) {
+            // Si hay errores al agregar la cuenta al cliente, se muestra un mensaje de error
             JOptionPane.showMessageDialog(this, "No fue posible agregar al cliente", "Error de almacenamiento", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    /**
+     * Método para cancelar una cuenta seleccionada por el cliente. Solicita confirmación antes de cancelar la cuenta.
+     */
     public void cancelarCuenta() {
+        // Se obtiene la cuenta seleccionada del JComboBox
         String cuentaSelect = (String) cmbCuentas.getSelectedItem();
 
+        // Se verifica que la cuenta seleccionada no sea nula y sea una instancia de String
         if (cuentaSelect != null && cuentaSelect instanceof String) {
+            // Se divide la cadena para obtener el número de cuenta
             String[] partes = cuentaSelect.split(" ");
             String numeroCuenta = partes[0].substring(0);
 
+            // Se muestra un cuadro de diálogo de confirmación al usuario
             int opcion = JOptionPane.showConfirmDialog(this, "¿Está seguro de cancelar la cuenta?", "Confirmación", JOptionPane.YES_NO_OPTION);
 
+            // Si el usuario confirma la cancelación
             if (opcion == JOptionPane.YES_OPTION) {
                 try {
+                    // Se utiliza el DAO de cliente para cambiar el estado de la cuenta a "Cancelada"
                     Banco.clienteDao.cambiarEstadoCuenta(numeroCuenta, "Cancelada");
+
+                    // Se muestra un mensaje de notificación al usuario
                     JOptionPane.showMessageDialog(this, "Se canceló la cuenta", "Notificación", JOptionPane.INFORMATION_MESSAGE);
+
+                    // Se actualiza la visualización de las cuentas del cliente
                     mostrarCuentas();
                 } catch (PersistenciaException ex) {
+                    // Si hay errores al cancelar la cuenta, se muestra un mensaje de error
                     JOptionPane.showMessageDialog(this, "No fue posible cancelar la cuenta", "Error de almacenamiento", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } else {
+            // Si no hay cuenta seleccionada, se muestra un mensaje de advertencia
             JOptionPane.showMessageDialog(this, "No hay cuenta seleccionada para cancelar", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
 
+    /**
+     * Método para mostrar las cuentas asociadas al cliente en el ComboBox.
+     *
+     * @throws PersistenciaException Si hay un error al consultar las cuentas del cliente.
+     */
     private void mostrarCuentas() {
         try {
+            // Se obtiene la lista de cuentas asociadas al cliente
             List<Cuenta> listaCuentas = Banco.clienteDao.consultarCuentas(this.cliente);
 
+            // Se crea un nuevo modelo para el ComboBox
             DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
 
+            // Se recorre la lista de cuentas
             for (Cuenta cuenta : listaCuentas) {
+                // Solo se agregan las cuentas activas al modelo
                 if ("Activa".equals(cuenta.getEstado())) {
+                    // Se añade cada cuenta al modelo del ComboBox con un formato específico
                     model.addElement(String.valueOf(cuenta.getNumCuenta()) + "      Saldo:" + cuenta.getSaldo());
                 }
             }
+            // Se establece el nuevo modelo en el ComboBox
             cmbCuentas.setModel(model);
         } catch (PersistenciaException ex) {
+            // Si hay errores al consultar las cuentas, se registra el error
             Logger.getLogger(TransferenciaFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -392,42 +453,74 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_nombreUsuarioActionPerformed
 
+    /**
+     * Método invocado cuando se hace clic en el botón de usuario.
+     *
+     * @param evt El evento de acción asociado.
+     */
     private void btnUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuarioActionPerformed
+        // Verifica si el área de opciones de usuario está desplegada o no
         if (!estadoDesplegado) {
+            // Si no está desplegado, muestra los textos "* Editar perfil" y "* Cerrar sesión"
             txtEditarPerfil.setText("* Editar perfil");
             txtCerrarSesion.setText("* Cerrar sesión");
         } else {
-            // Si ya está desplegado, oculta el texto
+            // Si ya está desplegado, oculta los textos
             txtEditarPerfil.setText("");
             txtCerrarSesion.setText("");
         }
 
-        // Cambia el estado
+        // Cambia el estado de despliegue para la próxima vez
         estadoDesplegado = !estadoDesplegado;
     }//GEN-LAST:event_btnUsuarioActionPerformed
 
+    /**
+     * Abre la ventana de historial de operaciones y cierra la ventana actual.
+     *
+     * @param evt Evento de acción del botón.
+     */
     private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
         HistorialOperacionesFrame historialFrame = new HistorialOperacionesFrame(cliente);
         historialFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnHistorialActionPerformed
 
+    /**
+     * Método asociado al clic del botón para agregar una cuenta. Invoca el método agregarCuenta() para agregar una nueva cuenta al cliente.
+     *
+     * @param evt Evento de acción del botón.
+     */
     private void agregarCuentabtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCuentabtnActionPerformed
         agregarCuenta();
     }//GEN-LAST:event_agregarCuentabtnActionPerformed
 
+    /**
+     * Abre la ventana de transferencia y cierra la ventana actual.
+     *
+     * @param evt Evento de acción del botón.
+     */
     private void transferenciaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferenciaBtnActionPerformed
         TransferenciaFrame transferencia = new TransferenciaFrame(cliente);
         transferencia.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_transferenciaBtnActionPerformed
 
+    /**
+     * Abre la ventana de solicitud de retiro y cierra la ventana actual.
+     *
+     * @param evt Evento de acción del botón.
+     */
     private void retiroBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retiroBtnActionPerformed
         SolicitarRetiroFrame retiroFrm = new SolicitarRetiroFrame(cliente);
         retiroFrm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_retiroBtnActionPerformed
 
+    /**
+     * Abre la ventana de actualización de usuario y cierra la ventana actual.
+     *
+     * @param evt Evento de acción del área de texto.
+     */
     private void txtEditarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEditarPerfilActionPerformed
         ActualizarUsuarioFrame editarPerfil = new ActualizarUsuarioFrame(cliente);
         editarPerfil.setVisible(true);
@@ -438,6 +531,11 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnUsuarioMouseClicked
 
+    /**
+     * Muestra un mensaje de notificación y abre la ventana de inicio de sesión, cerrando la ventana actual.
+     *
+     * @param evt Evento de acción del área de texto.
+     */
     private void txtCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCerrarSesionActionPerformed
         JOptionPane.showMessageDialog(this, "Se ha cerrado sesión correctamente.", "Notificación", JOptionPane.INFORMATION_MESSAGE);
         IniciarSesionFrame iniciarSesion = new IniciarSesionFrame();
@@ -449,6 +547,11 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbCuentasActionPerformed
 
+    /**
+     * Método asociado al clic del botón para cancelar una cuenta. Invoca el método cancelarCuenta() para cancelar la cuenta seleccionada.
+     *
+     * @param evt Evento de acción del botón.
+     */
     private void agregarCuentabtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCuentabtn1ActionPerformed
         cancelarCuenta();
     }//GEN-LAST:event_agregarCuentabtn1ActionPerformed

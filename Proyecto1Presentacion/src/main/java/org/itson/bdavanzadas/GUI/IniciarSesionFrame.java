@@ -6,37 +6,51 @@ package org.itson.bdavanzadas.GUI;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.itson.bdavanzadas.proyecto.daos.IClienteDAO;
-import org.itson.bdavanzadas.proyecto.daos.ICuentaDAO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyectodominio.Cliente;
 
 /**
+ * La clase IniciarSesionFrame representa la ventana de inicio de sesión de la aplicación. Permite a los usuarios ingresar sus credenciales para acceder al sistema.
  *
- * @author JoseH
+ * @author Eduardo Talavera Ramos | 00000245244
+ * @author Angel Huerta Amparán | 00000245345
  */
 public class IniciarSesionFrame extends javax.swing.JFrame {
 
+    // Atributo de la clase
     private Cliente usuario;
 
-
+    /**
+     * Crea una nueva instancia de IniciarSesionFrame. Inicializa los componentes de la interfaz gráfica de usuario.
+     */
     public IniciarSesionFrame() {
         initComponents();
     }
 
+    /**
+     * Valida los campos de usuario y contraseña antes de intentar iniciar sesión.
+     *
+     * @return true si los campos son válidos, false si uno o ambos campos son nulos o están en blanco.
+     */
     public boolean validarCampo() {
+        // Verifica si los campos de usuario y contraseña son nulos
         if (txtUsuario == null || pswContrasenia == null) {
             return false;
         }
 
+        // Obtiene la contraseña como una cadena de caracteres desde el campo de contraseña
         char[] contrasenaCharArray = pswContrasenia.getPassword();
         String contraseña = new String(contrasenaCharArray).trim();
 
+        // Verifica si el campo de usuario o la contraseña están en blanco
         if (txtUsuario.getText().isBlank() || contraseña.isBlank()) {
             return false;
         }
 
+        // Limpia la referencia de la contraseña por razones de seguridad
         contraseña = null;
+
+        // Devuelve true si los campos son válidos
         return true;
     }
 
@@ -267,6 +281,11 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    /**
+     * Realiza el proceso de inicio de sesión al hacer clic en el botón "Iniciar Sesión". Verifica las credenciales ingresadas por el usuario y redirige a la ventana del menú de la cuenta en caso de éxito. Muestra mensajes de error si las credenciales son incorrectas o no se han ingresado correctamente.
+     *
+     * @param evt El evento de acción que desencadenó este método (clic en el botón "Iniciar Sesión").
+     */
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
         boolean existeUsuario = false;
         String usuario = txtUsuario.getText();
@@ -276,6 +295,7 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
 
         if (validarCampo()) {
             try {
+                // Itera sobre los clientes en la base de datos para verificar las credenciales.
                 for (Cliente cliente : Banco.clienteDao.consultar()) {
                     if (cliente.getUsuario().equals(usuario) && cliente.getContraseña().equals(contrasenia)) {
                         this.usuario = cliente;
@@ -286,12 +306,14 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
                 Logger.getLogger(IniciarSesionFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            errorContraseña.setText("Ingrese una contraseña valida.");
+            // Muestra un mensaje de error si la contraseña no es válida.
+            errorContraseña.setText("Ingrese una contraseña válida.");
         }
 
         if (existeUsuario) {
             try {
                 System.out.println(this.usuario.getNombre());
+                // Redirige a la ventana del menú de la cuenta en caso de éxito.
                 MenuCuentaFrame menuCuentaFrm = new MenuCuentaFrame(this.usuario);
                 menuCuentaFrm.setVisible(true);
                 this.dispose();
@@ -299,10 +321,16 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
                 Logger.getLogger(IniciarSesionFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            errorUsuario.setText("Ingrese un usuario valido.");
+            // Muestra un mensaje de error si el usuario no es válido.
+            errorUsuario.setText("Ingrese un usuario válido.");
         }
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
+    /**
+     * Abre la ventana de registro de usuario al hacer clic en el botón "Registro". Cierra la ventana actual.
+     *
+     * @param evt El evento de acción que desencadenó este método (clic en el botón "Registro").
+     */
     private void btnRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroActionPerformed
         RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame();
         registrarUsuario.setVisible(true);
@@ -317,12 +345,22 @@ public class IniciarSesionFrame extends javax.swing.JFrame {
         errorContraseña.setText("");
     }//GEN-LAST:event_pswContraseniaMouseClicked
 
+    /**
+     * Abre la ventana de índice al hacer clic en la etiqueta jLabel7. Cierra la ventana actual.
+     *
+     * @param evt El evento de clic del mouse.
+     */
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
         IndiceFrame indiceFrame = new IndiceFrame();
         indiceFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel7MouseClicked
 
+    /**
+     * Abre la ventana de índice al hacer clic en la etiqueta jLabel6. Cierra la ventana actual.
+     *
+     * @param evt El evento de clic del mouse.
+     */
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         IndiceFrame indiceFrame = new IndiceFrame();
         indiceFrame.setVisible(true);

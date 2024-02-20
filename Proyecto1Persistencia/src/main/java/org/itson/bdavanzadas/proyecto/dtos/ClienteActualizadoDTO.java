@@ -8,11 +8,16 @@ import java.security.SecureRandom;
 import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
 
 /**
+ * DTO (Data Transfer Object) para representar la actualización de datos de un cliente.
  *
- * @author Ramosz
+ * Esta clase contiene atributos y métodos para representar la actualización de información de un cliente. También incluye validaciones para asegurar la integridad de los datos.
+ *
+ * @author Eduardo Talavera Ramos | 00000245244
+ * @author Angel Huerta Amparán | 00000245345
  */
 public class ClienteActualizadoDTO {
 
+    // Atributos que representan la información del cliente
     String usuario;
     String nombre;
     String apellidoPaterno;
@@ -26,6 +31,7 @@ public class ClienteActualizadoDTO {
     String ciudad;
     int edad;
 
+    // Método para obtener el usuario generado a partir del nombre
     public String getUsuario() {
         return usuario;
     }
@@ -74,6 +80,7 @@ public class ClienteActualizadoDTO {
         return edad;
     }
 
+    // Método para establecer el usuario basado en el nombre, en este metodo se crea un usuario a partir de los primeros 3 caracteres del nombre y los 5 caracteres restantes son una cadena de números aleatorios generados utilizando la clase random.
     public void setUsuario(String nombre) {
         if (nombre != null && nombre.length() >= 3) {
             StringBuilder sb = new StringBuilder();
@@ -85,13 +92,18 @@ public class ClienteActualizadoDTO {
                 sb.append(digitoAleatorio);
             }
 
+            // Toma los primeros tres caracteres del nombre
             String primerosTresCaracteres = nombre.substring(0, Math.min(nombre.length(), 3));
+
+            // Combinar los caracteres del nombre con los números aleatorios generados
             this.usuario = primerosTresCaracteres + sb.toString();
         } else {
+            // Lanza una excepción si el nombre no es válido para generar el usuario
             throw new IllegalArgumentException("Nombre no válido para generar el usuario");
         }
     }
 
+    // Métodos para establecer los demás atributos
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -104,10 +116,13 @@ public class ClienteActualizadoDTO {
         this.apellidoMaterno = apellidoMaterno;
     }
 
+    // Este metodo es donde se encripta la contraseña a partir de una cadena de caracteres que recibe como atributo, utiliza un método muy sencillo que es aumentar en 5 posiciones el carácter.
     public void setContraseña(char[] contraseña) {
+        // Modificar cada carácter de la contraseña sumándole 5 al valor ASCII
         for (int i = 0; i < contraseña.length; i++) {
             contraseña[i] += 5;
         }
+        // Convierte el arreglo de caracteres modificado de nuevo a String
         this.contraseña = new String(contraseña);
     }
 
@@ -139,7 +154,9 @@ public class ClienteActualizadoDTO {
         this.edad = edad;
     }
 
+    // Método para validar la integridad de los datos
     public boolean esValido() throws ValidacionDTOException {
+        // Validaciones de longitud para cada atributo y comprobación que no sean nulos
         if (this.nombre.trim().length() > 50) {
             throw new ValidacionDTOException("Nombre inválido");
         }

@@ -18,8 +18,10 @@ import org.itson.bdavanzadas.proyectodominio.Cliente;
 import org.itson.bdavanzadas.proyectodominio.Cuenta;
 
 /**
+ * Clase que representa la ventana de transferencia entre cuentas. Permite realizar transferencias entre la cuenta origen del cliente y otra cuenta destino.
  *
- * @author JoseH
+ * @author Eduardo Talavera Ramos | 00000245244
+ * @author Angel Huerta Amparán | 00000245345
  */
 public class TransferenciaFrame extends javax.swing.JFrame {
 
@@ -56,7 +58,7 @@ public class TransferenciaFrame extends javax.swing.JFrame {
 
     }
 
-    public void realizarTransferencia() {
+    public void realizarTransferencia() throws PersistenciaException {
         String cuentaString = (String) cuentaOrigenCmbBox.getSelectedItem();
         Cuenta cuenta = new Cuenta();
         List<Cuenta> listaCuentas;
@@ -82,6 +84,7 @@ public class TransferenciaFrame extends javax.swing.JFrame {
             transferencia.setIdCuentaDestino(idCuentaDestino);
             transferencia.setFechaHora(fechaActual);
             transferencia.setMonto(monto);
+            Banco.transferenciaDao.realizarTransferencia(transferencia, Banco.cuentaDao.obtenerCuenta(cuenta.getNumCuenta()));
             dispose();
             ConfirmarTransferenciaFrame confirmar = new ConfirmarTransferenciaFrame(transferencia, cliente);
             confirmar.setVisible(true);
@@ -322,13 +325,20 @@ public class TransferenciaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_txtImporteActionPerformed
 
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
-        realizarTransferencia();
+        try {
+            realizarTransferencia();
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(TransferenciaFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_confirmarBtnActionPerformed
 
     private void txtImporteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtImporteMouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_txtImporteMouseEntered
 
+    /**
+     * Evento de clic en el JLabel para regresar al menú de cuenta. Cierra la ventana actual y muestra el menú de cuenta.
+     */
     private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
         MenuCuentaFrame menuCuenta = null;
         try {
@@ -340,6 +350,9 @@ public class TransferenciaFrame extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jLabel13MouseClicked
 
+    /**
+     * Evento de clic en el JLabel para regresar al menú de cuenta. Cierra la ventana actual y muestra el menú de cuenta.
+     */
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         dispose();
         MenuCuentaFrame menuCuentaFrm;

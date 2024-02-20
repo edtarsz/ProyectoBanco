@@ -13,8 +13,6 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import org.itson.bdavanzadas.proyecto.daos.IClienteDAO;
-import org.itson.bdavanzadas.proyecto.daos.ICuentaDAO;
 import org.itson.bdavanzadas.proyecto.dtos.ClienteActualizadoDTO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyecto.excepciones.ValidacionDTOException;
@@ -22,27 +20,35 @@ import org.itson.bdavanzadas.proyectodominio.Cliente;
 
 /**
  *
- * @author JoseH
+ * @author Eduardo Talavera Ramos | 00000245244
+ * @author Angel Huerta Amparán | 00000245345
  */
 public class ActualizarUsuarioFrame extends javax.swing.JFrame {
 
+    /**
+     * Atributo que almacena la información del cliente cuya información se va a actualizar.
+     */
     private Cliente cliente;
 
     /**
      * Creates new form RegistrarUsuarioFrame
-     *
-     * @param clienteDAO
-     * @param cuentaDAO
      */
     public ActualizarUsuarioFrame() {
         initComponents();
     }
 
+    /**
+     * Constructor que toma un objeto Cliente como argumento e inicializa la interfaz gráfica con la información del cliente proporcionado.
+     *
+     * @param cliente Objeto Cliente con la información del cliente a actualizar.
+     */
     public ActualizarUsuarioFrame(Cliente cliente) {
         initComponents();
 
+        // Asigna el cliente proporcionado al atributo de clase
         this.cliente = cliente;
 
+        // Establece los valores de los componentes de la interfaz con la información del cliente
         txtNombre.setText(cliente.getNombre());
         txtPaterno.setText(cliente.getApellidoPaterno());
         txtMaterno.setText(cliente.getApellidoMaterno());
@@ -54,23 +60,30 @@ public class ActualizarUsuarioFrame extends javax.swing.JFrame {
         txtCalle.setText(cliente.getCalle());
         txtNumExterior.setText(cliente.getNumExterior());
 
+        // Establece la fecha de nacimiento si está disponible en el cliente
         if (cliente.getFechaNacimiento() != null) {
             try {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 Date date = dateFormat.parse(cliente.getFechaNacimiento());
                 txtfechaNacimiento.setDate(date);
             } catch (ParseException e) {
+                // Maneja la excepción si hay un problema al analizar la fecha
             }
         }
     }
 
+    /**
+     * Método que se invoca al realizar la acción de edición. Obtiene los datos de la interfaz gráfica, realiza algunas validaciones y actualiza la información del cliente a través de métodos de persistencia.
+     */
     private void editar() {
+        // Obtiene las contraseñas como caracteres y las convierte a cadenas
         char[] contrasenaCharArray = pswContraseña.getPassword();
         char[] contrasenaConfiCharArray = pswContraseñaConfirmar.getPassword();
         String contraseña = new String(contrasenaCharArray);
         String contraseñaConfirmar = new String(contrasenaConfiCharArray);
 
         int edad;
+        // Obtiene otros datos de la interfaz gráfica
         String nombre = txtNombre.getText();
         String apellidoPaterno = txtPaterno.getText();
         String apellidoMaterno = txtMaterno.getText();
@@ -80,11 +93,12 @@ public class ActualizarUsuarioFrame extends javax.swing.JFrame {
         String calle = txtCalle.getText();
         String numExterior = txtNumExterior.getText();
 
+        // Obtiene la fecha de nacimiento y formatearla
         Date fecha = txtfechaNacimiento.getDate();
         String fechaNacimiento = (fecha != null) ? new SimpleDateFormat("yyyy-MM-dd").format(fecha) : "Fecha no seleccionada";
 
+        // Crea un objeto ClienteActualizadoDTO con los datos obtenidos
         ClienteActualizadoDTO clienteActualizado = new ClienteActualizadoDTO();
-
         clienteActualizado.setNombre(nombre);
         clienteActualizado.setApellidoPaterno(apellidoPaterno);
         clienteActualizado.setApellidoMaterno(apellidoMaterno);
@@ -97,6 +111,7 @@ public class ActualizarUsuarioFrame extends javax.swing.JFrame {
         clienteActualizado.setFechaNacimiento(fechaNacimiento);
 
         try {
+            // Calcula la edad a partir de la fecha de nacimiento
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate fechaNacimientoDate = LocalDate.parse(fechaNacimiento, formatter);
             LocalDate fechaActual = LocalDate.now();
@@ -105,18 +120,23 @@ public class ActualizarUsuarioFrame extends javax.swing.JFrame {
             clienteActualizado.setUsuario(nombre);
             clienteActualizado.setEdad(edad);
         } catch (Exception ex) {
+            // Maneja la excepción si hay un problema al calcular la edad
         }
 
         try {
+            // Valida las contraseñas y mostrar mensajes de error o éxito
             if (!validarContraseñas(contraseña, contraseñaConfirmar)) {
                 errorContraseña.setText("Las contraseñas no coinciden.");
             } else {
                 errorContraseña.setText("");
+                // Valida si todos los campos obligatorios están llenos
                 if (!validarCampo()) {
                     JOptionPane.showMessageDialog(this, "Rellene todos los campos", "Notificación", JOptionPane.INFORMATION_MESSAGE);
                 } else if (clienteActualizado.esValido()) {
+                    // Actualiza el cliente a través de un objeto DAO (Banco.clienteDao)
                     Cliente clienteTrasActualizar = Banco.clienteDao.actualizar(cliente.getIdCliente(), clienteActualizado);
                     clienteTrasActualizar.setIdCliente(cliente.getIdCliente());
+                    // Muestra mensajes de éxito y abrir una nueva ventana de menú
                     JOptionPane.showMessageDialog(this, "Se ha actualizado el usuario", "Notificación", JOptionPane.INFORMATION_MESSAGE);
                     JOptionPane.showMessageDialog(this, "Tu usuario es: " + clienteActualizado.getUsuario(), "Notificación", JOptionPane.INFORMATION_MESSAGE);
                     MenuCuentaFrame menuCuenta = new MenuCuentaFrame(clienteTrasActualizar);
@@ -125,18 +145,27 @@ public class ActualizarUsuarioFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ValidacionDTOException ex) {
+            // Maneja la excepción de validación DTO
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error de validación", JOptionPane.ERROR_MESSAGE);
         } catch (PersistenciaException ex) {
+            // Maneja la excepción de persistencia
             JOptionPane.showMessageDialog(this, "No fue posible agregar al cliente", "Error de almacenamiento", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    /**
+     * Método que valida si todos los campos obligatorios en la interfaz gráfica están llenos.
+     *
+     * @return true si todos los campos están llenos, false de lo contrario.
+     */
     public boolean validarCampo() {
+        // Obtiene las contraseñas como caracteres y convertirlas a cadenas
         char[] contrasenaCharArray = pswContraseña.getPassword();
         char[] contrasenaConfiCharArray = pswContraseñaConfirmar.getPassword();
         String contraseña = new String(contrasenaCharArray);
         String contraseñaConfirmar = new String(contrasenaConfiCharArray);
 
+        // Valida si algún campo obligatorio está vacío
         if (txtNombre.getText().isBlank()
                 || txtPaterno.getText().isBlank()
                 || txtMaterno.getText().isBlank()
@@ -152,6 +181,13 @@ public class ActualizarUsuarioFrame extends javax.swing.JFrame {
         return true;
     }
 
+    /**
+     * Método que valida si las contraseñas ingresadas coinciden.
+     *
+     * @param contraseña Contraseña ingresada.
+     * @param confirmarContraseña Confirmación de la contraseña ingresada.
+     * @return true si las contraseñas coinciden, false de lo contrario.
+     */
     public boolean validarContraseñas(String contraseña, String confirmarContraseña) {
         if (!contraseña.equals(confirmarContraseña)) {
             errorContraseña.setText("Las contraseñas no coinciden.");
@@ -550,6 +586,7 @@ public class ActualizarUsuarioFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        // Llama al método editar.
         editar();
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
@@ -596,6 +633,7 @@ public class ActualizarUsuarioFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
+        // Esta sección se activa cuando se pulsa la flecha, te lleva a la clase anterior.
         MenuCuentaFrame menuCuenta = null;
         try {
             menuCuenta = new MenuCuentaFrame(this.cliente);

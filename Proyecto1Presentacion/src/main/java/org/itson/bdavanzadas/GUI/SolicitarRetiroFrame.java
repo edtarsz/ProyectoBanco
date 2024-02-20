@@ -14,11 +14,12 @@ import org.itson.bdavanzadas.proyecto.dtos.RetiroSinCuentaDTO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyectodominio.Cliente;
 import org.itson.bdavanzadas.proyectodominio.Cuenta;
-import org.itson.bdavanzadas.proyectodominio.RetiroSinCuenta;
 
 /**
+ * Ventana para solicitar un retiro sin cuenta asociada. Permite al cliente seleccionar la cuenta y especificar el monto del retiro. Al confirmar el retiro, se genera un folio y una contraseña encriptada. El folio y la contraseña desencriptada se muestran al cliente.
  *
- * @author JoseH
+ * @author Eduardo Talavera Ramos | 00000245244
+ * @author Angel Huerta Amparán | 00000245345
  */
 public class SolicitarRetiroFrame extends javax.swing.JFrame {
 
@@ -73,16 +74,16 @@ public class SolicitarRetiroFrame extends javax.swing.JFrame {
                 retiro.setIdCuenta(cuenta.getNumCuenta());
                 retiro.setFolio();
                 retiro.setContraseñaEcriptada();
-                
+
                 String contraDesencriptada = retiro.getContraseñaRetiro();
                 char[] charArray = contraDesencriptada.toCharArray();
-                
+
                 for (int i = 0; i < charArray.length; i++) {
                     charArray[i] -= 5;
                 }
-                
+
                 contraDesencriptada = new String(charArray);
-                
+
                 retiro.setMonto(monto);
                 retiro.setFechaHora(fechaHoraActual);
                 Banco.retiroDao.solicitarRetiro(retiro, Banco.cuentaDao);
@@ -276,10 +277,18 @@ public class SolicitarRetiroFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtMontoActionPerformed
 
+    /**
+     * Método invocado al hacer clic en el botón de confirmación. Realiza un retiro sin cuenta asociada, obteniendo la cuenta seleccionada, el monto y la fecha y hora actual. Luego, genera un objeto RetiroSinCuentaDTO con un folio y una contraseña encriptada. Muestra el folio y la contraseña desencriptada al cliente.
+     */
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
         realizarRetiro();
     }//GEN-LAST:event_confirmarBtnActionPerformed
 
+    /**
+     * Evento de clic en la etiqueta (jLabel) para volver al menú de cuenta. Cierra la ventana actual y abre el menú de cuenta asociado al cliente.
+     *
+     * @param evt Evento de clic del mouse.
+     */
     private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
         MenuCuentaFrame menuCuenta = null;
         try {
@@ -291,6 +300,11 @@ public class SolicitarRetiroFrame extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jLabel13MouseClicked
 
+    /**
+     * Evento de clic en la etiqueta (jLabel) para volver al menú de cuenta. Cierra la ventana actual y abre el menú de cuenta asociado al cliente.
+     *
+     * @param evt Evento de clic del mouse.
+     */
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         dispose();
         MenuCuentaFrame menuCuentaFrm;

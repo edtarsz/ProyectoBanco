@@ -4,17 +4,17 @@
  */
 package org.itson.bdavanzadas.GUI;
 
-import org.itson.bdavanzadas.proyecto.daos.IClienteDAO;
-import org.itson.bdavanzadas.proyecto.daos.ICuentaDAO;
-
 /**
+ * Clase que define la ventana de inicio o índice de la aplicación. Proporciona opciones para iniciar sesión, realizar retiros sin cuenta y registrarse como usuario. Esta clase extiende JFrame y se utiliza para la creación y gestión de la interfaz gráfica.
  *
- * @author JoseH
+ * @author Eduardo Talavera Ramos | 00000245244
+ * @author Angel Huerta Amparán | 00000245345
  */
 public class IndiceFrame extends javax.swing.JFrame {
 
-
- 
+    /**
+     * Constructor de la clase IndiceFrame. Inicializa y configura los componentes de la interfaz gráfica.
+     */
     public IndiceFrame() {
         initComponents();
     }
@@ -169,18 +169,33 @@ public class IndiceFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Maneja el evento de clic en el botón "Iniciar sesión". Abre la ventana de inicio de sesión, permitiendo que el usuario inicie sesión en la aplicación.
+     *
+     * @param evt Evento de acción que desencadena la apertura de la ventana de inicio de sesión.
+     */
     private void iniciarSesionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionBtnActionPerformed
         IniciarSesionFrame iniciarSesion = new IniciarSesionFrame();
         iniciarSesion.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_iniciarSesionBtnActionPerformed
 
+    /**
+     * Maneja el evento de clic en el botón "Retiro sin cuenta". Abre la ventana para realizar retiros sin tener una cuenta registrada.
+     *
+     * @param evt Evento de acción que desencadena la apertura de la ventana de retiro sin cuenta.
+     */
     private void retiroBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retiroBtnActionPerformed
         HacerRetiroFrame retiro = new HacerRetiroFrame();
         retiro.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_retiroBtnActionPerformed
 
+    /**
+     * Maneja el evento de clic en el botón "Registrarse aquí". Abre la ventana de registro de usuario, permitiendo que un nuevo usuario se registre en la aplicación.
+     *
+     * @param evt Evento de acción que desencadena la apertura de la ventana de registro de usuario.
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         RegistrarUsuarioFrame registrarUsuario = new RegistrarUsuarioFrame();
         registrarUsuario.setVisible(true);
