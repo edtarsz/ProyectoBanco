@@ -28,6 +28,7 @@ public class HacerRetiroFrame extends javax.swing.JFrame {
         float monto = Integer.parseInt(txtMonto.getText());
         RetiroSinCuenta retiro = new RetiroSinCuenta(folio, contraseña);
         Banco.retiroDao.procesarRetiro(Banco.retiroDao.consultarRetiro(retiro));
+        DatosRetiroForm datosFrame = new DatosRetiroForm(retiro);
     }
 
     /**

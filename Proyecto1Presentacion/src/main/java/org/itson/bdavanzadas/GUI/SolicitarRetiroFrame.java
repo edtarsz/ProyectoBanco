@@ -14,6 +14,7 @@ import org.itson.bdavanzadas.proyecto.dtos.RetiroSinCuentaDTO;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyectodominio.Cliente;
 import org.itson.bdavanzadas.proyectodominio.Cuenta;
+import org.itson.bdavanzadas.proyectodominio.RetiroSinCuenta;
 
 /**
  *
@@ -75,14 +76,15 @@ public class SolicitarRetiroFrame extends javax.swing.JFrame {
                 retiro.setMonto(monto);
                 retiro.setFechaHora(fechaHoraActual);
                 Banco.retiroDao.solicitarRetiro(retiro, Banco.cuentaDao);
+                RetiroSinCuenta retiro1 = new RetiroSinCuenta();
+                retiro1.setIdCuenta(cuenta.getNumCuenta());
+                retiro1.setFolio(retiro.getFolio());
+                retiro1.setContraseñaRetiro(retiro.getContraseñaRetiro());
+                retiro1.setMonto(monto);
+                retiro1.setFechaHora(fechaHoraActual);
 
-                JOptionPane.showMessageDialog(this, "Se registra al cliente", "Notificación", JOptionPane.INFORMATION_MESSAGE);
-                JOptionPane.showMessageDialog(this, "El folio es: \n" + retiro.getFolio() + "Contraseña: \n" + retiro.getContraseñaRetiro(), "Notificación", JOptionPane.INFORMATION_MESSAGE);
-                DatosRetiroForm datosRetiro = new DatosRetiroForm(this.realizarRetiro());
-                datosRetiro.setVisible(true);
+                JOptionPane.showMessageDialog(this, "El folio es: \n" + retiro.getFolio() + "\nContraseña: \n" + retiro.getContraseñaRetiro(), "Notificación", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
-
-                this.dispose();
 
                 return retiro;
             }

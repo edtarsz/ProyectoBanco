@@ -17,6 +17,11 @@ public class RetiroSinCuenta extends Operacion {
     String contraseñaRetiro;
     String estado;
 
+    
+    public RetiroSinCuenta(){
+        
+    }
+    
     public RetiroSinCuenta(int idOperacion, LocalDateTime fechaHora, float monto, String folio, String contraseñaRetiro, String idCuenta, String estado) {
         super(idOperacion, fechaHora, monto);
         this.idOperacion = idOperacion;

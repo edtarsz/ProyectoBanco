@@ -6,6 +6,8 @@ package org.itson.bdavanzadas.GUI;
 
 import java.time.format.DateTimeFormatter;
 import org.itson.bdavanzadas.proyecto.dtos.RetiroSinCuentaDTO;
+import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
+import org.itson.bdavanzadas.proyectodominio.RetiroSinCuenta;
 
 /**
  *
@@ -16,13 +18,13 @@ public class DatosRetiroForm extends javax.swing.JFrame {
     /**
      * Creates new form DatosRetiroForm
      */
-    public DatosRetiroForm(RetiroSinCuentaDTO retiroDTO) {
+    public DatosRetiroForm(RetiroSinCuenta retiro) {
         initComponents();
-        txtFolio.setText(retiroDTO.getFolio());
-        txtContraseña.setText(retiroDTO.getContraseñaRetiro());
-        txtMonto.setText(String.valueOf(retiroDTO.getMonto()));
+        txtFolio.setText(retiro.getFolio());
+        txtContraseña.setText(retiro.getContraseñaRetiro());
+        txtMonto.setText(String.valueOf(retiro.getMonto()));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String fechaHoraString = retiroDTO.getFechaHora().format(formatter);
+        String fechaHoraString = retiro.getFechaHora().format(formatter);
         txtFechaOperacion.setText(fechaHoraString);
     }
 
@@ -50,8 +52,7 @@ public class DatosRetiroForm extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jLabel10 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        inicioBtn = new javax.swing.JButton();
+        confirmarBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -118,22 +119,16 @@ public class DatosRetiroForm extends javax.swing.JFrame {
         jLabel10.setText("Retiro sin cuenta");
         jPanel3.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 130, -1, 37));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Captura de pantalla 2024-02-18 010517.png"))); // NOI18N
-        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(64, 87, 45, 44));
-
-        inicioBtn.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        inicioBtn.setForeground(new java.awt.Color(42, 98, 143));
-        inicioBtn.setText("Regresar al inicio");
-        inicioBtn.setAlignmentY(0.0F);
-        inicioBtn.setBorderPainted(false);
-        inicioBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        inicioBtn.setBackground(null);
-        inicioBtn.addActionListener(new java.awt.event.ActionListener() {
+        confirmarBtn.setBackground(new java.awt.Color(42, 98, 143));
+        confirmarBtn.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        confirmarBtn.setForeground(new java.awt.Color(255, 255, 255));
+        confirmarBtn.setText("Confirmar");
+        confirmarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inicioBtnActionPerformed(evt);
+                confirmarBtnActionPerformed(evt);
             }
         });
-        jPanel3.add(inicioBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, -1, 44));
+        jPanel3.add(confirmarBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -149,21 +144,21 @@ public class DatosRetiroForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void inicioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inicioBtnActionPerformed
-        MenuCuentaFrame menu = new MenuCuentaFrame();
-        menu.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_inicioBtnActionPerformed
+    private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
+        dispose();
+        IndiceFrame indice;
+        indice = new IndiceFrame();
+        indice.setVisible(true);
+    }//GEN-LAST:event_confirmarBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton inicioBtn;
+    private javax.swing.JButton confirmarBtn;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
