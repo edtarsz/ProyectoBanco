@@ -57,10 +57,8 @@ public class TransferenciaFrame extends javax.swing.JFrame {
     }
 
     public void realizarTransferencia() {
-        Cuenta cuenta = new Cuenta();
         String cuentaString = (String) cuentaOrigenCmbBox.getSelectedItem();
-        int idCuentaDestino = Integer.parseInt(txtCuentaDestino.getText());
-        int monto = Integer.parseInt(txtImporte.getText());
+        Cuenta cuenta = new Cuenta();
         List<Cuenta> listaCuentas;
         try {
             listaCuentas = Banco.clienteDao.consultarCuentas(this.cliente);
@@ -73,9 +71,11 @@ public class TransferenciaFrame extends javax.swing.JFrame {
             Logger.getLogger(TransferenciaFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        if (String.valueOf(idCuentaDestino).isEmpty() || String.valueOf(idCuentaDestino) == null || String.valueOf(monto).isEmpty() || String.valueOf(monto) == null) {
+        if (String.valueOf(txtCuentaDestino.getText()).isEmpty() || String.valueOf(txtCuentaDestino.getText()) == null || String.valueOf(txtImporte.getText()).isEmpty() || String.valueOf(txtImporte.getText()) == null) {
             JOptionPane.showMessageDialog(this, "Rellene todos los campos", "Notificación", JOptionPane.INFORMATION_MESSAGE);
         } else {
+            int idCuentaDestino = Integer.parseInt(txtCuentaDestino.getText());
+            int monto = Integer.parseInt(txtImporte.getText());
             LocalDateTime fechaActual = LocalDateTime.now();
             TransferenciaDTO transferencia = new TransferenciaDTO();
             transferencia.setIdCuenta(Integer.parseInt(cuenta.getNumCuenta()));

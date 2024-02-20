@@ -51,7 +51,6 @@ public class SolicitarRetiroFrame extends javax.swing.JFrame {
     public RetiroSinCuentaDTO realizarRetiro() {
         Cuenta cuenta = new Cuenta();
         String cuentaString = (String) cuentaCmbBox.getSelectedItem();
-        int monto = Integer.parseInt(txtMonto.getText());
         List<Cuenta> listaCuentas;
         try {
             listaCuentas = Banco.clienteDao.consultarCuentas(this.cliente);
@@ -65,25 +64,30 @@ public class SolicitarRetiroFrame extends javax.swing.JFrame {
         }
 
         try {
-            if (monto < 0) {
+            if (txtMonto.getText() == null || txtMonto.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Coloca un monto válido", "Notificación", JOptionPane.INFORMATION_MESSAGE);
             } else {
+                int monto = Integer.parseInt(txtMonto.getText());
                 LocalDateTime fechaHoraActual = LocalDateTime.now();
                 RetiroSinCuentaDTO retiro = new RetiroSinCuentaDTO();
                 retiro.setIdCuenta(cuenta.getNumCuenta());
                 retiro.setFolio();
-                retiro.setContraseñaRetiro();
+                retiro.setContraseñaEcriptada();
+                
+                String contraDesencriptada = retiro.getContraseñaRetiro();
+                char[] charArray = contraDesencriptada.toCharArray();
+                
+                for (int i = 0; i < charArray.length; i++) {
+                    charArray[i] -= 5;
+                }
+                
+                contraDesencriptada = new String(charArray);
+                
                 retiro.setMonto(monto);
                 retiro.setFechaHora(fechaHoraActual);
                 Banco.retiroDao.solicitarRetiro(retiro, Banco.cuentaDao);
-                RetiroSinCuenta retiro1 = new RetiroSinCuenta();
-                retiro1.setIdCuenta(cuenta.getNumCuenta());
-                retiro1.setFolio(retiro.getFolio());
-                retiro1.setContraseñaRetiro(retiro.getContraseñaRetiro());
-                retiro1.setMonto(monto);
-                retiro1.setFechaHora(fechaHoraActual);
 
-                JOptionPane.showMessageDialog(this, "El folio es: \n" + retiro.getFolio() + "\nContraseña: \n" + retiro.getContraseñaRetiro(), "Notificación", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "El folio es: \n" + retiro.getFolio() + "\nContraseña: \n" + contraDesencriptada, "Notificación", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
 
                 return retiro;
