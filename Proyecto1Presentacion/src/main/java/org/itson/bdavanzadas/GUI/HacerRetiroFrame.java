@@ -40,8 +40,11 @@ public class HacerRetiroFrame extends javax.swing.JFrame {
             String contraseña = txtContraseña.getText();
             float monto = Integer.parseInt(txtMonto.getText());
             RetiroSinCuenta retiro = new RetiroSinCuenta(folio, contraseña);
-            Banco.retiroDao.procesarRetiro(Banco.retiroDao.consultarRetiro(retiro));
-            JOptionPane.showMessageDialog(null, "Retiro exitoso en la fecha:" + retiro.getFechaHora());
+            if (Banco.retiroDao.procesarRetiro(Banco.retiroDao.consultarRetiro(retiro))) {
+                JOptionPane.showMessageDialog(null, "Retiro exitoso en la fecha:" + retiro.getFechaHora());
+            } else {
+                JOptionPane.showMessageDialog(null, "Ya pasaron 10 minutos desde la solicitud del retiro. Genere otro.");
+            }
 
         }
     }

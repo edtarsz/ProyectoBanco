@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package org.itson.bdavanzadas.proyecto.daos;
 
 import java.sql.Connection;
@@ -23,6 +19,9 @@ import org.itson.bdavanzadas.proyectodominio.Cliente;
 import org.itson.bdavanzadas.proyectodominio.Cuenta;
 
 /**
+ * Esta clase implementa la interfaz IClienteDAO y proporciona métodos para realizar operaciones de acceso a datos relacionadas con la entidad Cliente en la base de datos. Incluye funciones para agregar nuevos clientes, consultar la lista de clientes, agregar cuentas asociadas a clientes, consultar las cuentas de un cliente y actualizar la información de un cliente. También ofrece un método para cambiar el estado de una cuenta en la base de datos.
+ *
+ * La clase utiliza la interfaz IConexion para obtener y gestionar conexiones a la base de datos. Se utiliza un objeto Logger para realizar registros de eventos y errores.
  *
  * @author Eduardo Talavera Ramos | 00000245244
  * @author Angel Huerta Amparán | 00000245345
@@ -36,6 +35,13 @@ public class ClienteDAO implements IClienteDAO {
         this.conexionBD = conexion;
     }
 
+    /**
+     * Agrega un nuevo cliente a la base de datos.
+     *
+     * @param clienteNuevo Objeto ClienteDTO con la información del nuevo cliente.
+     * @return Cliente con la información del cliente agregado, incluido su ID generado.
+     * @throws PersistenciaException Si ocurre un error al interactuar con la base de datos.
+     */
     @Override
     public Cliente agregar(ClienteDTO clienteNuevo) throws PersistenciaException {
         String sentenciaSQL = """
@@ -88,6 +94,12 @@ public class ClienteDAO implements IClienteDAO {
         }
     }
 
+    /**
+     * Consulta la lista de clientes en la base de datos.
+     *
+     * @return Lista de objetos Cliente con la información de los clientes consultados.
+     * @throws PersistenciaException Si ocurre un error al interactuar con la base de datos.
+     */
     @Override
     public List<Cliente> consultar() throws PersistenciaException {
         String sentenciaSQL = "SELECT idCliente, Usuario, Nombre, ApellidoPaterno, ApellidoMaterno, Contraseña, FechaNacimiento, CodigoPostal, NumExterior, Calle, Colonia, Ciudad FROM clientes";
@@ -131,6 +143,13 @@ public class ClienteDAO implements IClienteDAO {
         }
     }
 
+    /**
+     * Agrega una nueva cuenta asociada a un cliente en la base de datos.
+     *
+     * @param cuentaNueva Objeto CuentaDTO con la información de la nueva cuenta.
+     * @return Cuenta con la información de la cuenta agregada.
+     * @throws PersistenciaException Si ocurre un error al interactuar con la base de datos.
+     */
     @Override
     public Cuenta agregarCuenta(CuentaDTO cuentaNueva) throws PersistenciaException {
         String sentenciaSQL = """
@@ -162,6 +181,13 @@ public class ClienteDAO implements IClienteDAO {
         }
     }
 
+    /**
+     * Consulta la lista de cuentas asociadas a un cliente en la base de datos.
+     *
+     * @param cliente Cliente para el cual se desea consultar las cuentas.
+     * @return Lista de objetos Cuenta con la información de las cuentas consultadas.
+     * @throws PersistenciaException Si ocurre un error al interactuar con la base de datos.
+     */
     @Override
     public List<Cuenta> consultarCuentas(Cliente cliente) throws PersistenciaException {
         String sentenciaSQL = "SELECT numCuenta, saldo, estado FROM Cuentas WHERE idCliente = ?;";
@@ -191,6 +217,14 @@ public class ClienteDAO implements IClienteDAO {
         }
     }
 
+    /**
+     * Actualiza la información de un cliente en la base de datos.
+     *
+     * @param idCliente ID del cliente que se desea actualizar.
+     * @param clienteActualizado Objeto ClienteActualizadoDTO con la información actualizada del cliente.
+     * @return Cliente con la información actualizada.
+     * @throws PersistenciaException Si ocurre un error al interactuar con la base de datos.
+     */
     @Override
     public Cliente actualizar(long idCliente, ClienteActualizadoDTO clienteActualizado) throws PersistenciaException {
         String sentenciaSQL = """
@@ -245,6 +279,13 @@ public class ClienteDAO implements IClienteDAO {
         }
     }
 
+    /**
+     * Cambia el estado de una cuenta en la base de datos.
+     *
+     * @param numCuenta Número de cuenta de la cuenta que se desea actualizar.
+     * @param nuevoEstado Nuevo estado que se asignará a la cuenta.
+     * @throws PersistenciaException Si ocurre un error al interactuar con la base de datos.
+     */
     @Override
     public void cambiarEstadoCuenta(String numCuenta, String nuevoEstado) throws PersistenciaException {
         String sentenciaSQL = "UPDATE cuentas SET estado = ? WHERE numCuenta = ?";
@@ -265,5 +306,4 @@ public class ClienteDAO implements IClienteDAO {
             throw new PersistenciaException("No se pudo cambiar el estado de la cuenta", ex);
         }
     }
-
 }

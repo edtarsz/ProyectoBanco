@@ -16,18 +16,39 @@ import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyectodominio.Cuenta;
 
 /**
+ * CuentaDAO es una clase que proporciona métodos para interactuar con la base de datos relacionados con la entidad Cuenta.
  *
- * @author Ramosz
+ * @author Eduardo Talavera Ramos | 00000245244
+ * @author Angel Huerta Amparán | 00000245345
  */
 public class CuentaDAO implements ICuentaDAO {
 
+    /**
+     * La conexión a la base de datos utilizada por la instancia de CuentaDAO.
+     */
     final IConexion conexionBD;
+
+    /**
+     * El objeto Logger utilizado para realizar registros en la aplicación.
+     */
     static final Logger logger = Logger.getLogger(Conexion.class.getName());
 
+    /**
+     * Constructor de la clase CuentaDAO.
+     *
+     * @param conexion Objeto que implementa la interfaz IConexion para establecer la conexión a la base de datos.
+     */
     public CuentaDAO(IConexion conexion) {
         this.conexionBD = conexion;
     }
 
+    /**
+     * Obtiene la información de una cuenta mediante su número de cuenta.
+     *
+     * @param numCuenta Número de cuenta de la cuenta que se desea obtener.
+     * @return Objeto Cuenta con la información de la cuenta obtenida.
+     * @throws PersistenciaException Si ocurre un error al interactuar con la base de datos.
+     */
     @Override
     public Cuenta obtenerCuenta(String numCuenta) throws PersistenciaException {
         String sentenciaSQL = "SELECT * FROM cuentas WHERE numCuenta = ?";

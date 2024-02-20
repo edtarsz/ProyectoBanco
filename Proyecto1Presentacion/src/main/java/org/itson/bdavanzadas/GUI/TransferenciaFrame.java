@@ -25,16 +25,25 @@ import org.itson.bdavanzadas.proyectodominio.Cuenta;
  */
 public class TransferenciaFrame extends javax.swing.JFrame {
 
+    // Variable privada para controlar el estado de despliegue de la ventana
     private boolean estadoDesplegado = false;
     private Cliente cliente;
 
+    // Variable privada para almacenar información sobre el cliente asociado a la transferencia
     public TransferenciaFrame() {
         initComponents();
     }
 
+    /**
+     * Constructor de la clase TransferenciaFrame que recibe un objeto Cliente. Inicializa la interfaz gráfica, establece el cliente asociado y consulta y muestra las cuentas activas del cliente.
+     *
+     * @param cliente Objeto Cliente asociado a la transferencia.
+     */
     public TransferenciaFrame(Cliente cliente) {
         initComponents();
         this.cliente = cliente;
+
+        // Consultar y mostrar las cuentas activas del cliente en el ComboBox
         try {
             List<Cuenta> listaCuentas = Banco.clienteDao.consultarCuentas(this.cliente);
 
@@ -51,17 +60,24 @@ public class TransferenciaFrame extends javax.swing.JFrame {
             Logger.getLogger(TransferenciaFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        // Establecer la fecha y hora actual en un campo de texto
         Date fechaActual = new java.util.Date();
         SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         String fechaString = formato.format(fechaActual);
         fechaHoratxt.setText(fechaString);
-
     }
 
+    /**
+     * Método para realizar la transferencia de fondos. Obtiene los datos de la interfaz gráfica, valida la entrada del usuario y realiza la transferencia.
+     *
+     * @throws PersistenciaException Si ocurre un error al realizar la transferencia en la base de datos.
+     */
     public void realizarTransferencia() throws PersistenciaException {
         String cuentaString = (String) cuentaOrigenCmbBox.getSelectedItem();
         Cuenta cuenta = new Cuenta();
         List<Cuenta> listaCuentas;
+
+        // Consultar cuentas asociadas al cliente y obtener la cuenta de origen seleccionada
         try {
             listaCuentas = Banco.clienteDao.consultarCuentas(this.cliente);
             for (Cuenta account : listaCuentas) {
@@ -73,17 +89,22 @@ public class TransferenciaFrame extends javax.swing.JFrame {
             Logger.getLogger(TransferenciaFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        // Validar la entrada del usuario y realizar la transferencia
         if (String.valueOf(txtCuentaDestino.getText()).isEmpty() || String.valueOf(txtCuentaDestino.getText()) == null || String.valueOf(txtImporte.getText()).isEmpty() || String.valueOf(txtImporte.getText()) == null) {
             JOptionPane.showMessageDialog(this, "Rellene todos los campos", "Notificación", JOptionPane.INFORMATION_MESSAGE);
         } else {
             int idCuentaDestino = Integer.parseInt(txtCuentaDestino.getText());
             int monto = Integer.parseInt(txtImporte.getText());
             LocalDateTime fechaActual = LocalDateTime.now();
+
+            // Crear un objeto TransferenciaDTO con los datos de la transferencia
             TransferenciaDTO transferencia = new TransferenciaDTO();
             transferencia.setIdCuenta(Integer.parseInt(cuenta.getNumCuenta()));
             transferencia.setIdCuentaDestino(idCuentaDestino);
             transferencia.setFechaHora(fechaActual);
             transferencia.setMonto(monto);
+
+            // Realizar la transferencia y mostrar la ventana de confirmación
             Banco.transferenciaDao.realizarTransferencia(transferencia, Banco.cuentaDao.obtenerCuenta(cuenta.getNumCuenta()));
             dispose();
             ConfirmarTransferenciaFrame confirmar = new ConfirmarTransferenciaFrame(transferencia, cliente);
@@ -324,10 +345,16 @@ public class TransferenciaFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtImporteActionPerformed
 
+    /**
+     * Método que se ejecuta al hacer clic en el botón de confirmación (confirmarBtn) en la interfaz gráfica. Invoca el método realizarTransferencia() para llevar a cabo la transferencia de fondos. Captura y maneja cualquier excepción de PersistenciaException que pueda ocurrir durante la transferencia.
+     *
+     * @param evt Objeto ActionEvent que representa el evento de acción (clic) en el botón.
+     */
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
         try {
             realizarTransferencia();
         } catch (PersistenciaException ex) {
+            // Capturar y registrar cualquier excepción de PersistenciaException
             Logger.getLogger(TransferenciaFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_confirmarBtnActionPerformed

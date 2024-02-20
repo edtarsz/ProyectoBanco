@@ -16,22 +16,33 @@ import org.itson.bdavanzadas.proyectodominio.Cliente;
 import org.itson.bdavanzadas.proyectodominio.Cuenta;
 
 /**
- * Ventana para solicitar un retiro sin cuenta asociada. Permite al cliente seleccionar la cuenta y especificar el monto del retiro. Al confirmar el retiro, se genera un folio y una contraseña encriptada. El folio y la contraseña desencriptada se muestran al cliente.
+ * Clase SolicitarRetiroFrame que representa una ventana para solicitar retiros de fondos en la interfaz de usuario. Permite al usuario seleccionar una cuenta activa y realizar un retiro de fondos.
  *
  * @author Eduardo Talavera Ramos | 00000245244
  * @author Angel Huerta Amparán | 00000245345
  */
 public class SolicitarRetiroFrame extends javax.swing.JFrame {
 
+    // Variable privada para almacenar información sobre el cliente asociado a la solicitud de retiro
     private Cliente cliente;
 
+    /**
+     * Constructor predeterminado de la clase SolicitarRetiroFrame. Inicializa la interfaz gráfica y sus componentes.
+     */
     public SolicitarRetiroFrame() {
         initComponents();
     }
 
+    /**
+     * Constructor de la clase SolicitarRetiroFrame que recibe un objeto Cliente. Inicializa la interfaz gráfica, establece el cliente asociado y consulta y muestra las cuentas activas del cliente.
+     *
+     * @param cliente Objeto Cliente asociado a la solicitud de retiro.
+     */
     public SolicitarRetiroFrame(Cliente cliente) {
         initComponents();
         this.cliente = cliente;
+
+        // Consultar y mostrar las cuentas activas del cliente en el ComboBox
         try {
             List<Cuenta> listaCuentas = Banco.clienteDao.consultarCuentas(this.cliente);
 
@@ -42,17 +53,23 @@ public class SolicitarRetiroFrame extends javax.swing.JFrame {
                     model.addElement(String.valueOf(cuenta.getNumCuenta()));
                 }
             }
-
             cuentaCmbBox.setModel(model);
         } catch (PersistenciaException ex) {
             Logger.getLogger(TransferenciaFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Método para realizar la solicitud de retiro. Obtiene los datos de la interfaz gráfica, valida la entrada del usuario y realiza la solicitud de retiro.
+     *
+     * @return Objeto RetiroSinCuentaDTO representando la información de la solicitud de retiro.
+     */
     public RetiroSinCuentaDTO realizarRetiro() {
         Cuenta cuenta = new Cuenta();
         String cuentaString = (String) cuentaCmbBox.getSelectedItem();
         List<Cuenta> listaCuentas;
+
+        // Consultar cuentas asociadas al cliente y obtener la cuenta seleccionada
         try {
             listaCuentas = Banco.clienteDao.consultarCuentas(this.cliente);
             for (Cuenta account : listaCuentas) {
@@ -65,16 +82,20 @@ public class SolicitarRetiroFrame extends javax.swing.JFrame {
         }
 
         try {
+            // Validar la entrada del usuario y realizar la solicitud de retiro
             if (txtMonto.getText() == null || txtMonto.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Coloca un monto válido", "Notificación", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 int monto = Integer.parseInt(txtMonto.getText());
                 LocalDateTime fechaHoraActual = LocalDateTime.now();
+
+                // Crear un objeto RetiroSinCuentaDTO con los datos de la solicitud de retiro
                 RetiroSinCuentaDTO retiro = new RetiroSinCuentaDTO();
                 retiro.setIdCuenta(cuenta.getNumCuenta());
                 retiro.setFolio();
                 retiro.setContraseñaEcriptada();
 
+                // Desencriptar la contraseña
                 String contraDesencriptada = retiro.getContraseñaRetiro();
                 char[] charArray = contraDesencriptada.toCharArray();
 
@@ -86,10 +107,11 @@ public class SolicitarRetiroFrame extends javax.swing.JFrame {
 
                 retiro.setMonto(monto);
                 retiro.setFechaHora(fechaHoraActual);
-                Banco.retiroDao.solicitarRetiro(retiro, Banco.cuentaDao);
 
+                // Realizar la solicitud de retiro y mostrar información al usuario
+                Banco.retiroDao.solicitarRetiro(retiro, Banco.cuentaDao);
                 JOptionPane.showMessageDialog(this, "El folio es: \n" + retiro.getFolio() + "\nContraseña: \n" + contraDesencriptada, "Notificación", JOptionPane.INFORMATION_MESSAGE);
-                dispose();
+                dispose();// Cerrar la ventana después de la solicitud de retiro
 
                 return retiro;
             }

@@ -50,14 +50,14 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         String calle = txtCalle.getText();
         String numExterior = txtNumExterior.getText();
 
-        // Obtener la fecha de nacimiento del formulario
+        // Obtiene la fecha de nacimiento del formulario
         Date fecha = txtfechaNacimiento.getDate();
         String fechaNacimiento = (fecha != null) ? new SimpleDateFormat("yyyy-MM-dd").format(fecha) : "Fecha no seleccionada";
 
-        // Crear un objeto ClienteDTO para almacenar la información del cliente
+        // Crea un objeto ClienteDTO para almacenar la información del cliente
         ClienteDTO clienteNuevo = new ClienteDTO();
 
-        // Configurar los atributos del cliente
+        // Configura los atributos del cliente
         clienteNuevo.setNombre(nombre);
         clienteNuevo.setApellidoPaterno(apellidoPaterno);
         clienteNuevo.setApellidoMaterno(apellidoMaterno);
@@ -70,7 +70,7 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         clienteNuevo.setFechaNacimiento(fechaNacimiento);
 
         try {
-            // Calcular la edad del cliente a partir de la fecha de nacimiento
+            // Calcula la edad del cliente a partir de la fecha de nacimiento
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate fechaNacimientoDate = LocalDate.parse(fechaNacimiento, formatter);
             LocalDate fechaActual = LocalDate.now();
@@ -82,7 +82,7 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
         }
 
         try {
-            // Validar las contraseñas ingresadas
+            // Valida las contraseñas ingresadas
             if (!validarContraseñas(contraseña, contraseñaConfirmar)) {
                 errorContraseña.setText("Las contraseñas no coinciden.");
             } else {
@@ -105,10 +105,10 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ValidacionDTOException ex) {
-            // Mostrar mensaje de error en caso de validación fallida
+            // Muestra mensaje de error en caso de validación fallida
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error de validación", JOptionPane.ERROR_MESSAGE);
         } catch (PersistenciaException ex) {
-            // Mostrar mensaje de error en caso de fallo al agregar el cliente a la base de datos
+            // Muestra mensaje de error en caso de fallo al agregar el cliente a la base de datos
             JOptionPane.showMessageDialog(this, "No fue posible agregar al cliente", "Error de almacenamiento", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -119,13 +119,13 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
      * @return true si todos los campos están completos, false si algún campo está vacío.
      */
     public boolean validarCampo() {
-        // Obtener las contraseñas del formulario
+        // Obtiene las contraseñas del formulario
         char[] contrasenaCharArray = pswContraseña.getPassword();
         char[] contrasenaConfiCharArray = pswContraseñaConfirmar.getPassword();
         String contraseña = new String(contrasenaCharArray);
         String contraseñaConfirmar = new String(contrasenaConfiCharArray);
 
-        // Verificar si algún campo obligatorio está vacío
+        // Verifica si algún campo obligatorio está vacío
         if (txtNombre.getText().isBlank()
                 || txtPaterno.getText().isBlank()
                 || txtMaterno.getText().isBlank()
@@ -145,9 +145,9 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
      * Método para limpiar todos los campos del formulario.
      */
     private void limpiarCampos() {
-        // Limpiar mensajes de error
+        // Limpia mensajes de error
         errorContraseña.setText("");
-        // Limpiar campos de texto
+        // Limpia campos de texto
         txtNombre.setText("");
         txtPaterno.setText("");
         txtMaterno.setText("");
@@ -171,9 +171,9 @@ public class RegistrarUsuarioFrame extends javax.swing.JFrame {
      * @return true si las contraseñas coinciden, false si no coinciden.
      */
     public boolean validarContraseñas(String contraseña, String confirmarContraseña) {
-        // Verificar si las contraseñas coinciden
+        // Verifica si las contraseñas coinciden
         if (!contraseña.equals(confirmarContraseña)) {
-            // Mostrar mensaje de error en caso de no coincidencia
+            // Muestra mensaje de error en caso de no coincidencia
             errorContraseña.setText("Las contraseñas no coinciden.");
             return false;
         }
