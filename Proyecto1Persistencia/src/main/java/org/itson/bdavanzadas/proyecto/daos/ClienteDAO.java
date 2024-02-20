@@ -38,10 +38,11 @@ public class ClienteDAO implements IClienteDAO {
     @Override
     public Cliente agregar(ClienteDTO clienteNuevo) throws PersistenciaException {
         String sentenciaSQL = """
-        INSERT INTO clientes(Usuario, Nombre, ApellidoPaterno, ApellidoMaterno, Contraseña, FechaNacimiento, CodigoPostal, NumExterior, Calle, Colonia, Ciudad, Edad)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""";
-        try (
-                Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);) {
+            INSERT INTO clientes(Usuario, Nombre, ApellidoPaterno, ApellidoMaterno, Contraseña, FechaNacimiento, CodigoPostal, NumExterior, Calle, Colonia, Ciudad, Edad)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""";
+
+        try (Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS)) {
+
             comando.setString(1, clienteNuevo.getUsuario());
             comando.setString(2, clienteNuevo.getNombre());
             comando.setString(3, clienteNuevo.getApellidoPaterno());
@@ -54,31 +55,35 @@ public class ClienteDAO implements IClienteDAO {
             comando.setString(10, clienteNuevo.getColonia());
             comando.setString(11, clienteNuevo.getCiudad());
             comando.setInt(12, clienteNuevo.getEdad());
+
             int numeroRegistrosInsertados = comando.executeUpdate();
-            logger.log(Level.INFO, "Se agregaron {0} socios", numeroRegistrosInsertados);
+            logger.log(Level.INFO, "Se agregaron {0} clientes", numeroRegistrosInsertados);
 
             ResultSet idGenerado = comando.getGeneratedKeys();
-            idGenerado.next();
+            if (idGenerado.next()) {
+                int idClienteGenerado = idGenerado.getInt(1);
 
-            Cliente cliente = new Cliente(
-                    idGenerado.getInt(1),
-                    clienteNuevo.getUsuario(),
-                    clienteNuevo.getNombre(),
-                    clienteNuevo.getApellidoPaterno(),
-                    clienteNuevo.getApellidoMaterno(),
-                    clienteNuevo.getContraseña(),
-                    clienteNuevo.getFechaNacimiento(),
-                    clienteNuevo.getCodigoPostal(),
-                    clienteNuevo.getNumExterior(),
-                    clienteNuevo.getCalle(),
-                    clienteNuevo.getColonia(),
-                    clienteNuevo.getCiudad(),
-                    clienteNuevo.getEdad());
-            return cliente;
+                return new Cliente(
+                        idClienteGenerado,
+                        clienteNuevo.getUsuario(),
+                        clienteNuevo.getNombre(),
+                        clienteNuevo.getApellidoPaterno(),
+                        clienteNuevo.getApellidoMaterno(),
+                        clienteNuevo.getContraseña(),
+                        clienteNuevo.getFechaNacimiento(),
+                        clienteNuevo.getCodigoPostal(),
+                        clienteNuevo.getNumExterior(),
+                        clienteNuevo.getCalle(),
+                        clienteNuevo.getColonia(),
+                        clienteNuevo.getCiudad(),
+                        clienteNuevo.getEdad());
+            } else {
+                throw new PersistenciaException("Error al obtener el ID del cliente generado");
+            }
 
         } catch (SQLException ex) {
-            logger.log(Level.SEVERE, "No se pudo guardar el cliente", ex);
-            throw new PersistenciaException("No se pudo guardar el cliente", ex);
+            logger.log(Level.SEVERE, "Error al guardar el cliente", ex);
+            throw new PersistenciaException("Error al guardar el cliente", ex);
         }
     }
 

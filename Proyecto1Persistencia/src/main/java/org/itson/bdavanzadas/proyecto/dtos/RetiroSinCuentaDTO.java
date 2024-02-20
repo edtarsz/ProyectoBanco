@@ -27,16 +27,44 @@ public class RetiroSinCuentaDTO extends Operacion {
         return idCuenta;
     }
 
-    public void setIdCuenta(String idCuenta) {
-        this.idCuenta = idCuenta;
-    }
-
     public String getFolio() {
         return folio;
     }
 
     public String getContraseñaRetiro() {
         return contraseñaRetiro;
+    }
+
+    public void setIdCuenta(String idCuenta) {
+        this.idCuenta = idCuenta;
+    }
+
+    public void setFolio(String folio) {
+        this.folio = folio;
+    }
+
+    public void setContraseñaRetiro() {
+        char[] contraseñaArray = new char[8];
+
+        SecureRandom random = new SecureRandom();
+
+        for (int i = 0; i < 3; i++) {
+            contraseñaArray[i] = (char) ('0' + random.nextInt(10));
+        }
+
+        for (int i = 3; i < 8; i++) {
+            contraseñaArray[i] = (char) ('a' + random.nextInt(26));
+        }
+
+        for (int i = 0; i < contraseñaArray.length; i++) {
+            contraseñaArray[i] += 5;
+        }
+
+        this.contraseñaRetiro = new String(contraseñaArray);
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public void setFolio() {
@@ -47,22 +75,6 @@ public class RetiroSinCuentaDTO extends Operacion {
             sb.append(random.nextInt(10));
         }
         this.folio = sb.toString();
-    }
-
-    public void setContraseñaRetiro() {
-        StringBuilder sb = new StringBuilder();
-        SecureRandom random = new SecureRandom();
-
-        for (int i = 0; i < 3; i++) {
-            sb.append(random.nextInt(10));
-        }
-
-        for (int i = 0; i < 5; i++) {
-            char randomChar = (char) ('a' + random.nextInt(26));
-            sb.append(randomChar);
-        }
-
-        this.contraseñaRetiro = sb.toString();
     }
 
 }

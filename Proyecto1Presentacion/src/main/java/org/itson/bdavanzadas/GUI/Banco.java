@@ -30,7 +30,7 @@ public class Banco {
     public static ITransferenciaDAO transferenciaDao;
 
     public static void main(String[] args) throws Exception {
-        String cadenaConexion = "jdbc:mysql://localhost/banco";
+        String cadenaConexion = "jdbc:mysql://localhost/bancoProyecto";
         String usuario = "root";
         String contrasenia = "18509Tal";
 

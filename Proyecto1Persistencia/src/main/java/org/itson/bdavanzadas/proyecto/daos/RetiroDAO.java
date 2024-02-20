@@ -60,6 +60,12 @@ public class RetiroDAO implements IRetiroDAO {
                     String contraseñaRetiro = resultados.getString("contraseñaRetiro");
                     String idCuenta = resultados.getString("idCuenta");
 
+                    // Desencriptación
+                    char[] contraseñaArray = contraseñaRetiro.toCharArray();
+                    for (int i = 0; i < contraseñaArray.length; i++) {
+                        contraseñaArray[i] -= 5;
+                    }
+
                     retiro = new RetiroSinCuenta(idOperacion, fechaHora, monto, folio, contraseñaRetiro, idCuenta, estado);
 
                 }
