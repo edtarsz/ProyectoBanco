@@ -7,11 +7,14 @@ package org.itson.bdavanzadas.proyectodominio;
 import java.util.Objects;
 
 /**
+ * Clase que representa un Cliente en el sistema.
  *
- * @author Ramosz
+ * @author Eduardo Talavera Ramos | 00000245244
+ * @author Angel Huerta Amparán | 00000245345
  */
 public class Cliente {
 
+    // Atributos de la clase Cliente
     private int idCliente;
     private String usuario;
     private String nombre;
@@ -26,9 +29,11 @@ public class Cliente {
     private String ciudad;
     private int edad;
 
+    // Constructor predeterminado de cliente
     public Cliente() {
     }
 
+    // Constructor con parámetros de información básica del cliente
     public Cliente(String nombre, String apellidoPaterno, String apellidoMaterno, String contraseña, String fechaNacimiento, String codigoPostal, String numExterior, String calle, String colonia, String ciudad, int edad) {
         this.edad = edad;
         this.nombre = nombre;
@@ -43,6 +48,7 @@ public class Cliente {
         this.ciudad = ciudad;
     }
 
+    // Constructor con parámetros incluyendo el ID del cliente
     public Cliente(int idCliente, String usuario, String nombre, String apellidoPaterno, String apellidoMaterno, String contraseña, String fechaNacimiento, String codigoPostal, String numExterior, String calle, String colonia, String ciudad) {
         this.usuario = usuario;
         this.idCliente = idCliente;
@@ -58,6 +64,7 @@ public class Cliente {
         this.ciudad = ciudad;
     }
 
+    // Constructor con parámetros incluyendo el ID y la edad del cliente
     public Cliente(int idCliente, String usuario, String nombre, String apellidoPaterno, String apellidoMaterno, String contraseña, String fechaNacimiento, String codigoPostal, String numExterior, String calle, String colonia, String ciudad, int edad) {
         this.usuario = usuario;
         this.idCliente = idCliente;
@@ -74,6 +81,7 @@ public class Cliente {
         this.edad = edad;
     }
 
+    // Constructor con parámetros excluyendo el ID del cliente
     public Cliente(String usuario, String nombre, String apellidoPaterno, String apellidoMaterno, String contraseña, String fechaNacimiento, String codigoPostal, String numExterior, String calle, String colonia, String ciudad, int edad) {
         this.usuario = usuario;
         this.nombre = nombre;
@@ -89,6 +97,7 @@ public class Cliente {
         this.edad = edad;
     }
 
+    // Métodos getters para obtener valores de los atributos
     public int getIdCliente() {
         return idCliente;
     }
@@ -141,6 +150,7 @@ public class Cliente {
         return ciudad;
     }
 
+    // Métodos setters para establecer valores a los atributos
     public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
     }
@@ -193,6 +203,7 @@ public class Cliente {
         this.ciudad = ciudad;
     }
 
+    // Método hashCode para generar un código hash basado en los atributos
     @Override
     public int hashCode() {
         int hash = 5;
@@ -212,6 +223,7 @@ public class Cliente {
         return hash;
     }
 
+    // Método equals para comparar la igualdad de objetos basándose en los atributos
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -263,6 +275,7 @@ public class Cliente {
         return Objects.equals(this.idCliente, other.idCliente);
     }
 
+    // Método toString para obtener una representación de cadena del objeto Cliente
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -283,5 +296,4 @@ public class Cliente {
         sb.append('}');
         return sb.toString();
     }
-
 }

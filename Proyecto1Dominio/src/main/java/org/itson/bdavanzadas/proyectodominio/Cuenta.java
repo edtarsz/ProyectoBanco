@@ -9,26 +9,32 @@ import java.util.Objects;
 import java.util.Random;
 
 /**
+ * Clase que representa una Cuenta en el sistema.
  *
- * @author Ramosz
+ * @author Eduardo Talavera Ramos | 00000245244
+ * @author Angel Huerta Amparán | 00000245345
  */
 public class Cuenta {
 
+    // Atributos de la clase Cuenta
     String numCuenta;
     String estado;
     int idCliente;
     float saldo;
     Date fechaApertura;
 
+    // Constructor predeterminado de cuenta
     public Cuenta() {
     }
 
+    // Constructor con parámetros de información básica de la cuenta
     public Cuenta(int idCliente, float saldo, Date fechaApertura) {
         this.idCliente = idCliente;
         this.saldo = saldo;
         this.fechaApertura = fechaApertura;
     }
 
+    // Constructor con parámetros incluyendo el número de cuenta y el estado
     public Cuenta(int idCliente, String numCuenta, float saldo, String estado) {
         this.idCliente = idCliente;
         this.numCuenta = numCuenta;
@@ -36,6 +42,7 @@ public class Cuenta {
         this.estado = estado;
     }
 
+    // Constructor con parámetros incluyendo el número de cuenta, el ID del cliente y la fecha de apertura
     public Cuenta(String numCuenta, int idCliente, float saldo, Date fechaApertura, String estado) {
         this.numCuenta = numCuenta;
         this.idCliente = idCliente;
@@ -44,6 +51,7 @@ public class Cuenta {
         this.estado = estado;
     }
 
+    // Métodos getters para obtener valores de los atributos
     public String getEstado() {
         return estado;
     }
@@ -64,6 +72,7 @@ public class Cuenta {
         return fechaApertura;
     }
 
+    // Método setter para generar un número de cuenta aleatorio
     public void setNumCuenta() {
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
@@ -74,6 +83,7 @@ public class Cuenta {
         this.numCuenta = sb.toString();
     }
 
+    // Métodos setters para establecer valores a los atributos
     public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
     }
@@ -90,6 +100,7 @@ public class Cuenta {
         this.estado = estado;
     }
 
+    // Método hashCode para generar un código hash basado en los atributos
     @Override
     public int hashCode() {
         int hash = 5;
@@ -101,6 +112,7 @@ public class Cuenta {
         return hash;
     }
 
+    // Método equals para comparar la igualdad de objetos basándose en los atributos
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -128,6 +140,7 @@ public class Cuenta {
         return Objects.equals(this.fechaApertura, other.fechaApertura);
     }
 
+    // Método toString para obtener una representación de cadena del objeto Cuenta
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

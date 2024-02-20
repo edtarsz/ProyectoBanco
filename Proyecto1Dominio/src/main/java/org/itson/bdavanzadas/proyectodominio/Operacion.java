@@ -8,24 +8,30 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
+ * Clase que representa una operación financiera en el sistema.
  *
- * @author Ramosz
+ * @author Eduardo Talavera Ramos | 00000245244
+ * @author Angel Huerta Amparán | 00000245345
  */
 public class Operacion {
 
+    // Atributos de la clase Operacion
     int idOperacion;
     LocalDateTime fechaHora;
     float monto;
 
+    // Constructor predeterminado de operacion
     public Operacion() {
     }
 
+    // Constructor con parámetros para inicializar la operación con valores específicos
     public Operacion(int idOperacion, LocalDateTime fechaHora, float monto) {
         this.idOperacion = idOperacion;
         this.fechaHora = fechaHora;
         this.monto = monto;
     }
 
+    // Métodos getters para obtener valores de los atributos
     public int getIdOperacion() {
         return idOperacion;
     }
@@ -38,6 +44,7 @@ public class Operacion {
         return monto;
     }
 
+    // Métodos setters para establecer valores a los atributos
     public void setIdOperacion(int idOperacion) {
         this.idOperacion = idOperacion;
     }
@@ -50,6 +57,7 @@ public class Operacion {
         this.monto = monto;
     }
 
+    // Método hashCode para generar un código hash basado en los atributos
     @Override
     public int hashCode() {
         int hash = 7;
@@ -59,6 +67,7 @@ public class Operacion {
         return hash;
     }
 
+    // Método equals para comparar la igualdad de objetos basándose en los atributos
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -80,6 +89,7 @@ public class Operacion {
         return Objects.equals(this.fechaHora, other.fechaHora);
     }
 
+    // Método toString para obtener una representación de cadena del objeto Operacion
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -90,5 +100,4 @@ public class Operacion {
         sb.append('}');
         return sb.toString();
     }
-
 }
