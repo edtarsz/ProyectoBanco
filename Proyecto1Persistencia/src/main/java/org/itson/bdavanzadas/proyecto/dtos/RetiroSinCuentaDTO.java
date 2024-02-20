@@ -43,7 +43,7 @@ public class RetiroSinCuentaDTO extends Operacion {
         this.folio = folio;
     }
 
-    public void setContraseñaRetiro() {
+    public void setContraseñaEcriptada() {
         char[] contraseñaArray = new char[8];
 
         SecureRandom random = new SecureRandom();
@@ -61,6 +61,10 @@ public class RetiroSinCuentaDTO extends Operacion {
         }
 
         this.contraseñaRetiro = new String(contraseñaArray);
+    }
+    
+    public void setContraseñaRetiro(String contraseñaRetiro){
+        this.contraseñaRetiro = contraseñaRetiro;
     }
 
     public void setEstado(String estado) {
