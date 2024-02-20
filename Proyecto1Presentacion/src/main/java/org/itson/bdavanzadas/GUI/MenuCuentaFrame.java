@@ -69,23 +69,24 @@ public class MenuCuentaFrame extends javax.swing.JFrame {
 
     public void cancelarCuenta() {
         String cuentaSelect = (String) cmbCuentas.getSelectedItem();
-        String[] partes = cuentaSelect.split(" ");
-        String numeroCuenta = partes[0].substring(0);
 
-        try {
-            if (cuentaSelect != null && cuentaSelect instanceof String) {
-                int opcion = JOptionPane.showConfirmDialog(this, "¿Está seguro de cancelar la cuenta?", "Confirmación", JOptionPane.YES_NO_OPTION);
-                System.out.println(numeroCuenta);
-                if (opcion == JOptionPane.YES_OPTION) {
+        if (cuentaSelect != null && cuentaSelect instanceof String) {
+            String[] partes = cuentaSelect.split(" ");
+            String numeroCuenta = partes[0].substring(0);
+
+            int opcion = JOptionPane.showConfirmDialog(this, "¿Está seguro de cancelar la cuenta?", "Confirmación", JOptionPane.YES_NO_OPTION);
+
+            if (opcion == JOptionPane.YES_OPTION) {
+                try {
                     Banco.clienteDao.cambiarEstadoCuenta(numeroCuenta, "Cancelada");
                     JOptionPane.showMessageDialog(this, "Se canceló la cuenta", "Notificación", JOptionPane.INFORMATION_MESSAGE);
                     mostrarCuentas();
+                } catch (PersistenciaException ex) {
+                    JOptionPane.showMessageDialog(this, "No fue posible cancelar la cuenta", "Error de almacenamiento", JOptionPane.ERROR_MESSAGE);
                 }
-            } else {
-                JOptionPane.showMessageDialog(this, "No hay cuenta seleccionada para cancelar", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
-        } catch (PersistenciaException ex) {
-            JOptionPane.showMessageDialog(this, "No fue posible cancelar la cuenta", "Error de almacenamiento", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No hay cuenta seleccionada para cancelar", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
 
