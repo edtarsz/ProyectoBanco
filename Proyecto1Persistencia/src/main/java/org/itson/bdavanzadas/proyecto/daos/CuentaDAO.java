@@ -72,7 +72,20 @@ public class CuentaDAO implements ICuentaDAO {
             Logger.getLogger(CuentaDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("Error al obtener información de la cuenta", ex);
         }
-
         return cuenta;
+    }
+
+    /**
+     * Verifica si una cuenta existe mediante su número de cuenta.
+     *
+     * @param numCuenta Número de cuenta de la cuenta que se desea verificar.
+     * @return true si la cuenta existe, false si no existe.
+     * @throws PersistenciaException Si ocurre un error al interactuar con la base de datos.
+     */
+    @Override
+    public boolean obtenerCuentaBoolean(String numCuenta) throws PersistenciaException {
+        Cuenta cuenta = obtenerCuenta(numCuenta);
+        System.out.println("obtener cuenta boolean " + cuenta);
+        return cuenta != null; // Devuelve true si la cuenta existe, false si no existe
     }
 }

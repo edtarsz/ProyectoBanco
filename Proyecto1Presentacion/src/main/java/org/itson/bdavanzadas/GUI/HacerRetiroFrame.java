@@ -38,14 +38,13 @@ public class HacerRetiroFrame extends javax.swing.JFrame {
         } else {
             String folio = txtFolio.getText();
             String contraseña = txtContraseña.getText();
-            float monto = Integer.parseInt(txtMonto.getText());
             RetiroSinCuenta retiro = new RetiroSinCuenta(folio, contraseña);
-            if (Banco.retiroDao.procesarRetiro(Banco.retiroDao.consultarRetiro(retiro))) {
-                JOptionPane.showMessageDialog(null, "Retiro exitoso en la fecha:" + retiro.getFechaHora());
+            RetiroSinCuenta RetiroActualizado = Banco.retiroDao.consultarRetiro(retiro);
+            if (Banco.retiroDao.procesarRetiro(RetiroActualizado)) {
+                JOptionPane.showMessageDialog(null, "Retiro exitoso en la fecha:" + RetiroActualizado.getFechaHora());
             } else {
                 JOptionPane.showMessageDialog(null, "Ya pasaron 10 minutos desde la solicitud del retiro. Genere otro.");
             }
-
         }
     }
 
@@ -66,8 +65,6 @@ public class HacerRetiroFrame extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         txtEditarPerfilT = new javax.swing.JButton();
         txtFolio = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
-        txtMonto = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -86,12 +83,12 @@ public class HacerRetiroFrame extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(42, 98, 143));
         jLabel7.setText("Folio");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 180, -1, 37));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 190, -1, 37));
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(42, 98, 143));
         jLabel10.setText("Contraseña");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 230, -1, 37));
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 250, -1, 37));
 
         txtContraseña.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
         txtContraseña.addActionListener(new java.awt.event.ActionListener() {
@@ -99,7 +96,7 @@ public class HacerRetiroFrame extends javax.swing.JFrame {
                 txtContraseñaActionPerformed(evt);
             }
         });
-        jPanel1.add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(421, 241, 182, -1));
+        jPanel1.add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 260, 182, -1));
 
         confirmarBtn.setBackground(new java.awt.Color(42, 98, 143));
         confirmarBtn.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
@@ -136,20 +133,7 @@ public class HacerRetiroFrame extends javax.swing.JFrame {
                 txtFolioActionPerformed(evt);
             }
         });
-        jPanel1.add(txtFolio, new org.netbeans.lib.awtextra.AbsoluteConstraints(421, 186, 182, -1));
-
-        jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(42, 98, 143));
-        jLabel12.setText("Monto");
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 290, -1, 22));
-
-        txtMonto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        txtMonto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMontoActionPerformed(evt);
-            }
-        });
-        jPanel1.add(txtMonto, new org.netbeans.lib.awtextra.AbsoluteConstraints(421, 290, 182, -1));
+        jPanel1.add(txtFolio, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 200, 182, -1));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/flecha.JPG"))); // NOI18N
         jLabel6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -181,10 +165,6 @@ public class HacerRetiroFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtMontoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMontoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtMontoActionPerformed
-
     private void txtFolioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFolioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtFolioActionPerformed
@@ -201,7 +181,6 @@ public class HacerRetiroFrame extends javax.swing.JFrame {
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
         try {
             realizarRetiro();
-
         } catch (PersistenciaException ex) {
             Logger.getLogger(HacerRetiroFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -228,7 +207,6 @@ public class HacerRetiroFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -236,6 +214,5 @@ public class HacerRetiroFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtContraseña;
     private javax.swing.JButton txtEditarPerfilT;
     private javax.swing.JTextField txtFolio;
-    private javax.swing.JTextField txtMonto;
     // End of variables declaration//GEN-END:variables
 }

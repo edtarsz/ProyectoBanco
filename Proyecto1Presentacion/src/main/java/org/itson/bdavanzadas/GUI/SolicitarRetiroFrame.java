@@ -107,7 +107,6 @@ public class SolicitarRetiroFrame extends javax.swing.JFrame {
 
                 retiro.setMonto(monto);
                 retiro.setFechaHora(fechaHoraActual);
-
                 // Realizar la solicitud de retiro y mostrar información al usuario
                 Banco.retiroDao.solicitarRetiro(retiro, Banco.cuentaDao);
                 JOptionPane.showMessageDialog(this, "El folio es: \n" + retiro.getFolio() + "\nContraseña: \n" + contraDesencriptada, "Notificación", JOptionPane.INFORMATION_MESSAGE);
@@ -304,6 +303,9 @@ public class SolicitarRetiroFrame extends javax.swing.JFrame {
      */
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
         realizarRetiro();
+        IndiceFrame indiceFrame = new IndiceFrame();
+        indiceFrame.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_confirmarBtnActionPerformed
 
     /**

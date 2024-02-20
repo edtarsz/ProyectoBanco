@@ -109,6 +109,8 @@ public class RetiroDAO implements IRetiroDAO {
             comando.setString(5, retiro.getFolio());
             comando.setString(6, retiro.getContraseñaRetiro());
 
+            Timestamp fechaHora = Timestamp.valueOf(retiro.getFechaHora());
+            LocalDateTime retiroDateTime = fechaHora.toLocalDateTime();
             // Registra el parámetro de salida
             comando.registerOutParameter(7, Types.INTEGER);
 
@@ -119,7 +121,7 @@ public class RetiroDAO implements IRetiroDAO {
             int idOperacion = comando.getInt(7);
 
             // Crear y retornar el objeto RetiroSinCuenta con los datos necesarios
-            RetiroSinCuenta retiroSin = new RetiroSinCuenta(idOperacion, retiro.getFechaHora(), retiro.getMonto(), retiro.getFolio(), retiro.getContraseñaRetiro(), retiro.getIdCuenta(), retiro.getEstado());
+            RetiroSinCuenta retiroSin = new RetiroSinCuenta(idOperacion, retiroDateTime, retiro.getMonto(), retiro.getFolio(), retiro.getContraseñaRetiro(), retiro.getIdCuenta(), retiro.getEstado());
             return retiroSin;
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, "No se pudo solicitar el retiro", ex);
@@ -138,10 +140,11 @@ public class RetiroDAO implements IRetiroDAO {
     public boolean procesarRetiro(RetiroSinCuenta retiro) throws PersistenciaException {
         LocalDateTime now = LocalDateTime.now();
         Duration duration = Duration.between(retiro.getFechaHora(), now);
-        long difMinutos = duration.toMinutes();
+        long minutos = duration.toMinutes();
 
+        System.out.println("Minutos pasados:" + minutos);
         // Verifica si han pasado más de 10 minutos desde la solicitud del retiro
-        if (difMinutos > 10) {
+        if (minutos < 10) {
             String sentenciaSQLNoCobrado = """
         UPDATE retirosincuentas SET estado = "No Cobrado" WHERE idOperacion = ?;
                                        """;
@@ -158,7 +161,7 @@ public class RetiroDAO implements IRetiroDAO {
         } else {
             // Si no han pasado más de 10 minutos, realizar el retiro
             String sentenciaSQLCobrado = """
-        CALL RealizarRetiro (?, ?, ?);
+            CALL RealizarRetiro (?, ?, ?);
                                        """;
             try (
                     Connection conexion = this.conexionBD.obtenerConexion(); PreparedStatement comando = conexion.prepareStatement(sentenciaSQLCobrado, Statement.RETURN_GENERATED_KEYS);) {
@@ -171,7 +174,7 @@ public class RetiroDAO implements IRetiroDAO {
                 logger.log(Level.SEVERE, "No se pudo realizar el retiro", ex);
                 throw new PersistenciaException("No se pudo realizar el retiro", ex);
             }
+            return true;
         }
-        return true;
     }
 }

@@ -24,4 +24,5 @@ public interface ICuentaDAO {
      */
     Cuenta obtenerCuenta(String numCuenta) throws PersistenciaException;
 
+    boolean obtenerCuentaBoolean(String numCuenta) throws PersistenciaException;
 }

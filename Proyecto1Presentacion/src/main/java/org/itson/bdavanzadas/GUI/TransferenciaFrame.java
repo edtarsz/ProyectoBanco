@@ -76,8 +76,6 @@ public class TransferenciaFrame extends javax.swing.JFrame {
         String cuentaString = (String) cuentaOrigenCmbBox.getSelectedItem();
         Cuenta cuenta = new Cuenta();
         List<Cuenta> listaCuentas;
-
-        // Consultar cuentas asociadas al cliente y obtener la cuenta de origen seleccionada
         try {
             listaCuentas = Banco.clienteDao.consultarCuentas(this.cliente);
             for (Cuenta account : listaCuentas) {
@@ -89,22 +87,20 @@ public class TransferenciaFrame extends javax.swing.JFrame {
             Logger.getLogger(TransferenciaFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        // Validar la entrada del usuario y realizar la transferencia
         if (String.valueOf(txtCuentaDestino.getText()).isEmpty() || String.valueOf(txtCuentaDestino.getText()) == null || String.valueOf(txtImporte.getText()).isEmpty() || String.valueOf(txtImporte.getText()) == null) {
             JOptionPane.showMessageDialog(this, "Rellene todos los campos", "Notificación", JOptionPane.INFORMATION_MESSAGE);
+        } else if (cuentaString.equals(String.valueOf(txtCuentaDestino.getText()))) {
+            JOptionPane.showMessageDialog(this, "La cuenta origen y destino deben ser diferentes", "Notificación", JOptionPane.INFORMATION_MESSAGE);
         } else {
             int idCuentaDestino = Integer.parseInt(txtCuentaDestino.getText());
             int monto = Integer.parseInt(txtImporte.getText());
             LocalDateTime fechaActual = LocalDateTime.now();
-
-            // Crear un objeto TransferenciaDTO con los datos de la transferencia
             TransferenciaDTO transferencia = new TransferenciaDTO();
+
             transferencia.setIdCuenta(Integer.parseInt(cuenta.getNumCuenta()));
             transferencia.setIdCuentaDestino(idCuentaDestino);
             transferencia.setFechaHora(fechaActual);
             transferencia.setMonto(monto);
-
-            // Realizar la transferencia y mostrar la ventana de confirmación
             Banco.transferenciaDao.realizarTransferencia(transferencia, Banco.cuentaDao.obtenerCuenta(cuenta.getNumCuenta()));
             dispose();
             ConfirmarTransferenciaFrame confirmar = new ConfirmarTransferenciaFrame(transferencia, cliente);
