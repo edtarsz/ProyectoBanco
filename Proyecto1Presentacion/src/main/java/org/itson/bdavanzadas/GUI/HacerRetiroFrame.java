@@ -6,6 +6,7 @@ package org.itson.bdavanzadas.GUI;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import org.itson.bdavanzadas.proyecto.excepciones.PersistenciaException;
 import org.itson.bdavanzadas.proyectodominio.RetiroSinCuenta;
 
@@ -23,12 +24,16 @@ public class HacerRetiroFrame extends javax.swing.JFrame {
     }
 
     public void realizarRetiro() throws PersistenciaException {
+        if (txtFolio.getText() == null || txtFolio.getText().isEmpty() || txtContraseña.getText() == null || txtContraseña.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Rellene todos los campos", "Notificación", JOptionPane.INFORMATION_MESSAGE);
+        } else {
         String folio = txtFolio.getText();
         String contraseña = txtContraseña.getText();
         float monto = Integer.parseInt(txtMonto.getText());
         RetiroSinCuenta retiro = new RetiroSinCuenta(folio, contraseña);
         Banco.retiroDao.procesarRetiro(Banco.retiroDao.consultarRetiro(retiro));
         DatosRetiroForm datosFrame = new DatosRetiroForm(retiro);
+    }
     }
 
     /**
